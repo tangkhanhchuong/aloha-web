@@ -25,7 +25,7 @@ import { getNotifies } from './redux/actions/notifyAction'
 import CallModal from './components/message/CallModal'
 import Peer from 'peerjs'
 
-function App() {
+const App = () => {
   const { auth, status, modal, call } = useSelector(state => state)
   const dispatch = useDispatch()
 

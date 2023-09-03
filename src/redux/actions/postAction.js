@@ -14,12 +14,12 @@ export const POST_TYPES = {
 
 
 export const createPost = ({content, images, auth, socket}) => async (dispatch) => {
-    let media = []
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: true} })
-        if(images.length > 0) media = await imageUpload(images)
-
-        const res = await postDataAPI('posts', { content, images: media }, auth.token)
+        let files = []
+        if(images.length > 0) files = await imageUpload(images)
+        
+        const res = await postDataAPI('posts', { content, images: files.map(file => file.key) }, auth.token)
 
         dispatch({ 
             type: POST_TYPES.CREATE_POST, 
@@ -34,8 +34,8 @@ export const createPost = ({content, images, auth, socket}) => async (dispatch) 
             text: 'added a new post.',
             recipients: res.data.newPost.user.followers,
             url: `/post/${res.data.newPost._id}`,
-            content, 
-            image: media[0].url
+            content,
+            image: files[0]
         }
 
         dispatch(createNotify({msg, auth, socket}))

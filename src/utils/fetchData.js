@@ -1,36 +1,40 @@
 import axios from 'axios'
 
+const axiosClient = axios.create({
+    baseURL: process.env.REACT_APP_SERVER_URL,
+    
+})
+
 export const getDataAPI = async (url, token) => {
-    const res = await axios.get(`/api/${url}`, {
+    return axiosClient.get(`/api/${url}`, {
         headers: { Authorization: token}
     })
-    return res;
 }
 
-export const postDataAPI = async (url, post, token) => {
-    const res = await axios.post(`/api/${url}`, post, {
-        headers: { Authorization: token}
+export const postDataAPI = async (url, data, token, isForm) => {
+    const headers = { Authorization: token }
+    if (isForm) {
+        headers['Content-Type'] = 'multipart/form-data';
+    }
+    return axiosClient.post(`/api/${url}`, data, {
+        headers
     })
-    return res;
 }
 
-export const putDataAPI = async (url, post, token) => {
-    const res = await axios.put(`/api/${url}`, post, {
+export const putDataAPI = async (url, data, token) => {
+    return axiosClient.put(`/api/${url}`, data, {
         headers: { Authorization: token}
     })
-    return res;
 }
 
-export const patchDataAPI = async (url, post, token) => {
-    const res = await axios.patch(`/api/${url}`, post, {
+export const patchDataAPI = async (url, data, token) => {
+    return axiosClient.patch(`/api/${url}`, data, {
         headers: { Authorization: token}
     })
-    return res;
 }
 
 export const deleteDataAPI = async (url, token) => {
-    const res = await axios.delete(`/api/${url}`, {
+    return axiosClient.delete(`/api/${url}`, {
         headers: { Authorization: token}
     })
-    return res;
 }

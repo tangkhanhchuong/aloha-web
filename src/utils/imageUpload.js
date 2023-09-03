@@ -1,3 +1,5 @@
+import { postDataAPI } from "./fetchData"
+
 export const checkImage = (file) => {
     let err = ""
     if(!file) return err = "File does not exist."
@@ -13,26 +15,14 @@ export const checkImage = (file) => {
 
 
 export const imageUpload = async (images) => {
-    let imgArr = [];
+    const formData = new FormData()
     for(const item of images){
-        const formData = new FormData()
-
         if(item.camera){
-            formData.append("file", item.camera)
+            formData.append("files", item.camera)
         }else{
-            formData.append("file", item)
+            formData.append("files", item)
         }
-        
-        formData.append("upload_preset", "efxjficn")
-        formData.append("cloud_name", "devat-channel")
-
-        const res = await fetch("https://api.cloudinary.com/v1_1/devat-channel/upload", {
-            method: "POST",
-            body: formData
-        })
-        
-        const data = await res.json()
-        imgArr.push({public_id: data.public_id, url: data.secure_url})
     }
-    return imgArr;
+    const res = await postDataAPI('file/upload', formData)
+    return res.data.files
 }
