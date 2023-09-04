@@ -93,38 +93,36 @@ export const updateProfileUser = ({ userData, avatar, auth }) => async (dispatch
 }
 
 export const follow = ({ users, user, auth, socket }) => async (dispatch) => {
-    let newUser;
+    let updatedUser;
     
     if(users.every(item => item._id !== user._id)) {
-        newUser = { ...user, followers: [...user.followers, auth.user] }
+        updatedUser = { ...user, followers: [...user.followers, auth.user] }
     }else{
         users.forEach(item => {
             if(item._id === user._id) {
-                newUser = { ...item, followers: [...item.followers, auth.user] }
+                updatedUser = { ...item, followers: [...item.followers, auth.user] }
             }
         })
     }
 
-    dispatch({ type: PROFILE_TYPES.FOLLOW, payload: newUser })
-
+    dispatch({ type: PROFILE_TYPES.FOLLOW, payload: updatedUser })
     dispatch({
         type: GLOBALTYPES.AUTH, 
         payload: {
             ...auth,
-            user: { ...auth.user, following: [...auth.user.following, newUser] }
+            user: { ...auth.user, following: [...auth.user.following, updatedUser] }
         }
     })
 
-
     try {
         const res = await patchDataAPI(`user/${user._id}/follow`, null, auth.token)
-        socket.emit('follow', res.data.newUser)
+        socket.emit('follow', res.data.user)
 
         // Notify
         const msg = {
             id: auth.user._id,
             text: 'has started to follow you.',
-            recipients: [newUser._id],
+            recipients: [updatedUser._id],
             url: `/profile/${auth.user._id}`,
         }
 
@@ -140,39 +138,39 @@ export const follow = ({ users, user, auth, socket }) => async (dispatch) => {
 
 export const unfollow = ({ users, user, auth, socket }) => async (dispatch) => {
 
-    let newUser;
+    let updatedUser;
 
     if(users.every(item => item._id !== user._id)) {
-        newUser = { ...user, followers: DeleteData(user.followers, auth.user._id)}
+        updatedUser = { ...user, followers: DeleteData(user.followers, auth.user._id)}
     }else{
         users.forEach(item => {
             if(item._id === user._id) {
-                newUser = { ...item, followers: DeleteData(item.followers, auth.user._id) }
+                updatedUser = { ...item, followers: DeleteData(item.followers, auth.user._id) }
             }
         })
     }
 
-    dispatch({ type: PROFILE_TYPES.UNFOLLOW, payload: newUser })
+    dispatch({ type: PROFILE_TYPES.UNFOLLOW, payload: updatedUser })
     dispatch({
         type: GLOBALTYPES.AUTH, 
         payload: {
             ...auth,
             user: { 
                 ...auth.user, 
-                following: DeleteData(auth.user.following, newUser._id) 
+                following: DeleteData(auth.user.following, updatedUser._id) 
             }
         }
     })
    
     try {
         const res = await patchDataAPI(`user/${user._id}/unfollow`, null, auth.token)
-        socket.emit('unFollow', res.data.newUser)
+        socket.emit('unFollow', res.data.user)
 
         // Notify
         const msg = {
             id: auth.user._id,
             text: 'has started to follow you.',
-            recipients: [newUser._id],
+            recipients: [updatedUser._id],
             url: `/profile/${auth.user._id}`,
         }
         dispatch(removeNotify({ msg, auth, socket }))

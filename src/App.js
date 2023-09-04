@@ -32,7 +32,7 @@ const App = () => {
   useEffect(() => {
     dispatch(refreshToken())
 
-    const socket = io()
+    const socket = io(process.env.REACT_APP_SERVER_URL, { transport: ['websocket'] })
     dispatch({type: GLOBALTYPES.SOCKET, payload: socket})
     return () => socket.close()
   },[dispatch])
