@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { deletePost } from '../../../redux/actions/postAction'
-import { BASE_URL } from '../../../utils/config'
 
 const CardHeader = ({post}) => {
     const { auth, socket } = useSelector(state => state)
@@ -25,7 +24,7 @@ const CardHeader = ({post}) => {
     }
 
     const handleCopyLink = () => {
-        navigator.clipboard.writeText(`${BASE_URL}/post/${post._id}`)
+        navigator.clipboard.writeText(`${process.env.REACT_APP_WEB_URL}/post/${post._id}`)
     }
 
     return (
