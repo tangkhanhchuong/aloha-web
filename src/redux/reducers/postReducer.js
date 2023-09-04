@@ -4,7 +4,7 @@ import { EditData, DeleteData } from '../actions/globalTypes'
 const initialState = {
     loading: false,
     posts: [],
-    result: 0,
+    count: 0,
     page: 2
 }
 
@@ -24,7 +24,7 @@ const postReducer = (state = initialState, action) => {
             return {
                 ...state,
                 posts: action.payload.posts,
-                result: action.payload.result,
+                count: action.payload.count,
                 page: action.payload.page
             };
         case POST_TYPES.UPDATE_POST:

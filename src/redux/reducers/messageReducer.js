@@ -26,7 +26,7 @@ const messageReducer = (state = initialState, action) => {
                     ? {
                         ...item,
                         messages: [...item.messages, action.payload],
-                        result: item.result + 1
+                        count: item.count + 1
                     }
                     : item
                 ),
@@ -45,7 +45,7 @@ const messageReducer = (state = initialState, action) => {
             return {
                 ...state,
                 users: action.payload.newArr,
-                resultUsers: action.payload.result,
+                resultUsers: action.payload.count,
                 firstLoad: true
             };
         case MESS_TYPES.GET_MESSAGES:

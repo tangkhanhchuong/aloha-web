@@ -3,7 +3,7 @@ import { DISCOVER_TYPES } from '../actions/discoverAction'
 const initialState = {
     loading: false,
     posts: [],
-    result: 9,
+    count: 9,
     page: 2,
     firstLoad: false
 }
@@ -19,14 +19,14 @@ const discoverReducer = (state = initialState, action) => {
             return {
                 ...state,
                 posts: action.payload.posts,
-                result: action.payload.result,
+                count: action.payload.count,
                 firstLoad: true
             };
         case DISCOVER_TYPES.UPDATE_POST:
             return {
                 ...state,
                 posts: action.payload.posts,
-                result: action.payload.result,
+                count: action.payload.count,
                 page: state.page + 1
             };
         default:

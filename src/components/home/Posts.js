@@ -39,8 +39,12 @@ const Posts = () => {
             }
 
             
-            <LoadMoreBtn result={homePosts.result} page={homePosts.page}
-            load={load} handleLoadMore={handleLoadMore} />
+            <LoadMoreBtn
+                count={homePosts.count}
+                page={homePosts.page}
+                load={load}
+                handleLoadMore={handleLoadMore}
+            />
         </div>
     )
 }

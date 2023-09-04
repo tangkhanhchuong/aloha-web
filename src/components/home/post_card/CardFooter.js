@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Send from '../../../images/send.svg'
 import LikeButton from '../../LikeButton'
 import { useSelector, useDispatch } from 'react-redux'
-import { likePost, unLikePost, savePost, unSavePost } from '../../../redux/actions/postAction'
+import { likePost, unlikePost, savePost, unsavePost } from '../../../redux/actions/postAction'
 import ShareModal from '../../ShareModal'
 
 
@@ -40,7 +40,7 @@ const CardFooter = ({post}) => {
         if(loadLike) return;
 
         setLoadLike(true)
-        await dispatch(unLikePost({post, auth, socket}))
+        await dispatch(unlikePost({post, auth, socket}))
         setLoadLike(false)
     }
 
@@ -66,7 +66,7 @@ const CardFooter = ({post}) => {
         if(saveLoad) return;
 
         setSaveLoad(true)
-        await dispatch(unSavePost({post, auth}))
+        await dispatch(unsavePost({post, auth}))
         setSaveLoad(false)
     }
 

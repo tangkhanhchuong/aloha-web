@@ -6,46 +6,47 @@ import { getDataAPI } from '../../utils/fetchData'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 
 const Saved = ({auth, dispatch}) => {
-    const [savePosts, setSavePosts] = useState([])
-    const [result, setResult] = useState(9)
+    const [savedPosts, setSavedPosts] = useState([])
+    const [count, setCount] = useState(9)
     const [page, setPage] = useState(2)
     const [load, setLoad] = useState(false)
 
     useEffect(() => {
         setLoad(true)
-        getDataAPI('getSavePosts', auth.token)
+        getDataAPI('users/saved-posts', auth.token)
         .then(res => {
-            setSavePosts(res.data.savePosts)
-            setResult(res.data.result)
+            setSavedPosts(res.data.savedPosts)
+            setCount(res.data.count)
             setLoad(false)
         })
         .catch(err => {
             dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
         })
 
-        return () => setSavePosts([])
+        return () => setSavedPosts([])
     },[auth.token, dispatch])
 
     const handleLoadMore = async () => {
         setLoad(true)
-        const res = await getDataAPI(`getSavePosts?limit=${page * 9}`, auth.token)
-        setSavePosts(res.data.savePosts)
-        setResult(res.data.result)
+        const res = await getDataAPI(`users/saved-posts?limit=${page * 9}`, auth.token)
+        setSavedPosts(res.data.savedPosts)
+        setCount(res.data.count)
         setPage(page + 1)
         setLoad(false)
     }
 
     return (
         <div>
-            <PostThumb posts={savePosts} result={result} />
-
+            <PostThumb posts={savedPosts} count={count} />
             {
-                load && <img src={LoadIcon} alt="loading" className="d-block mx-auto" />
+                load && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
             }
-
-            
-            <LoadMoreBtn result={result} page={page}
-            load={load} handleLoadMore={handleLoadMore} />
+            <LoadMoreBtn
+                count={count}
+                page={page}
+                load={load}
+                handleLoadMore={handleLoadMore}
+            />
             
         </div>
     )

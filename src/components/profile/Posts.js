@@ -7,7 +7,7 @@ import { PROFILE_TYPES } from '../../redux/actions/profileAction'
 
 const Posts = ({auth, id, dispatch, profile}) => {
     const [posts, setPosts] = useState([])
-    const [result, setResult] = useState(9)
+    const [count, setCount] = useState(9)
     const [page, setPage] = useState(0)
     const [load, setLoad] = useState(false)
 
@@ -15,7 +15,7 @@ const Posts = ({auth, id, dispatch, profile}) => {
         profile.posts.forEach(data => {
             if(data._id === id){
                 setPosts(data.posts)
-                setResult(data.result)
+                setCount(data.count)
                 setPage(data.page)
             }
         })
@@ -23,7 +23,7 @@ const Posts = ({auth, id, dispatch, profile}) => {
 
     const handleLoadMore = async () => {
         setLoad(true)
-        const res = await getDataAPI(`user_posts/${id}?limit=${page * 9}`, auth.token)
+        const res = await getDataAPI(`users/${id}/posts?limit=${page * 9}`, auth.token)
         const newData = {...res.data, page: page + 1, _id: id}
         dispatch({type: PROFILE_TYPES.UPDATE_POST, payload: newData})
         setLoad(false)
@@ -31,14 +31,14 @@ const Posts = ({auth, id, dispatch, profile}) => {
 
     return (
         <div>
-            <PostThumb posts={posts} result={result} />
+            <PostThumb posts={posts} count={count} />
 
             {
-                load && <img src={LoadIcon} alt="loading" className="d-block mx-auto" />
+                load && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
             }
 
             
-            <LoadMoreBtn result={result} page={page}
+            <LoadMoreBtn count={count} page={page}
             load={load} handleLoadMore={handleLoadMore} />
             
         </div>

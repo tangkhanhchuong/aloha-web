@@ -20,8 +20,8 @@ export const getProfileUsers = ({ id, auth }) => async (dispatch) => {
 
     try {
         dispatch({ type: PROFILE_TYPES.LOADING, payload: true })
-        const res = getDataAPI(`/user/${id}`, auth.token)
-        const res1 = getDataAPI(`/user_posts/${id}`, auth.token)
+        const res = getDataAPI(`/users/${id}`, auth.token)
+        const res1 = getDataAPI(`/users/${id}/posts`, auth.token)
         
         const users = await res;
         const posts = await res1;
@@ -66,7 +66,7 @@ export const updateProfileUser = ({ userData, avatar, auth }) => async (dispatch
             media = await imageUpload([avatar])
         }
 
-        const res = await patchDataAPI('user', {
+        const res = await patchDataAPI('users', {
             ...userData,
             avatar: avatar ? media[0].key : auth.user.avatar
         }, auth.token)
@@ -115,7 +115,7 @@ export const follow = ({ users, user, auth, socket }) => async (dispatch) => {
     })
 
     try {
-        const res = await patchDataAPI(`user/${user._id}/follow`, null, auth.token)
+        const res = await patchDataAPI(`users/${user._id}/follow`, null, auth.token)
         socket.emit('follow', res.data.user)
 
         // Notify
@@ -163,7 +163,7 @@ export const unfollow = ({ users, user, auth, socket }) => async (dispatch) => {
     })
    
     try {
-        const res = await patchDataAPI(`user/${user._id}/unfollow`, null, auth.token)
+        const res = await patchDataAPI(`users/${user._id}/unfollow`, null, auth.token)
         socket.emit('unFollow', res.data.user)
 
         // Notify

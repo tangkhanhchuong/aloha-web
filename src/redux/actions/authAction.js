@@ -1,4 +1,4 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
 import { GLOBALTYPES } from './globalTypes'
 import { postDataAPI } from '../../utils/fetchData'
@@ -9,7 +9,7 @@ const TOKEN_LIFESPAN = 7; //days
 export const login = (data) => async (dispatch) => {
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: true} })
-        const res = await postDataAPI('login', data)
+        const res = await postDataAPI('auth/login', data)
         
         Cookies.set('refresh_token', res.data.refresh_token, {
             expires: TOKEN_LIFESPAN,
@@ -23,7 +23,7 @@ export const login = (data) => async (dispatch) => {
             } 
         })
 
-        localStorage.setItem("firstLogin", true)
+        localStorage.setItem('firstLogin', true)
         dispatch({ 
             type: GLOBALTYPES.ALERT, 
             payload: {
@@ -43,13 +43,13 @@ export const login = (data) => async (dispatch) => {
 
 
 export const refreshToken = () => async (dispatch) => {
-    const firstLogin = localStorage.getItem("firstLogin")
+    const firstLogin = localStorage.getItem('firstLogin')
     if(firstLogin){
         dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: true} })
 
         try {
             const refreshToken = Cookies.get('refresh_token');
-            const res = await postDataAPI('refresh_token', { refreshToken })
+            const res = await postDataAPI('auth/refresh-token', { refreshToken })
             dispatch({ 
                 type: GLOBALTYPES.AUTH, 
                 payload: {
@@ -78,7 +78,7 @@ export const register = (data) => async (dispatch) => {
     try {
         dispatch({type: GLOBALTYPES.ALERT, payload: {loading: true}})
 
-        const res = await postDataAPI('register', data)
+        const res = await postDataAPI('auth/register', data)
 
         Cookies.set('refresh_token', res.data.refresh_token, {
             expires: TOKEN_LIFESPAN,
@@ -91,7 +91,7 @@ export const register = (data) => async (dispatch) => {
             } 
         })
 
-        localStorage.setItem("firstLogin", true)
+        localStorage.setItem('firstLogin', true)
         dispatch({ 
             type: GLOBALTYPES.ALERT, 
             payload: {
@@ -112,8 +112,8 @@ export const register = (data) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
     try {
         localStorage.removeItem('firstLogin')
-        await postDataAPI('logout')
-        window.location.href = "/"
+        await postDataAPI('auth/logout')
+        window.location.href = '/'
     } catch (err) {
         dispatch({ 
             type: GLOBALTYPES.ALERT, 

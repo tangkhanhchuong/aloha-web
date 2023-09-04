@@ -26,7 +26,7 @@ const LeftSide = () => {
         if(!search) return setSearchUsers([]);
 
         try {
-            const res = await getDataAPI(`search?username=${search}`, auth.token)
+            const res = await getDataAPI(`users/search?username=${search}`, auth.token)
             setSearchUsers(res.data.users)
         } catch (err) {
             dispatch({
@@ -82,15 +82,15 @@ const LeftSide = () => {
 
     return (
         <>
-            <form className="message_header" onSubmit={handleSearch} >
-                <input type="text" value={search}
-                placeholder="Enter to Search..."
+            <form className='message_header' onSubmit={handleSearch} >
+                <input type='text' value={search}
+                placeholder='Enter to Search...'
                 onChange={e => setSearch(e.target.value)} />
 
-                <button type="submit" style={{display: 'none'}}>Search</button>
+                <button type='submit' style={{display: 'none'}}>Search</button>
             </form>
 
-            <div className="message_chat_list">
+            <div className='message_chat_list'>
                 {
                     searchUsers.length !== 0
                     ?  <>
@@ -112,10 +112,10 @@ const LeftSide = () => {
                                     <UserCard user={user} msg={true}>
                                         {
                                             user.online
-                                            ? <i className="fas fa-circle text-success" />
+                                            ? <i className='fas fa-circle text-success' />
                                             : auth.user.following.find(item => 
                                                 item._id === user._id
-                                            ) && <i className="fas fa-circle" />
+                                            ) && <i className='fas fa-circle' />
                                                 
                                         }
                                         

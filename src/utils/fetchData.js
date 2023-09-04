@@ -1,12 +1,11 @@
 import axios from 'axios'
 
 const axiosClient = axios.create({
-    baseURL: process.env.REACT_APP_SERVER_URL,
-    
+    baseURL: process.env.REACT_APP_SERVER_URL + '/api/v1',
 })
 
 export const getDataAPI = async (url, token) => {
-    return axiosClient.get(`/api/${url}`, {
+    return axiosClient.get(url, {
         headers: { Authorization: token}
     })
 }
@@ -16,25 +15,25 @@ export const postDataAPI = async (url, data, token, isForm) => {
     if (isForm) {
         headers['Content-Type'] = 'multipart/form-data';
     }
-    return axiosClient.post(`/api/${url}`, data, {
+    return axiosClient.post(url, data, {
         headers
     })
 }
 
 export const putDataAPI = async (url, data, token) => {
-    return axiosClient.put(`/api/${url}`, data, {
+    return axiosClient.put(url, data, {
         headers: { Authorization: token}
     })
 }
 
 export const patchDataAPI = async (url, data, token) => {
-    return axiosClient.patch(`/api/${url}`, data, {
+    return axiosClient.patch(url, data, {
         headers: { Authorization: token}
     })
 }
 
 export const deleteDataAPI = async (url, token) => {
-    return axiosClient.delete(`/api/${url}`, {
+    return axiosClient.delete(url, {
         headers: { Authorization: token}
     })
 }

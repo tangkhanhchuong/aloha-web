@@ -24,7 +24,7 @@ const RightSide = () => {
     const pageEnd = useRef()
 
     const [data, setData] = useState([])
-    const [result, setResult] = useState(9)
+    const [count, setCount] = useState(9)
     const [page, setPage] = useState(0)
     const [isLoadMore, setIsLoadMore] = useState(0)
 
@@ -34,7 +34,7 @@ const RightSide = () => {
         const newData = message.data.find(item => item._id === id)
         if(newData){
             setData(newData.messages)
-            setResult(newData.result)
+            setCount(newData.count)
             setPage(newData.page)
         }
     },[message.data, id])
@@ -128,8 +128,8 @@ const RightSide = () => {
 
     useEffect(() => {
         if(isLoadMore > 1){
-            if(result >= page * 9){
-                dispatch(loadMoreMessages({auth, id, page: page + 1}))
+            if(count >= page * 9){
+                dispatch(loadMoreMessages({ auth, id, page: page + 1 }))
                 setIsLoadMore(1)
             }
         }
