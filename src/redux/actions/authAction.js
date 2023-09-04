@@ -1,14 +1,22 @@
+import Cookies from "js-cookie";
+
 import { GLOBALTYPES } from './globalTypes'
 import { postDataAPI } from '../../utils/fetchData'
 import valid from '../../utils/valid'
 
+const TOKEN_LIFESPAN = 7; //days
 
 export const login = (data) => async (dispatch) => {
     try {
         dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: true} })
         const res = await postDataAPI('login', data)
-        dispatch({ 
-            type: GLOBALTYPES.AUTH, 
+        
+        Cookies.set('refresh_token', res.data.refresh_token, {
+            expires: TOKEN_LIFESPAN,
+        });
+
+        dispatch({
+            type: GLOBALTYPES.AUTH,
             payload: {
                 token: res.data.access_token,
                 user: res.data.user
@@ -40,7 +48,8 @@ export const refreshToken = () => async (dispatch) => {
         dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: true} })
 
         try {
-            const res = await postDataAPI('refresh_token')
+            const refreshToken = Cookies.get('refresh_token');
+            const res = await postDataAPI('refresh_token', { refreshToken })
             dispatch({ 
                 type: GLOBALTYPES.AUTH, 
                 payload: {
@@ -71,6 +80,10 @@ export const register = (data) => async (dispatch) => {
         dispatch({type: GLOBALTYPES.ALERT, payload: {loading: true}})
 
         const res = await postDataAPI('register', data)
+
+        Cookies.set('refresh_token', res.data.refresh_token, {
+            expires: TOKEN_LIFESPAN,
+        });
         dispatch({ 
             type: GLOBALTYPES.AUTH, 
             payload: {
