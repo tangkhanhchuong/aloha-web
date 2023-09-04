@@ -82,7 +82,7 @@ export const updatePost = ({content, images, auth, status}) => async (dispatch) 
         if(imgNewUrl.length > 0) media = await imageUpload(imgNewUrl)
 
         const res = await patchDataAPI(`post/${status._id}`, { 
-            content, images: [...imgOldUrl, ...media] 
+            content, images: [...imgOldUrl, ...media].map(file => file.key)
         }, auth.token)
 
         dispatch({ type: POST_TYPES.UPDATE_POST, payload: res.data.newPost })
