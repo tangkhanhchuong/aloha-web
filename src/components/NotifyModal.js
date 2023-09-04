@@ -20,7 +20,9 @@ const NotifyModal = () => {
 
     const handleDeleteAll = () => {
         const newArr = notify.data.filter(item => item.isRead === false)
-        if(newArr.length === 0) return dispatch(deleteAllNotifies(auth.token))
+        if(newArr.length === 0) {
+            return dispatch(deleteAllNotifies(auth.token))
+        }
 
         if(window.confirm(`You have ${newArr.length} unread notices. Are you sure you want to delete all?`)){
             return dispatch(deleteAllNotifies(auth.token))
@@ -32,18 +34,24 @@ const NotifyModal = () => {
             <div className="d-flex justify-content-between align-items-center px-3">
                 <h3>Notification</h3>
                 {
-                    notify.sound 
-                    ? <i className="fas fa-bell text-danger" 
-                    style={{fontSize: '1.2rem', cursor: 'pointer'}}
-                    onClick={handleSound} />
-
-                    : <i className="fas fa-bell-slash text-danger"
-                    style={{fontSize: '1.2rem', cursor: 'pointer'}}
-                    onClick={handleSound} />
+                    notify.sound ? (
+                        <i
+                            className="fas fa-bell text-danger" 
+                            style={{fontSize: '1.2rem',
+                            cursor: 'pointer'}}
+                            onClick={handleSound}
+                        />
+                    ) : (
+                        <i
+                            className="fas fa-bell-slash text-danger"
+                            style={{fontSize: '1.2rem',
+                            cursor: 'pointer'}}
+                            onClick={handleSound}
+                        />
+                    )
                 }
             </div>
             <hr className="mt-0" />
-
             {
                 notify.data.length === 0 &&
                 <img src={NoNotice} alt="NoNotice" className="w-100" />
@@ -53,8 +61,10 @@ const NotifyModal = () => {
                 {
                     notify.data.map((msg, index) => (
                         <div key={index} className="px-2 mb-3" >
-                            <Link to={`${msg.url}`} className="d-flex text-dark align-items-center"
-                            onClick={() => handleIsRead(msg)}>
+                            <Link
+                                to={`${msg.url}`}
+                                className="d-flex text-dark align-items-center"
+                                onClick={() => handleIsRead(msg)}>
                                 <Avatar src={msg.user.avatar} size="big-avatar" />
 
                                 <div className="mx-1 flex-fill">
@@ -62,20 +72,9 @@ const NotifyModal = () => {
                                         <strong className="mr-1">{msg.user.username}</strong>
                                         <span>{msg.text}</span>
                                     </div>
-                                    {msg.content && <small>{msg.content.slice(0,20)}...</small>}
+                                    { msg.content && <small>{msg.content.slice(0,20)}...</small> }
                                 </div>
 
-                                {
-                                    msg.image &&
-                                    <div style={{width: '30px'}}>
-                                        {
-                                            msg.image.match(/video/i)
-                                            ? <video src={msg.image} width="100%" />
-                                            : <Avatar src={msg.image} size="medium-avatar" />
-                                        }
-                                    </div>
-                                }
-                                
                             </Link>
                             <small className="text-muted d-flex justify-content-between px-2">
                                 {moment(msg.createdAt).fromNow()}

@@ -50,7 +50,7 @@ export const getNotifies = (token) => async (dispatch) => {
 export const isReadNotify = ({msg, auth}) => async (dispatch) => {
     dispatch({type: NOTIFY_TYPES.UPDATE_NOTIFY, payload: {...msg, isRead: true}})
     try {
-        await patchDataAPI(`/isReadNotify/${msg._id}`, null, auth.token)
+        await patchDataAPI(`isReadNotify/${msg._id}`, null, auth.token)
     } catch (err) {
         dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
     }
