@@ -33,7 +33,7 @@ export const createPost = ({content, images, auth, socket}) => async (dispatch) 
             id: res.data.newPost._id,
             text: 'added a new post.',
             recipients: res.data.newPost.user.followers,
-            url: `/post/${res.data.newPost._id}`,
+            url: `/posts/${res.data.newPost._id}`,
             content,
             image: files[0]
         }
@@ -110,7 +110,7 @@ export const likePost = ({post, auth, socket}) => async (dispatch) => {
             id: auth.user._id,
             text: 'like your post.',
             recipients: [post.user._id],
-            url: `/post/${post._id}`,
+            url: `/posts/${post._id}`,
             content: post.content, 
             image: post.images[0].url
         }
@@ -139,7 +139,7 @@ export const unlikePost = ({post, auth, socket}) => async (dispatch) => {
             id: auth.user._id,
             text: 'like your post.',
             recipients: [post.user._id],
-            url: `/post/${post._id}`,
+            url: `/posts/${post._id}`,
         }
         dispatch(removeNotify({msg, auth, socket}))
 
@@ -176,7 +176,7 @@ export const deletePost = ({post, auth, socket}) => async (dispatch) => {
             id: post._id,
             text: 'added a new post.',
             recipients: res.data.post.user.followers,
-            url: `/post/${post._id}`,
+            url: `/posts/${post._id}`,
         }
         dispatch(removeNotify({msg, auth, socket}))
     } catch (err) {

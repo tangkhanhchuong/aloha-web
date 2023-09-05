@@ -80,7 +80,7 @@ const CardFooter = ({post}) => {
                     handleUnLike={handleUnLike}
                     />
 
-                    <Link to={`/post/${post._id}`} className="text-dark">
+                    <Link to={`/s/${post._id}`} className="text-dark">
                         <i className="far fa-comment" />
                     </Link>
 
@@ -109,7 +109,7 @@ const CardFooter = ({post}) => {
             </div>
 
             {
-            isShare && <ShareModal url={`${process.env.REACT_APP_WEB_URL}/post/${post._id}`} theme={theme} />
+            isShare && <ShareModal url={`${process.env.REACT_APP_WEB_URL}/posts/${post._id}`} theme={theme} />
             }
         </div>
     )

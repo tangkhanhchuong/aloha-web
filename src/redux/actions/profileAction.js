@@ -49,7 +49,7 @@ export const getProfileUsers = ({ id, auth }) => async (dispatch) => {
 
 export const updateProfileUser = ({ userData, avatar, auth }) => async (dispatch) => {
     if(!userData.fullname) {
-        return dispatch({type: GLOBALTYPES.ALERT, payload: { error: 'Please add your full name.' }})
+        return dispatch({type: GLOBALTYPES.ALERT, payload: { error: 'Please add your fullname.' }})
     }
     if(userData.fullname.length > 25) {
         return dispatch({type: GLOBALTYPES.ALERT, payload: { error: 'Your full name too long.' }})
@@ -63,7 +63,7 @@ export const updateProfileUser = ({ userData, avatar, auth }) => async (dispatch
         dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 
         if(avatar) {
-            media = await imageUpload([avatar])
+            media = await imageUpload([ avatar ])
         }
 
         const res = await patchDataAPI('users', {
@@ -122,7 +122,7 @@ export const follow = ({ users, user, auth, socket }) => async (dispatch) => {
         const msg = {
             id: auth.user._id,
             text: 'has started to follow you.',
-            recipients: [updatedUser._id],
+            recipients: [ updatedUser._id ],
             url: `/profile/${auth.user._id}`,
         }
 

@@ -24,7 +24,7 @@ const CardHeader = ({post}) => {
     }
 
     const handleCopyLink = () => {
-        navigator.clipboard.writeText(`${process.env.REACT_APP_WEB_URL}/post/${post._id}`)
+        navigator.clipboard.writeText(`${process.env.REACT_APP_WEB_URL}/posts/${post._id}`)
     }
 
     return (

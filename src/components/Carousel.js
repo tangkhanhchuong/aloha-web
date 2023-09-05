@@ -1,5 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { Image, Space } from 'antd'
+import {
+    RotateLeftOutlined,
+    RotateRightOutlined,
+    SwapOutlined,
+    ZoomInOutlined,
+    ZoomOutOutlined,
+  } from '@ant-design/icons'
+
 
 const Carousel = ({images, id}) => {
     const isActive = index => {
@@ -31,6 +40,7 @@ const Carousel = ({images, id}) => {
                             <div
                                 key={index}
                                 className={`carousel-item ${isActive(index)}`}
+                                style={{ textAlign: 'center' }}
                             >
                                 {
                                     img.url.match(/video/i) ? (
@@ -44,7 +54,7 @@ const Carousel = ({images, id}) => {
                                             }}
                                         />
                                     ) : (
-                                        <img
+                                        <Image
                                             src={img.url}
                                             className='d-block w-100 carousel-el'
                                             alt={img.url}
@@ -52,6 +62,24 @@ const Carousel = ({images, id}) => {
                                             style={{
                                                 filter: theme ? 'invert(1)' : 'invert(0)',
                                             }}
+                                            preview={{
+                                                toolbarRender: (
+                                                  _,
+                                                  {
+                                                    transform: { scale },
+                                                    actions: { onFlipY, onFlipX, onRotateLeft, onRotateRight, onZoomOut, onZoomIn },
+                                                  },
+                                                ) => (
+                                                  <Space size={12} className="toolbar-wrapper">
+                                                    <SwapOutlined rotate={90} onClick={onFlipY} />
+                                                    <SwapOutlined size={48} onClick={onFlipX} />
+                                                    <RotateLeftOutlined onClick={onRotateLeft} />
+                                                    <RotateRightOutlined onClick={onRotateRight} />
+                                                    <ZoomOutOutlined disabled={scale === 1} onClick={onZoomOut} />
+                                                    <ZoomInOutlined disabled={scale === 50} onClick={onZoomIn} />
+                                                  </Space>
+                                                ),
+                                              }}
                                         />
                                     )
                                 }
@@ -59,10 +87,8 @@ const Carousel = ({images, id}) => {
                             </div>
                         )
                     })
-                }
-                
+                }  
             </div>
-            
             {
                 images.length > 1 &&
                 <>

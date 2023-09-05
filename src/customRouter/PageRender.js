@@ -14,7 +14,7 @@ const generatePage = (pageName) => {
 }
 
 const PageRender = () => {
-    const {page, id} = useParams()
+    const { page, id } = useParams()
     const { auth } = useSelector(state => state)
 
     let pageName = "";

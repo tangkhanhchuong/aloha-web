@@ -26,7 +26,7 @@ const FollowBtn = ({user}) => {
         setLoad(false)
     }
 
-    const handleUnFollow = async () => {
+    const handleUnfollow = async () => {
         if(load) return;
 
         setFollowed(false)
@@ -41,9 +41,9 @@ const FollowBtn = ({user}) => {
                 followed ? (
                     <button 
                         className="btn btn-outline-danger"
-                        onClick={handleUnFollow}
+                        onClick={handleUnfollow}
                     >
-                        UnFollow
+                        Unfollow
                     </button>
                 ) : (
                     <button

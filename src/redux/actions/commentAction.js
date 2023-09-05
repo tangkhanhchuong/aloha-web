@@ -25,7 +25,7 @@ export const createComment = ({post, newComment, auth, socket}) => async (dispat
             id: res.data.newComment._id,
             text: newComment.reply ? 'mentioned you in a comment.' : 'has commented on your post.',
             recipients: newComment.reply ? [newComment.tag._id] : [post.user._id],
-            url: `/post/${post._id}`,
+            url: `/posts/${post._id}`,
             content: post.content, 
             image: post.images[0].url
         }
@@ -101,7 +101,7 @@ export const deleteComment = ({post, comment, auth, socket}) => async (dispatch)
                 id: item._id,
                 text: comment.reply ? 'mentioned you in a comment.' : 'has commented on your post.',
                 recipients: comment.reply ? [comment.tag._id] : [post.user._id],
-                url: `/post/${post._id}`,
+                url: `/posts/${post._id}`,
             }
     
             dispatch(removeNotify({msg, auth, socket}))
