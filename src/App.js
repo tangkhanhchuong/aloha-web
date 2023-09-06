@@ -32,10 +32,13 @@ const App = () => {
   useEffect(() => {
     dispatch(refreshToken())
 
-    const socket = io(process.env.REACT_APP_SERVER_URL, { transport: ['websocket'] })
-    dispatch({type: GLOBALTYPES.SOCKET, payload: socket})
+    const socket = io(process.env.REACT_APP_SERVER_URL, {
+      reconnection: true,
+      transport: [ 'websocket' ]
+    })
+    dispatch({ type: GLOBALTYPES.SOCKET, payload: socket })
     return () => socket.close()
-  },[dispatch])
+  },[ dispatch ])
 
   useEffect(() => {
     if(auth.token) {
@@ -43,17 +46,16 @@ const App = () => {
       dispatch(getSuggestions(auth.token))
       dispatch(getNotifies(auth.token))
     }
-  }, [dispatch, auth.token])
+  }, [ dispatch, auth.token] )
 
-  
   useEffect(() => {
-    if (!("Notification" in window)) {
-      alert("This browser does not support desktop notification");
+    if (!('Notification' in window)) {
+      alert('This browser does not support desktop notification');
     }
-    else if (Notification.permission === "granted") {}
-    else if (Notification.permission !== "denied") {
+    else if (Notification.permission === 'granted') {}
+    else if (Notification.permission !== 'denied') {
       Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {}
+        if (permission === 'granted') {}
       });
     }
   },[])
@@ -65,26 +67,26 @@ const App = () => {
     })
     
     dispatch({ type: GLOBALTYPES.PEER, payload: newPeer })
-  },[dispatch])
+  },[ dispatch ])
 
 
   return (
     <Router>
       <Alert />
 
-      <input type="checkbox" id="theme" />
+      <input type='checkbox' id='theme' />
       <div className={`App ${(status || modal) && 'mode'}`}>
-        <div className="main">
-          {auth.token && <Header />}
-          {status && <StatusModal />}
-          {auth.token && <SocketClient />}
-          {call && <CallModal />}
+        <div className='main'>
+          { auth.token && <Header /> }
+          { status && <StatusModal /> }
+          { auth.token && <SocketClient /> }
+          { call && <CallModal /> }
           
-          <Route exact path="/" component={auth.token ? Home : Login} />
-          <Route exact path="/register" component={Register} />
+          <Route exact path='/' component={auth.token ? Home : Login} />
+          <Route exact path='/register' component={Register} />
 
-          <PrivateRouter exact path="/:page" component={PageRender} />
-          <PrivateRouter exact path="/:page/:id" component={PageRender} />
+          <PrivateRouter exact path='/:page' component={PageRender} />
+          <PrivateRouter exact path='/:page/:id' component={PageRender} />
           
         </div>
       </div>

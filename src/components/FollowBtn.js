@@ -40,14 +40,14 @@ const FollowBtn = ({user}) => {
             {
                 followed ? (
                     <button 
-                        className="btn btn-outline-danger"
+                        className='btn btn-outline-danger'
                         onClick={handleUnfollow}
                     >
                         Unfollow
                     </button>
                 ) : (
                     <button
-                        className="btn btn-outline-info"
+                        className='btn btn-outline-info'
                         onClick={handleFollow}
                         >
                         Follow

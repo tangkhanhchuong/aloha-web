@@ -19,22 +19,22 @@ const MsgDisplay = ({user, msg, theme, data}) => {
 
     return (
         <>
-            <div className="chat_title">
-                <Avatar src={user.avatar} size="small-avatar" />
+            <div className='chat_title'>
+                <Avatar src={user.avatar} size='small-avatar' />
                 <span>{user.username}</span>
             </div>
 
-            <div className="you_content">
+            <div className='you_content'>
                 { 
                     user._id === auth.user._id && 
-                    <i className="fas fa-trash text-danger"
+                    <i className='fas fa-trash text-danger'
                     onClick={handleDeleteMessages} />
                 }
 
                 <div>
                     {
                         msg.text && 
-                        <div className="chat_text"
+                        <div className='chat_text'
                         style={{filter: theme ? 'invert(1)' : 'invert(0)'}}>
                             {msg.text}
                         </div>
@@ -54,10 +54,10 @@ const MsgDisplay = ({user, msg, theme, data}) => {
             
                 {
                     msg.call &&
-                    <button className="btn d-flex align-items-center py-3"
+                    <button className='btn d-flex align-items-center py-3'
                     style={{background: '#eee', borderRadius: '10px'}}>
 
-                        <span className="material-icons font-weight-bold mr-1"
+                        <span className='material-icons font-weight-bold mr-1'
                         style={{ 
                             fontSize: '2.5rem', color: msg.call.times === 0 ? 'crimson' : 'green',
                             filter: theme ? 'invert(1)' : 'invert(0)'
@@ -69,7 +69,7 @@ const MsgDisplay = ({user, msg, theme, data}) => {
                             }
                         </span>
 
-                        <div className="text-left">
+                        <div className='text-left'>
                             <h6>{msg.call.video ? 'Video Call' : 'Audio Call'}</h6>
                             <small>
                                 {
@@ -85,7 +85,7 @@ const MsgDisplay = ({user, msg, theme, data}) => {
             
             </div>
 
-            <div className="chat_time">
+            <div className='chat_time'>
                 {new Date(msg.createdAt).toLocaleString()}
             </div>
         </>

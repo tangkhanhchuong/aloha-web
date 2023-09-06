@@ -158,11 +158,11 @@ const SocketClient = () => {
 
     // Check User Offline
     useEffect(() => {
-        socket.on('CheckUserOffline', id =>{
+        socket.on('checkUserOffline', id =>{
             dispatch({type: GLOBALTYPES.OFFLINE, payload: id})
         })
 
-        return () => socket.off('CheckUserOffline')
+        return () => socket.off('checkUserOffline')
     },[socket, dispatch])
 
 
@@ -188,7 +188,7 @@ const SocketClient = () => {
     return (
         <>
             <audio controls ref={audioRef} style={{display: 'none'}} >
-                <source src={audiobell} type="audio/mp3" />
+                <source src={audiobell} type='audio/mp3' />
             </audio>
         </>
     )

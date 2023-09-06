@@ -182,13 +182,13 @@ const CallModal = () => {
 
 
     return (
-        <div className="call_modal">
-            <div className="call_box" style={{
+        <div className='call_modal'>
+            <div className='call_box' style={{
                 display: (answer && call.video) ? 'none' : 'flex'
             }} >
 
-                <div className="text-center" style={{padding: '40px 0'}} >
-                    <Avatar src={call.avatar} size="supper-avatar" />
+                <div className='text-center' style={{padding: '40px 0'}} >
+                    <Avatar src={call.avatar} size='supper-avatar' />
                     <h4>{call.username}</h4>
                     <h6>{call.fullname}</h6>
 
@@ -214,7 +214,7 @@ const CallModal = () => {
                 
                 {
                     !answer && 
-                    <div className="timer">
+                    <div className='timer'>
                         <small>{ mins.toString().length < 2 ? '0' + mins : mins }</small>
                         <small>:</small>
                         <small>{ second.toString().length < 2 ? '0' + second : second }</small>
@@ -222,8 +222,8 @@ const CallModal = () => {
                 }
                 
 
-                <div className="call_menu">
-                    <button className="material-icons text-danger"
+                <div className='call_menu'>
+                    <button className='material-icons text-danger'
                     onClick={handleEndCall}>
                         call_end
                     </button>
@@ -233,11 +233,11 @@ const CallModal = () => {
                         <>
                             {
                                 call.video
-                                ? <button className="material-icons text-success"
+                                ? <button className='material-icons text-success'
                                 onClick={handleAnswer}>
                                     videocam
                                 </button>
-                                : <button className="material-icons text-success"
+                                : <button className='material-icons text-success'
                                 onClick={handleAnswer}>
                                     call
                                 </button>
@@ -249,15 +249,15 @@ const CallModal = () => {
                 
             </div>
 
-            <div className="show_video" style={{
+            <div className='show_video' style={{
                 opacity: (answer && call.video) ? '1' : '0',
                 filter: theme ? 'invert(1)' : 'invert(0)'
             }} >
 
-                <video ref={youVideo} className="you_video" playsInline muted />
-                <video ref={otherVideo} className="other_video" playsInline />
+                <video ref={youVideo} className='you_video' playsInline muted />
+                <video ref={otherVideo} className='other_video' playsInline />
 
-                <div className="time_video">
+                <div className='time_video'>
                     <span>{ hours.toString().length < 2 ? '0' + hours : hours }</span>
                     <span>:</span>
                     <span>{ mins.toString().length < 2 ? '0' + mins : mins }</span>
@@ -265,7 +265,7 @@ const CallModal = () => {
                     <span>{ second.toString().length < 2 ? '0' + second : second }</span>
                 </div>
 
-                <button className="material-icons text-danger end_call"
+                <button className='material-icons text-danger end_call'
                 onClick={handleEndCall}>
                     call_end
                 </button>

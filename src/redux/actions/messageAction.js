@@ -14,8 +14,8 @@ export const MESS_TYPES = {
 
 
 
-export const addMessage = ({msg, auth, socket}) => async (dispatch) =>{
-    dispatch({type: MESS_TYPES.ADD_MESSAGE, payload: msg})
+export const addMessage = ({ msg, auth, socket}) => async (dispatch) =>{
+    dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg})
 
     const { _id, avatar, fullname, username } = auth.user
     socket.emit('addMessage', {...msg, user: { _id, avatar, fullname, username } })
@@ -23,11 +23,11 @@ export const addMessage = ({msg, auth, socket}) => async (dispatch) =>{
     try {
         await postDataAPI('messages', msg, auth.token)
     } catch (err) {
-        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+        dispatch({ type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg }})
     }
 }
 
-export const getConversations = ({auth, page = 1}) => async (dispatch) => {
+export const getConversations = ({ auth, page = 1}) => async (dispatch) => {
     try {
         const res = await getDataAPI(`conversations?limit=${page * 9}`, auth.token)
         
@@ -35,58 +35,58 @@ export const getConversations = ({auth, page = 1}) => async (dispatch) => {
         res.data.conversations.forEach(item => {
             item.recipients.forEach(cv => {
                 if(cv._id !== auth.user._id){
-                    newArr.push({...cv, text: item.text, media: item.media, call: item.call})
+                    newArr.push({ ...cv, text: item.text, media: item.media, call: item.call })
                 }
             })
         })
 
-        dispatch({
+        dispatch({ 
             type: MESS_TYPES.GET_CONVERSATIONS, 
-            payload: {newArr, count: res.data.count}
+            payload: { newArr, count: res.data.count }
         })
 
     } catch (err) {
-        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+        dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg }})
     }
 }
 
-export const getMessages = ({auth, id, page = 1}) => async (dispatch) => {
+export const getMessages = ({ auth, id, page = 1}) => async (dispatch) => {
     try {
         const res = await getDataAPI(`messages/${id}?limit=${page * 9}`, auth.token)
         const newData = {...res.data, messages: res.data.messages.reverse()}
 
-        dispatch({type: MESS_TYPES.GET_MESSAGES, payload: {...newData, _id: id, page}})
+        dispatch({ type: MESS_TYPES.GET_MESSAGES, payload: { ...newData, _id: id, page }})
     } catch (err) {
-        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+        dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg }})
     }
 }
 
-export const loadMoreMessages = ({auth, id, page = 1}) => async (dispatch) => {
+export const loadMoreMessages = ({ auth, id, page = 1 }) => async (dispatch) => {
     try {
         const res = await getDataAPI(`messages/${id}?limit=${page * 9}`, auth.token)
-        const newData = {...res.data, messages: res.data.messages.reverse()}
+        const newData = { ...res.data, messages: res.data.messages.reverse() }
 
-        dispatch({type: MESS_TYPES.UPDATE_MESSAGES, payload: {...newData, _id: id, page}})
+        dispatch({ type: MESS_TYPES.UPDATE_MESSAGES, payload: { ...newData, _id: id, page }})
     } catch (err) {
-        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+        dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg }})
     }
 }
 
-export const deleteMessages = ({msg, data, auth}) => async (dispatch) => {
+export const deleteMessages = ({ msg, data, auth}) => async (dispatch) => {
     const newData = DeleteData(data, msg._id)
-    dispatch({type: MESS_TYPES.DELETE_MESSAGES, payload: {newData, _id: msg.recipient}})
+    dispatch({ type: MESS_TYPES.DELETE_MESSAGES, payload: { newData, _id: msg.recipient }})
     try {
         await deleteDataAPI(`messages/${msg._id}`, auth.token)
     } catch (err) {
-        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+        dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg }})
     }
 }
 
-export const deleteConversation = ({auth, id}) => async (dispatch) => {
-    dispatch({type: MESS_TYPES.DELETE_CONVERSATION, payload: id})
+export const deleteConversation = ({ auth, id}) => async (dispatch) => {
+    dispatch({ type: MESS_TYPES.DELETE_CONVERSATION, payload: id })
     try {
         await deleteDataAPI(`conversations/${id}`, auth.token)
     } catch (err) {
-        dispatch({type: GLOBALTYPES.ALERT, payload: {error: err.response.data.msg}})
+        dispatch({ type: GLOBALTYPES.ALERT, payload: { error: err.response.data.msg }})
     }
 }

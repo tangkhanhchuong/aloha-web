@@ -6,12 +6,12 @@ import { useSelector } from 'react-redux'
 const Followers = ({users, setShowFollowers}) => {
     const { auth } = useSelector(state => state)
     return (
-        <div className="follow">
-            <div className="follow_box">
-                <h5 className="text-center">Followers</h5>
+        <div className='follow'>
+            <div className='follow_box'>
+                <h5 className='text-center'>Followers</h5>
                 <hr/>
                 
-                <div className="follow_content">
+                <div className='follow_content'>
                     {
                         users.map(user => (
                             <UserCard key={user._id} user={user} setShowFollowers={setShowFollowers} >
@@ -24,7 +24,7 @@ const Followers = ({users, setShowFollowers}) => {
                 </div>
                 
 
-                <div className="close" onClick={() => setShowFollowers(false)}>
+                <div className='close' onClick={() => setShowFollowers(false)}>
                     &times;
                 </div>
                 

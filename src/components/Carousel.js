@@ -70,7 +70,7 @@ const Carousel = ({images, id}) => {
                                                     actions: { onFlipY, onFlipX, onRotateLeft, onRotateRight, onZoomOut, onZoomIn },
                                                   },
                                                 ) => (
-                                                  <Space size={12} className="toolbar-wrapper">
+                                                  <Space size={12} className='toolbar-wrapper'>
                                                     <SwapOutlined rotate={90} onClick={onFlipY} />
                                                     <SwapOutlined size={48} onClick={onFlipX} />
                                                     <RotateLeftOutlined onClick={onRotateLeft} />

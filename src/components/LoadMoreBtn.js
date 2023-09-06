@@ -6,7 +6,7 @@ const LoadMoreBtn = ({ count, page, load, handleLoadMore }) => {
             {
                 count < 9 * (page - 1) ? '' : 
 
-                !load && <button className="btn btn-dark mx-auto d-block"
+                !load && <button className='btn btn-dark mx-auto d-block'
                 onClick={handleLoadMore}>
                     Load more
                 </button>

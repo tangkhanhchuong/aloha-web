@@ -1,8 +1,6 @@
 import { GLOBALTYPES, DeleteData } from './globalTypes'
 import { getDataAPI, patchDataAPI } from '../../utils/fetchData'
 import { imageUpload } from '../../utils/imageUpload'
-import { createNotify, removeNotify } from '../actions/notifyAction'
-
 
 export const PROFILE_TYPES = {
     LOADING: 'LOADING_PROFILE',
@@ -33,14 +31,14 @@ export const getProfileUsers = ({ id, auth }) => async (dispatch) => {
 
         dispatch({
             type: PROFILE_TYPES.GET_POSTS,
-            payload: {...posts.data, _id: id, page: 2}
+            payload: { ...posts.data, _id: id, page: 2 }
         })
 
         dispatch({ type: PROFILE_TYPES.LOADING, payload: false })
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT, 
-            payload: {error: err.response.data.msg}
+            payload: { error: err.response.data.msg }
         })
     }
     
@@ -118,16 +116,6 @@ export const follow = ({ users, user, auth, socket }) => async (dispatch) => {
         const res = await patchDataAPI(`users/${user._id}/follow`, null, auth.token)
         socket.emit('follow', res.data.user)
 
-        // Notify
-        const msg = {
-            id: auth.user._id,
-            text: 'has started to follow you.',
-            recipients: [ updatedUser._id ],
-            url: `/profile/${auth.user._id}`,
-        }
-
-        dispatch(createNotify({ msg, auth, socket }))
-
     } catch (err) {
         dispatch({
             type: GLOBALTYPES.ALERT, 
@@ -165,15 +153,6 @@ export const unfollow = ({ users, user, auth, socket }) => async (dispatch) => {
     try {
         const res = await patchDataAPI(`users/${user._id}/unfollow`, null, auth.token)
         socket.emit('unFollow', res.data.user)
-
-        // Notify
-        const msg = {
-            id: auth.user._id,
-            text: 'has started to follow you.',
-            recipients: [updatedUser._id],
-            url: `/profile/${auth.user._id}`,
-        }
-        dispatch(removeNotify({ msg, auth, socket }))
 
     } catch (err) {
         dispatch({

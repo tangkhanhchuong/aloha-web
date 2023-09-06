@@ -24,13 +24,13 @@ const Profile = () => {
     },[id, auth, dispatch, profile.ids])
 
     return (
-        <div className="profile">
+        <div className='profile'>
             
             <Info auth={auth} profile={profile} dispatch={dispatch} id={id} />
 
             {
                 auth.user._id === id &&
-                <div className="profile_tab">
+                <div className='profile_tab'>
                     <button className={saveTab ? '' : 'active'} onClick={() => setSaveTab(false)}>Posts</button>
                     <button className={saveTab ? 'active' : ''} onClick={() => setSaveTab(true)}>Saved</button>
                 </div>
@@ -38,7 +38,7 @@ const Profile = () => {
 
             {
                 profile.loading 
-                ? <img className="d-block mx-auto" src={LoadIcon} alt="loading" />
+                ? <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
                 : <>
                     {
                         saveTab

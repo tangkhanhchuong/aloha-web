@@ -10,9 +10,9 @@ const CommentDisplay = ({comment, post, replyCm}) => {
     },[replyCm, next])
 
     return (
-        <div className="comment_display">
+        <div className='comment_display'>
             <CommentCard comment={comment} post={post} commentId={comment._id} >
-                <div className="pl-4">
+                <div className='pl-4'>
                     {
                         showRep.map((item, index) => (
                             item.reply &&

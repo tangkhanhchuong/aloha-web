@@ -52,14 +52,14 @@ const RightSide = () => {
 
     const handleChangeMedia = (e) => {
         const files = [...e.target.files]
-        let err = ""
+        let err = ''
         let newMedia = []
 
         files.forEach(file => {
-            if(!file) return err = "File does not exist."
+            if(!file) return err = 'File does not exist.'
 
             if(file.size > 1024 * 1024 * 5){
-                return err = "The image/video largest is 5mb."
+                return err = 'The image/video largest is 5mb.'
             }
 
             return newMedia.push(file)
@@ -181,27 +181,27 @@ const RightSide = () => {
 
     return (
         <>
-            <div className="message_header" style={{cursor: 'pointer'}} >
+            <div className='message_header' style={{cursor: 'pointer'}} >
                 {
                     user.length !== 0 &&
                     <UserCard user={user}>
                         <div>
-                            <i className="fas fa-phone-alt"
+                            <i className='fas fa-phone-alt'
                             onClick={handleAudioCall} />
 
-                            <i className="fas fa-video mx-3"
+                            <i className='fas fa-video mx-3'
                             onClick={handleVideoCall} />
 
-                            <i className="fas fa-trash text-danger"
+                            <i className='fas fa-trash text-danger'
                             onClick={handleDeleteConversation} />
                         </div>
                     </UserCard>
                 }
             </div>
 
-            <div className="chat_container" 
+            <div className='chat_container' 
             style={{height: media.length > 0 ? 'calc(100% - 180px)' : ''}} >
-                <div className="chat_display" ref={refDisplay}>
+                <div className='chat_display' ref={refDisplay}>
                     <button style={{marginTop: '-25px', opacity: 0}} ref={pageEnd}>
                         Load more
                     </button>
@@ -211,14 +211,14 @@ const RightSide = () => {
                                 <div key={index}>
                                     {
                                         msg.sender !== auth.user._id &&
-                                        <div className="chat_row other_message">
+                                        <div className='chat_row other_message'>
                                             <MsgDisplay user={user} msg={msg} theme={theme} />
                                         </div>
                                     }
 
                                     {
                                         msg.sender === auth.user._id &&
-                                        <div className="chat_row you_message">
+                                        <div className='chat_row you_message'>
                                             <MsgDisplay user={auth.user} msg={msg} theme={theme} data={data} />
                                         </div>
                                     }
@@ -229,18 +229,18 @@ const RightSide = () => {
 
                    {
                        loadMedia && 
-                       <div className="chat_row you_message">
-                           <img src={LoadIcon} alt="loading"/>
+                       <div className='chat_row you_message'>
+                           <img src={LoadIcon} alt='loading'/>
                        </div>
                    }
 
                 </div>
             </div>
 
-            <div className="show_media" style={{display: media.length > 0 ? 'grid' : 'none'}} >
+            <div className='show_media' style={{display: media.length > 0 ? 'grid' : 'none'}} >
                 {
                     media.map((item, index) => (
-                        <div key={index} id="file_media">
+                        <div key={index} id='file_media'>
                             {
                                 item.type.match(/video/i)
                                 ? videoShow(URL.createObjectURL(item), theme)
@@ -252,8 +252,8 @@ const RightSide = () => {
                 }
             </div>
 
-            <form className="chat_input" onSubmit={handleSubmit} >
-                <input type="text" placeholder="Enter you message..."
+            <form className='chat_input' onSubmit={handleSubmit} >
+                <input type='text' placeholder='Enter you message...'
                 value={text} onChange={e => setText(e.target.value)}
                 style={{
                     filter: theme ? 'invert(1)' : 'invert(0)',
@@ -263,13 +263,13 @@ const RightSide = () => {
 
                 <Icons setContent={setText} content={text} theme={theme} />
 
-                <div className="file_upload">
-                    <i className="fas fa-image text-danger" />
-                    <input type="file" name="file" id="file"
-                    multiple accept="image/*,video/*" onChange={handleChangeMedia} />
+                <div className='file_upload'>
+                    <i className='fas fa-image text-danger' />
+                    <input type='file' name='file' id='file'
+                    multiple accept='image/*,video/*' onChange={handleChangeMedia} />
                 </div>
 
-                <button type="submit" className="material-icons" 
+                <button type='submit' className='material-icons' 
                 disabled={(text || media.length > 0) ? false : true}>
                     near_me
                 </button>
