@@ -40,7 +40,7 @@ const CallModal = () => {
 
     // End Call
     const addCallMessage = useCallback((call, times, disconnect) => {
-        if(call.recipient !== auth.user._id || disconnect){
+        if(call.recipient !== auth.user._id || disconnect) {
             const msg = {
                 sender: call.sender,
                 recipient: call.recipient,
@@ -64,7 +64,7 @@ const CallModal = () => {
     }
 
     useEffect(() => {
-        if(answer){
+        if(answer) {
             setTotal(0)
         }else{
             const timer = setTimeout(() => {
@@ -121,7 +121,7 @@ const CallModal = () => {
     useEffect(() => {
         peer.on('call', newCall => {
             openStream(call.video).then(stream => {
-                if(youVideo.current){
+                if(youVideo.current) {
                     playStream(youVideo.current, stream)
                 }
                 const track = stream.getTracks()
@@ -129,7 +129,7 @@ const CallModal = () => {
                 
                 newCall.answer(stream)
                 newCall.on('stream', function(remoteStream) {
-                    if(otherVideo.current){
+                    if(otherVideo.current) {
                         playStream(otherVideo.current, remoteStream)
                     }
                 });
@@ -171,7 +171,7 @@ const CallModal = () => {
 
     useEffect(() => {
         let newAudio = new Audio(RingRing)
-        if(answer){
+        if(answer) {
             pauseAudio(newAudio)
         }else{
             playAudio(newAudio)

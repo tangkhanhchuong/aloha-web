@@ -21,6 +21,7 @@ const Menu = () => {
 
     useEffect(() => {
         if (!notify || !notify.data || !notify.data.length) {
+            setNumberOfNewNotify(0)
             return
         }
         setNumberOfNewNotify(notify.data.filter(item => !item.isRead).length)

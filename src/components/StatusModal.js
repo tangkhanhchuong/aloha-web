@@ -47,7 +47,7 @@ const StatusModal = () => {
 
     const handleStream = () => {
         setStream(true)
-        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true })
             .then(mediaStream => {
                 videoRef.current.srcObject = mediaStream
@@ -98,7 +98,7 @@ const StatusModal = () => {
     }
 
     useEffect(() => {
-        if(status.onEdit){
+        if(status.onEdit) {
             setContent(status.content)
             setImages(status.images)
         }

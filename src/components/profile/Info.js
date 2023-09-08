@@ -14,7 +14,7 @@ const Info = ({id, auth, profile, dispatch}) => {
     const [showFollowing, setShowFollowing] = useState(false)
 
     useEffect(() => {
-        if(id === auth.user._id){
+        if(id === auth.user._id) {
             setUserData([auth.user])
         }else{
             const newData = profile.users.filter(user => user._id === id)
@@ -24,7 +24,7 @@ const Info = ({id, auth, profile, dispatch}) => {
 
 
     useEffect(() => {
-        if(showFollowers || showFollowing || onEdit){
+        if(showFollowers || showFollowing || onEdit) {
             dispatch({ type: GLOBALTYPES.MODAL, payload: true})
         }else{
             dispatch({ type: GLOBALTYPES.MODAL, payload: false})

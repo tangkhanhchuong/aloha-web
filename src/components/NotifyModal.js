@@ -24,7 +24,7 @@ const NotifyModal = () => {
             return dispatch(deleteAllNotifies(auth.token))
         }
 
-        if(window.confirm(`You have ${newArr.length} unread notices. Are you sure you want to delete all?`)){
+        if(window.confirm(`You have ${newArr.length} unread notices. Are you sure you want to delete all?`)) {
             return dispatch(deleteAllNotifies(auth.token))
         }
     }

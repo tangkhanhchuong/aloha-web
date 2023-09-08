@@ -84,7 +84,7 @@ img {
 
 
 /* --------- Responsive ------ */
-@media (max-width: 766px){
+@media (max-width: 766px) {
   .header .navbar .logo{
     display: none;
   }

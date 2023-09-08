@@ -3,7 +3,7 @@ import Avatar from './Avatar'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const UserCard = ({children, user, border, handleClose, setShowFollowers, setShowFollowing, msg}) => {
+const UserCard = ({ children, user, border, handleClose, setShowFollowers, setShowFollowing, msg }) => {
 
     const { theme } = useSelector(state => state)
 
@@ -17,12 +17,12 @@ const UserCard = ({children, user, border, handleClose, setShowFollowers, setSho
         return(
             <>
                 <div style={{filter: theme ? 'invert(1)' : 'invert(0)'}}>
-                    {user.text}
+                    { user.text }
                 </div>
                 {
                     user.media.length > 0 && 
                     <div>
-                        {user.media.length} <i className='fas fa-image' />
+                        { user.media.length } <i className='fas fa-image' />
                     </div>
                 }
 
@@ -49,21 +49,16 @@ const UserCard = ({children, user, border, handleClose, setShowFollowers, setSho
                     
                     <Avatar src={user.avatar} size='big-avatar' />
 
-                    <div className='ml-1' style={{transform: 'translateY(-2px)'}}>
-                        <span className='d-block'>{user.username}</span>
+                    <div className='ml-1' style={{ transform: 'translateY(-2px)' }}>
+                        <span className='d-block'>{ user.username }</span>
                         
-                        <small style={{opacity: 0.7}}>
-                            {
-                                msg 
-                                ? showMsg(user)
-                                : user.fullname
-                            }
+                        <small style={{ opacity: 0.7 }}>
+                            { msg ? showMsg(user) : user.fullname }
                         </small>
                     </div>
                 </Link>
             </div>
-            
-            {children}
+            { children }
         </div>
     )
 }

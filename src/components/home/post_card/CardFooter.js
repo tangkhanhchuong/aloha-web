@@ -21,7 +21,7 @@ const CardFooter = ({post}) => {
 
     // Likes
     useEffect(() => {
-        if(post.likes.find(like => like._id === auth.user._id)){
+        if(post.likes.find(like => like._id === auth.user._id)) {
             setIsLike(true)
         }else{
             setIsLike(false)
@@ -47,7 +47,7 @@ const CardFooter = ({post}) => {
 
     // Saved
     useEffect(() => {
-        if(auth.user.saved.find(id => id === post._id)){
+        if(auth.user.saved.find(id => id === post._id)) {
             setSaved(true)
         }else{
             setSaved(false)

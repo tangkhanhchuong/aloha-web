@@ -14,7 +14,7 @@ const Home = () => {
     const { homePosts } = useSelector(state => state)
 
     window.addEventListener('scroll', () => {
-        if(window.location.pathname === '/'){
+        if(window.location.pathname === '/') {
             scroll = window.pageYOffset
             return scroll;
         }

@@ -13,7 +13,7 @@ const Posts = ({auth, id, dispatch, profile}) => {
 
     useEffect(() => {
         profile.posts.forEach(data => {
-            if(data._id === id){
+            if(data._id === id) {
                 setPosts(data.posts)
                 setCount(data.count)
                 setPage(data.page)

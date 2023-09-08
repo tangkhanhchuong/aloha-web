@@ -16,8 +16,8 @@ export const checkImage = (file) => {
 
 export const imageUpload = async (images) => {
     const formData = new FormData()
-    for(const item of images){
-        if(item.camera){
+    for(const item of images) {
+        if(item.camera) {
             formData.append('files', item.camera)
         }else{
             formData.append('files', item)

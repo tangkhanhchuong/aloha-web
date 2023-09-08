@@ -122,7 +122,7 @@ export const unlikePost = ({post, auth, socket}) => async (dispatch) => {
 }
 
 export const getPost = ({ detailPost, id, auth }) => async (dispatch) => {
-    if(detailPost.every(post => post._id !== id)){
+    if(detailPost.every(post => post._id !== id)) {
         try {
             const res = await getDataAPI(`posts/${id}`, auth.token)
             dispatch({ type: POST_TYPES.GET_POST, payload: res.data.post })

@@ -27,13 +27,13 @@ const CommentCard = ({children, comment, post, commentId}) => {
         setContent(comment.content)
         setIsLike(false)
         setOnReply(false)
-        if(comment.likes.find(like => like._id === auth.user._id)){
+        if(comment.likes.find(like => like._id === auth.user._id)) {
             setIsLike(true)
         }
     },[comment, auth.user._id])
 
     const handleUpdate = () => {
-        if(comment.content !== content){
+        if(comment.content !== content) {
             dispatch(updateComment({comment, post, content, auth}))
             setOnEdit(false)
         }else{

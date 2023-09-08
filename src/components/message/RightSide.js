@@ -32,7 +32,7 @@ const RightSide = () => {
 
     useEffect(() => {
         const newData = message.data.find(item => item._id === id)
-        if(newData){
+        if(newData) {
             setData(newData.messages)
             setCount(newData.count)
             setPage(newData.page)
@@ -40,7 +40,7 @@ const RightSide = () => {
     },[message.data, id])
 
     useEffect(() => {
-        if(id && message.users.length > 0){
+        if(id && message.users.length > 0) {
             setTimeout(() => {
                 refDisplay.current.scrollIntoView({behavior: 'smooth', block: 'end'})
             },50)
@@ -58,7 +58,7 @@ const RightSide = () => {
         files.forEach(file => {
             if(!file) return err = 'File does not exist.'
 
-            if(file.size > 1024 * 1024 * 5){
+            if(file.size > 1024 * 1024 * 5) {
                 return err = 'The image/video largest is 5mb.'
             }
 
@@ -95,14 +95,14 @@ const RightSide = () => {
 
         setLoadMedia(false)
         await dispatch(addMessage({msg, auth, socket}))
-        if(refDisplay.current){
+        if(refDisplay.current) {
             refDisplay.current.scrollIntoView({behavior: 'smooth', block: 'end'})
         }
     }
 
     useEffect(() => {
         const getMessagesData = async () => {
-            if(message.data.every(item => item._id !== id)){
+            if(message.data.every(item => item._id !== id)) {
                 await dispatch(getMessages({auth, id}))
                 setTimeout(() => {
                     refDisplay.current.scrollIntoView({behavior: 'smooth', block: 'end'})
@@ -116,7 +116,7 @@ const RightSide = () => {
     // Load More
     useEffect(() => {
         const observer = new IntersectionObserver(entries => {
-            if(entries[0].isIntersecting){
+            if(entries[0].isIntersecting) {
                 setIsLoadMore(p => p + 1)
             }
         },{
@@ -127,8 +127,8 @@ const RightSide = () => {
     },[setIsLoadMore])
 
     useEffect(() => {
-        if(isLoadMore > 1){
-            if(count >= page * 9){
+        if(isLoadMore > 1) {
+            if(count >= page * 9) {
                 dispatch(loadMoreMessages({ auth, id, page: page + 1 }))
                 setIsLoadMore(1)
             }
@@ -137,7 +137,7 @@ const RightSide = () => {
     },[isLoadMore])
 
     const handleDeleteConversation = () => {
-        if(window.confirm('Do you want to delete?')){
+        if(window.confirm('Do you want to delete?')) {
             dispatch(deleteConversation({auth, id}))
             return history.push('/message')
         }

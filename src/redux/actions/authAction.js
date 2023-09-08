@@ -44,7 +44,7 @@ export const login = (data) => async (dispatch) => {
 
 export const refreshToken = () => async (dispatch) => {
     const firstLogin = localStorage.getItem('firstLogin')
-    if(firstLogin){
+    if(firstLogin) {
         dispatch({ type: GLOBALTYPES.ALERT, payload: {loading: true} })
 
         try {

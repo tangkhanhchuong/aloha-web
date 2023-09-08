@@ -14,7 +14,7 @@ const Discover = () => {
     const [load, setLoad] = useState(false)
 
     useEffect(() => {
-        if(!discover.firstLoad){
+        if(!discover.firstLoad) {
             dispatch(getDiscoverPosts(auth.token))
         }
     },[dispatch, auth.token, discover.firstLoad])

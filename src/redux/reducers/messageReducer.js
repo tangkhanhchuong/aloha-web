@@ -9,12 +9,12 @@ const initialState = {
 }
 
 const messageReducer = (state = initialState, action) => {
-    switch (action.type){
+    switch (action.type) {
         case MESS_TYPES.ADD_USER:
-            if(state.users.every(item => item._id !== action.payload._id)){
+            if(state.users.every(item => item._id !== action.payload._id)) {
                 return {
                     ...state,
-                    users: [action.payload, ...state.users]
+                    users: [ action.payload, ...state.users ]
                 };
             }
             return state;
@@ -25,7 +25,7 @@ const messageReducer = (state = initialState, action) => {
                     item._id === action.payload.recipient || item._id === action.payload.sender 
                     ? {
                         ...item,
-                        messages: [...item.messages, action.payload],
+                        messages: [ ...item.messages, action.payload ],
                         count: item.count + 1
                     }
                     : item
@@ -51,7 +51,7 @@ const messageReducer = (state = initialState, action) => {
         case MESS_TYPES.GET_MESSAGES:
             return {
                 ...state,
-                data: [...state.data, action.payload]
+                data: [ ...state.data, action.payload ]
             };
         case MESS_TYPES.UPDATE_MESSAGES:
             return {
@@ -63,7 +63,7 @@ const messageReducer = (state = initialState, action) => {
                 ...state,
                 data: state.data.map(item => 
                     item._id === action.payload._id
-                    ? {...item, messages: action.payload.newData}
+                    ? { ...item, messages: action.payload.newData }
                     : item
                 )
             };
@@ -78,8 +78,8 @@ const messageReducer = (state = initialState, action) => {
                 ...state,
                 users: state.users.map(user => 
                     action.payload.includes(user._id)
-                    ? {...user, online: true}
-                    : {...user, online: false}
+                    ? { ...user, online: true }
+                    : { ...user, online: false }
                 )
             };
         default:

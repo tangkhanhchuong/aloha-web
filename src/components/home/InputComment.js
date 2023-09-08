@@ -11,7 +11,7 @@ const InputComment = ({children, post, onReply, setOnReply}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if(!content.trim()){
+        if(!content.trim()) {
             if(setOnReply) return setOnReply(false);
             return;
         }
