@@ -18,20 +18,20 @@ import peer from './peerReducer'
 
 
 export default combineReducers({
-    auth,
-    alert,
-    theme,
-    profile,
-    status,
-    homePosts,
-    modal,
-    detailPost,
-    discover,
-    suggestions,
-    socket,
-    notify,
-    message,
-    online,
-    call,
-    peer
+	auth,
+	alert,
+	theme,
+	profile,
+	status,
+	homePosts,
+	modal,
+	detailPost,
+	discover,
+	suggestions,
+	socket,
+	notify,
+	message,
+	online,
+	call,
+	peer
 })

@@ -26,74 +26,73 @@ const SocketClient = () => {
 
     const audioRef = useRef()
 
-    // joinUser
+    // user joined
     useEffect(() => {
         socket.emit('userJoined', auth.user)
-        return () => {
-            socket.emit('leave', auth.user)
-        }
-    }, [  socket, auth.user ])
 
-    // Likes
+    }, [socket, auth.user])
+
+    // user liked a post
     useEffect(() => {
         socket.on('likeToClient', newPost => {
             dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
         })
-
         return () => socket.off('likeToClient')
-    }, [ socket, dispatch ])
+
+    }, [socket, dispatch])
 
     useEffect(() => {
         socket.on('unLikeToClient', newPost => {
             dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
         })
-
         return () => socket.off('unLikeToClient')
-    }, [ socket, dispatch ])
+
+    }, [socket, dispatch])
 
 
-    // Comments
+    // user commentted a post
     useEffect(() => {
         socket.on('createCommentToClient', newPost => {
             dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
         })
-
         return () => socket.off('createCommentToClient')
-    }, [ socket, dispatch ])
+
+    }, [socket, dispatch])
 
     useEffect(() => {
         socket.on('deleteCommentToClient', newPost => {
             dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
         })
-
         return () => socket.off('deleteCommentToClient')
-    }, [ socket, dispatch ])
+
+    }, [socket, dispatch])
 
 
-    // Follow
+    // user followed another user
     useEffect(() => {
         socket.on('followToClient', newUser => {
-            dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser }})
+            dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
         })
-
         return () => socket.off('followToClient')
-    }, [ socket, dispatch, auth ])
+
+    }, [socket, dispatch, auth])
 
     useEffect(() => {
         socket.on('unFollowToClient', newUser => {
-            dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser }})
+            dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
         })
-
         return () => socket.off('unFollowToClient')
-    }, [ socket, dispatch, auth ])
+
+    }, [socket, dispatch, auth])
 
 
-    // Notification
+    // notify user
     useEffect(() => {
         socket.on('createNotifyToClient', msg => {
             dispatch({ type: NOTIFY_TYPES.CREATE_NOTIFY, payload: msg })
 
-            if(notify.sound) audioRef.current.play()
+            if (notify.sound)
+                audioRef.current.play()
             spawnNotification(
                 msg.user.username + ' ' + msg.text,
                 msg.user.avatar,
@@ -103,7 +102,7 @@ const SocketClient = () => {
         })
 
         return () => socket.off('createNotifyToClient')
-    }, [ socket, dispatch, notify.sound])
+    }, [socket, dispatch, notify.sound])
 
     useEffect(() => {
         socket.on('removeNotifyToClient', msg => {
@@ -111,7 +110,7 @@ const SocketClient = () => {
         })
 
         return () => socket.off('removeNotifyToClient')
-    }, [ socket, dispatch ])
+    }, [socket, dispatch])
 
 
     // Message
@@ -119,54 +118,55 @@ const SocketClient = () => {
         socket.on('addMessageToClient', msg => {
             dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg })
 
-            dispatch({ 
-                type: MESS_TYPES.ADD_USER, 
+            dispatch({
+                type: MESS_TYPES.ADD_USER,
                 payload: {
-                    ...msg.user, 
-                    text: msg.text, 
+                    ...msg.user,
+                    text: msg.text,
                     media: msg.media
                 }
             })
         })
 
         return () => socket.off('addMessageToClient')
-    }, [ socket, dispatch ])
+    }, [socket, dispatch])
 
     // Check User Online / Offline
     useEffect(() => {
         socket.emit('checkUserOnline', auth.user)
-    }, [ socket, auth.user ])
+
+    }, [socket, auth.user])
 
     useEffect(() => {
         socket.on('checkUserOnlineToMe', data => {
             data.forEach(item => {
-                if(!online.includes(item.id)) {
+                if (!online.includes(item.id)) {
                     dispatch({ type: GLOBALTYPES.ONLINE, payload: item.id })
                 }
             })
         })
-
         return () => socket.off('checkUserOnlineToMe')
-    }, [ socket, dispatch, online ])
+
+    }, [socket, dispatch, online])
 
     useEffect(() => {
         socket.on('checkUserOnlineToClient', id => {
-            if(!online.includes(id)) {
+            if (!online.includes(id)) {
                 dispatch({ type: GLOBALTYPES.ONLINE, payload: id })
             }
         })
-
         return () => socket.off('checkUserOnlineToClient')
-    }, [ socket, dispatch, online ])
+
+    }, [socket, dispatch, online])
 
     // Check User Offline
     useEffect(() => {
         socket.on('checkUserOffline', id => {
             dispatch({ type: GLOBALTYPES.OFFLINE, payload: id })
         })
-
         return () => socket.off('checkUserOffline')
-    }, [ socket, dispatch ])
+
+    }, [socket, dispatch])
 
 
     // Call User
@@ -174,19 +174,17 @@ const SocketClient = () => {
         socket.on('callUserToClient', data => {
             dispatch({ type: GLOBALTYPES.CALL, payload: data })
         })
-
         return () => socket.off('callUserToClient')
-    }, [ socket, dispatch ])
+
+    }, [socket, dispatch])
 
     useEffect(() => {
         socket.on('userBusy', data => {
-            dispatch({ type: GLOBALTYPES.ALERT, payload: { error: `${call.username} is busy!` }})
+            dispatch({ type: GLOBALTYPES.ALERT, payload: { error: `${call.username} is busy!` } })
         })
-
         return () => socket.off('userBusy')
-    }, [ socket, dispatch, call ])
 
-
+    }, [socket, dispatch, call])
 
     return (
         <>
