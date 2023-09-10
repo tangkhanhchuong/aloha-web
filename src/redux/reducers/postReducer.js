@@ -14,31 +14,31 @@ const postReducer = (state = initialState, action) => {
 			return {
 				...state,
 				posts: [action.payload, ...state.posts]
-			};
+			}
 		case POST_TYPES.LOADING_POST:
 			return {
 				...state,
 				loading: action.payload
-			};
+			}
 		case POST_TYPES.GET_POSTS:
 			return {
 				...state,
 				posts: action.payload.posts,
 				count: action.payload.count,
 				page: action.payload.page
-			};
+			}
 		case POST_TYPES.UPDATE_POST:
 			return {
 				...state,
 				posts: editData(state.posts, action.payload._id, action.payload)
-			};
+			}
 		case POST_TYPES.DELETE_POST:
 			return {
 				...state,
 				posts: deleteData(state.posts, action.payload._id)
-			};
+			}
 		default:
-			return state;
+			return state
 	}
 }
 

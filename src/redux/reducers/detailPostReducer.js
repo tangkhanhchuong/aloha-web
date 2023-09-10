@@ -8,7 +8,7 @@ const detailPostReducer = (state = [], action) => {
 		case POST_TYPES.UPDATE_POST:
 			return editData(state, action.payload._id, action.payload)
 		default:
-			return state;
+			return state
 	}
 }
 

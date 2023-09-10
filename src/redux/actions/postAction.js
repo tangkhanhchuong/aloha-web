@@ -63,7 +63,7 @@ export const updatePost = ({ content, images, auth, status }) => async (dispatch
 		&& imgNewUrl.length === 0
 		&& imgOldUrl.length === status.images.length
 	) {
-		return;
+		return
 	}
 
 	try {

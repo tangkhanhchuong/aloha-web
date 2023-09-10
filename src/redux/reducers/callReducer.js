@@ -4,9 +4,9 @@ import { GLOBALTYPES } from '../actions/globalTypes'
 const callReducer = (state = null, action) => {
 	switch (action.type) {
 		case GLOBALTYPES.CALL:
-			return action.payload;
+			return action.payload
 		default:
-			return state;
+			return state
 	}
 }
 

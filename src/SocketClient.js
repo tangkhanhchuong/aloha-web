@@ -9,190 +9,108 @@ import audiobell from './audio/got-it-done-613.mp3'
 
 
 const spawnNotification = (body, icon, url, title) => {
-    let options = {
-        body, icon
-    }
-    let n = new Notification(title, options)
+	let options = {
+		body, icon
+	}
+	let n = new Notification(title, options)
 
-    n.onclick = e => {
-        e.preventDefault()
-        window.open(url, '_blank')
-    }
+	n.onclick = e => {
+		e.preventDefault()
+		window.open(url, '_blank')
+	}
 }
 
 const SocketClient = () => {
-    const { auth, socket, notify, online, call } = useSelector(state => state)
-    const dispatch = useDispatch()
+	const { auth, socket, notify, online, call } = useSelector(state => state)
+	const dispatch = useDispatch()
 
-    const audioRef = useRef()
+	const audioRef = useRef()
 
-    // user joined
-    useEffect(() => {
-        socket.emit('userJoined', auth.user)
+	// user joined
+	useEffect(() => {
+		socket.emit('user_joined', auth.user)
 
-    }, [socket, auth.user])
+	}, [socket, auth.user])
 
-    // user liked a post
-    useEffect(() => {
-        socket.on('likeToClient', newPost => {
-            dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
-        })
-        return () => socket.off('likeToClient')
+	// notify user
+	useEffect(() => {
+		socket.on('send_notifcation', msg => {
+			dispatch({ type: NOTIFY_TYPES.CREATE_NOTIFY, payload: msg })
 
-    }, [socket, dispatch])
+			if (notify.sound)
+				audioRef.current.play()
+			spawnNotification(
+				msg.user.username + ' ' + msg.text,
+				msg.user.avatar,
+				msg.url,
+				'Aloha'
+			)
+		})
+		return () => socket.off('send_notifcation')
 
-    useEffect(() => {
-        socket.on('unLikeToClient', newPost => {
-            dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
-        })
-        return () => socket.off('unLikeToClient')
+	}, [socket, dispatch, notify.sound])
 
-    }, [socket, dispatch])
+	// Message
+	useEffect(() => {
+		socket.on('add_message_to_client', msg => {
+			dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg })
+			dispatch({
+				type: MESS_TYPES.ADD_USER,
+				payload: {
+					...msg.user,
+					text: msg.text,
+					media: msg.media
+				}
+			})
+		})
+		return () => socket.off('add_message_to_client')
 
+	}, [socket, dispatch])
 
-    // user commentted a post
-    useEffect(() => {
-        socket.on('createCommentToClient', newPost => {
-            dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
-        })
-        return () => socket.off('createCommentToClient')
+	useEffect(() => {
+		socket.on('user_is_online', id => {
+			if (!online.includes(id)) {
+				dispatch({ type: GLOBALTYPES.ONLINE, payload: id })
+			}
+		})
+		return () => socket.off('user_is_online')
 
-    }, [socket, dispatch])
+	}, [socket, dispatch, online])
 
-    useEffect(() => {
-        socket.on('deleteCommentToClient', newPost => {
-            dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
-        })
-        return () => socket.off('deleteCommentToClient')
+	// Check User Offline
+	useEffect(() => {
+		socket.on('user_is_offline', id => {
+			dispatch({ type: GLOBALTYPES.OFFLINE, payload: id })
+		})
+		return () => socket.off('user_is_offline')
 
-    }, [socket, dispatch])
-
-
-    // user followed another user
-    useEffect(() => {
-        socket.on('followToClient', newUser => {
-            dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
-        })
-        return () => socket.off('followToClient')
-
-    }, [socket, dispatch, auth])
-
-    useEffect(() => {
-        socket.on('unFollowToClient', newUser => {
-            dispatch({ type: GLOBALTYPES.AUTH, payload: { ...auth, user: newUser } })
-        })
-        return () => socket.off('unFollowToClient')
-
-    }, [socket, dispatch, auth])
-
-
-    // notify user
-    useEffect(() => {
-        socket.on('createNotifyToClient', msg => {
-            dispatch({ type: NOTIFY_TYPES.CREATE_NOTIFY, payload: msg })
-
-            if (notify.sound)
-                audioRef.current.play()
-            spawnNotification(
-                msg.user.username + ' ' + msg.text,
-                msg.user.avatar,
-                msg.url,
-                'Aloha'
-            )
-        })
-
-        return () => socket.off('createNotifyToClient')
-    }, [socket, dispatch, notify.sound])
-
-    useEffect(() => {
-        socket.on('removeNotifyToClient', msg => {
-            dispatch({ type: NOTIFY_TYPES.REMOVE_NOTIFY, payload: msg })
-        })
-
-        return () => socket.off('removeNotifyToClient')
-    }, [socket, dispatch])
+	}, [socket, dispatch])
 
 
-    // Message
-    useEffect(() => {
-        socket.on('addMessageToClient', msg => {
-            dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg })
+	// Call User
+	// useEffect(() => {
+	// 	socket.on('callUserToClient', data => {
+	// 		dispatch({ type: GLOBALTYPES.CALL, payload: data })
+	// 	})
+	// 	return () => socket.off('callUserToClient')
 
-            dispatch({
-                type: MESS_TYPES.ADD_USER,
-                payload: {
-                    ...msg.user,
-                    text: msg.text,
-                    media: msg.media
-                }
-            })
-        })
+	// }, [socket, dispatch])
 
-        return () => socket.off('addMessageToClient')
-    }, [socket, dispatch])
+	// useEffect(() => {
+	// 	socket.on('userBusy', data => {
+	// 		dispatch({ type: GLOBALTYPES.ALERT, payload: { error: `${call.username} is busy!` } })
+	// 	})
+	// 	return () => socket.off('userBusy')
 
-    // Check User Online / Offline
-    useEffect(() => {
-        socket.emit('checkUserOnline', auth.user)
+	// }, [socket, dispatch, call])
 
-    }, [socket, auth.user])
-
-    useEffect(() => {
-        socket.on('checkUserOnlineToMe', data => {
-            data.forEach(item => {
-                if (!online.includes(item.id)) {
-                    dispatch({ type: GLOBALTYPES.ONLINE, payload: item.id })
-                }
-            })
-        })
-        return () => socket.off('checkUserOnlineToMe')
-
-    }, [socket, dispatch, online])
-
-    useEffect(() => {
-        socket.on('checkUserOnlineToClient', id => {
-            if (!online.includes(id)) {
-                dispatch({ type: GLOBALTYPES.ONLINE, payload: id })
-            }
-        })
-        return () => socket.off('checkUserOnlineToClient')
-
-    }, [socket, dispatch, online])
-
-    // Check User Offline
-    useEffect(() => {
-        socket.on('checkUserOffline', id => {
-            dispatch({ type: GLOBALTYPES.OFFLINE, payload: id })
-        })
-        return () => socket.off('checkUserOffline')
-
-    }, [socket, dispatch])
-
-
-    // Call User
-    useEffect(() => {
-        socket.on('callUserToClient', data => {
-            dispatch({ type: GLOBALTYPES.CALL, payload: data })
-        })
-        return () => socket.off('callUserToClient')
-
-    }, [socket, dispatch])
-
-    useEffect(() => {
-        socket.on('userBusy', data => {
-            dispatch({ type: GLOBALTYPES.ALERT, payload: { error: `${call.username} is busy!` } })
-        })
-        return () => socket.off('userBusy')
-
-    }, [socket, dispatch, call])
-
-    return (
-        <>
-            <audio controls ref={audioRef} style={{ display: 'none' }} >
-                <source src={audiobell} type='audio/mp3' />
-            </audio>
-        </>
-    )
+	return (
+		<>
+			<audio controls ref={audioRef} style={{ display: 'none' }} >
+				<source src={audiobell} type='audio/mp3' />
+			</audio>
+		</>
+	)
 }
 
 export default SocketClient

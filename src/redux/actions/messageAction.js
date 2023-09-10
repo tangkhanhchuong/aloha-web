@@ -16,7 +16,7 @@ export const addMessage = ({ msg, auth, socket }) => async (dispatch) => {
 	dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg })
 
 	const { _id, avatar, fullname, username } = auth.user
-	socket.emit('addMessage', { ...msg, user: { _id, avatar, fullname, username } })
+	socket.emit('add_message', { ...msg, user: { _id, avatar, fullname, username } })
 
 	try {
 		await postDataAPI('messages', msg, auth.token)
@@ -29,7 +29,7 @@ export const getConversations = ({ auth, page = 1 }) => async (dispatch) => {
 	try {
 		const res = await getDataAPI(`conversations?limit=${page * 9}`, auth.token)
 
-		let newArr = [];
+		let newArr = []
 		res.data.conversations.forEach(item => {
 			item.recipients.forEach(cv => {
 				if (cv._id !== auth.user._id) {

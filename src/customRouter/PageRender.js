@@ -1,7 +1,8 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
-import NotFound from '../components/NotFound'
 import { useSelector } from 'react-redux'
+
+import NotFound from '../components/NotFound'
 
 const generatePage = (pageName) => {
     const component = () => require(`../pages/${pageName}`).default
@@ -17,8 +18,7 @@ const PageRender = () => {
     const { page, id } = useParams()
     const { auth } = useSelector(state => state)
 
-    let pageName = '';
-
+    let pageName = ''
     if(auth.token) {
         if(id) {
             pageName = `${page}/[id]`

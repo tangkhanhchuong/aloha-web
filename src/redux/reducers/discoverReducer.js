@@ -14,23 +14,23 @@ const discoverReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: action.payload
-			};
+			}
 		case DISCOVER_TYPES.GET_POSTS:
 			return {
 				...state,
 				posts: action.payload.posts,
 				count: action.payload.count,
 				firstLoad: true
-			};
+			}
 		case DISCOVER_TYPES.UPDATE_POST:
 			return {
 				...state,
 				posts: action.payload.posts,
 				count: action.payload.count,
 				page: state.page + 1
-			};
+			}
 		default:
-			return state;
+			return state
 	}
 }
 

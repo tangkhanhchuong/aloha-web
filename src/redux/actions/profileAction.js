@@ -21,8 +21,8 @@ export const getProfileUsers = ({ id, auth }) => async (dispatch) => {
 		const res = getDataAPI(`/users/${id}`, auth.token)
 		const res1 = getDataAPI(`/users/${id}/posts`, auth.token)
 
-		const users = await res;
-		const posts = await res1;
+		const users = await res
+		const posts = await res1
 
 		dispatch({
 			type: PROFILE_TYPES.GET_USER,
@@ -57,7 +57,7 @@ export const updateProfileUser = ({ userData, avatar, auth }) => async (dispatch
 	}
 
 	try {
-		let media;
+		let media
 		dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 
 		if (avatar) {
@@ -91,7 +91,7 @@ export const updateProfileUser = ({ userData, avatar, auth }) => async (dispatch
 }
 
 export const follow = ({ users, user, auth, socket }) => async (dispatch) => {
-	let updatedUser;
+	let updatedUser
 
 	if (users.every(item => item._id !== user._id)) {
 		updatedUser = { ...user, followers: [...user.followers, auth.user] }
@@ -126,7 +126,7 @@ export const follow = ({ users, user, auth, socket }) => async (dispatch) => {
 
 export const unfollow = ({ users, user, auth, socket }) => async (dispatch) => {
 
-	let updatedUser;
+	let updatedUser
 
 	if (users.every(item => item._id !== user._id)) {
 		updatedUser = { ...user, followers: deleteData(user.followers, auth.user._id) }
