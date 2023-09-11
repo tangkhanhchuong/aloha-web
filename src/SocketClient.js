@@ -32,6 +32,14 @@ const SocketClient = () => {
 
 	}, [socket, auth.user])
 
+	// user reconnected
+	useEffect(() => {
+		socket.on('user_reconnected', () => {
+			socket.emit('user_joined', auth.user)
+		})
+
+	}, [socket, auth.user])
+
 	// notify user
 	useEffect(() => {
 		socket.on('send_notifcation', msg => {
@@ -50,16 +58,16 @@ const SocketClient = () => {
 
 	}, [socket, dispatch, notify.sound])
 
-	// Message
+	// user send message
 	useEffect(() => {
-		socket.on('add_message_to_client', msg => {
-			dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg })
+		socket.on('add_message_to_client', payload => {
+			dispatch({ payload, type: MESS_TYPES.ADD_MESSAGE })
 			dispatch({
 				type: MESS_TYPES.ADD_USER,
 				payload: {
-					...msg.user,
-					text: msg.text,
-					media: msg.media
+					...payload.user,
+					text: payload.text,
+					media: payload.media
 				}
 			})
 		})
@@ -77,7 +85,7 @@ const SocketClient = () => {
 
 	}, [socket, dispatch, online])
 
-	// Check User Offline
+	// check user offline
 	useEffect(() => {
 		socket.on('user_is_offline', id => {
 			dispatch({ type: GLOBALTYPES.OFFLINE, payload: id })
@@ -87,7 +95,7 @@ const SocketClient = () => {
 	}, [socket, dispatch])
 
 
-	// Call User
+	// call user
 	// useEffect(() => {
 	// 	socket.on('callUserToClient', data => {
 	// 		dispatch({ type: GLOBALTYPES.CALL, payload: data })
