@@ -43,3 +43,6 @@ yarn start
 ![image](public/profile.png)
 - Follow/ unfollow
 ![image](public/follow.png)
+
+### Demo
+Please click [here](https://aloha-web-git-master-tangkhanhchuong.vercel.app/) for demo

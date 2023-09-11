@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { POST_TYPES } from './redux/actions/postAction'
 import { GLOBALTYPES } from './redux/actions/globalTypes'
 import { NOTIFY_TYPES } from './redux/actions/notifyAction'
 import { MESS_TYPES } from './redux/actions/messageAction'
@@ -21,7 +20,7 @@ const spawnNotification = (body, icon, url, title) => {
 }
 
 const SocketClient = () => {
-	const { auth, socket, notify, online, call } = useSelector(state => state)
+	const { auth, socket, notify, online } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	const audioRef = useRef()
