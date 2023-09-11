@@ -10,13 +10,9 @@ export const getDataAPI = async (url, token) => {
 	})
 }
 
-export const postDataAPI = async (url, data, token, isForm) => {
-	const headers = { Authorization: token }
-	if (isForm) {
-		headers['Content-Type'] = 'multipart/form-data'
-	}
+export const postDataAPI = async (url, data, token) => {
 	return axiosClient.post(url, data, {
-		headers
+		headers: { Authorization: token }
 	})
 }
 

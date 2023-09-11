@@ -3,8 +3,8 @@ import { DISCOVER_TYPES } from '../actions/discoverAction'
 const initialState = {
 	loading: false,
 	posts: [],
-	count: 9,
-	page: 2,
+	count: 0,
+	page: 0,
 	firstLoad: false
 }
 

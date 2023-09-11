@@ -13,8 +13,7 @@ export const checkImage = (file) => {
 	return err
 }
 
-
-export const imageUpload = async (images) => {
+export const imageUpload = async (images, token) => {
 	const formData = new FormData()
 	for (const item of images) {
 		if (item.camera) {
@@ -23,6 +22,6 @@ export const imageUpload = async (images) => {
 			formData.append('files', item)
 		}
 	}
-	const res = await postDataAPI('files/upload', formData)
+	const res = await postDataAPI('files/upload', formData, token)
 	return res.data.files
 }

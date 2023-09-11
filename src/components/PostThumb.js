@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
+const placeholder = 'https://placehold.co/600x400'
+
 const PostThumb = ({ posts, count }) => {
 	const { theme } = useSelector(state => state)
 
@@ -14,7 +16,13 @@ const PostThumb = ({ posts, count }) => {
 					<Link key={post._id} to={`/posts/${post._id}`}>
 						<div className='post_thumb_display'>
 							{
-								post.images[0].url.match(/video/i) ? (
+								!post.images[0] ? (
+									<img
+										src={placeholder}
+										alt='placeholder'
+										style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+									/>
+								) : post.images[0].url.match(/video/i) ? (
 									<video
 										controls
 										src={post.images[0].url}

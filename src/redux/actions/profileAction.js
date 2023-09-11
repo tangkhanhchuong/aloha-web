@@ -31,7 +31,7 @@ export const getProfileUsers = ({ id, auth }) => async (dispatch) => {
 
 		dispatch({
 			type: PROFILE_TYPES.GET_POSTS,
-			payload: { ...posts.data, _id: id, page: 2 }
+			payload: { ...posts.data, _id: id, page: posts?.data.length || 0 }
 		})
 
 		dispatch({ type: PROFILE_TYPES.LOADING, payload: false })
@@ -60,9 +60,8 @@ export const updateProfileUser = ({ userData, avatar, auth }) => async (dispatch
 		let media
 		dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 
-		if (avatar) {
-			media = await imageUpload([avatar])
-		}
+		if (avatar)
+			media = await imageUpload([avatar], auth.token)
 
 		const res = await patchDataAPI('users', {
 			...userData,

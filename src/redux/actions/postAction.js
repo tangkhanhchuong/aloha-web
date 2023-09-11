@@ -11,14 +11,12 @@ export const POST_TYPES = {
 	DELETE_POST: 'DELETE_POST'
 }
 
-
-export const createPost = ({ content, images, auth, socket }) => async (dispatch) => {
+export const createPost = ({ content, images, auth }) => async (dispatch) => {
 	try {
 		dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 		let files = []
-		if (images.length > 0) {
-			files = await imageUpload(images)
-		}
+		if (images.length > 0)
+			files = await imageUpload(images, auth.token)
 
 		const res = await postDataAPI('posts', { content, images: files.map(file => file.key) }, auth.token)
 		dispatch({
@@ -42,7 +40,7 @@ export const getPosts = (token) => async (dispatch) => {
 
 		dispatch({
 			type: POST_TYPES.GET_POSTS,
-			payload: { ...res.data, page: 2 }
+			payload: { ...res.data, page: res?.data.length || 0 }
 		})
 		dispatch({ type: POST_TYPES.LOADING_POST, payload: false })
 
@@ -68,9 +66,8 @@ export const updatePost = ({ content, images, auth, status }) => async (dispatch
 
 	try {
 		dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
-		if (imgNewUrl.length > 0) {
-			media = await imageUpload(imgNewUrl)
-		}
+		if (imgNewUrl.length > 0)
+			media = await imageUpload(imgNewUrl, auth.token)
 
 		const res = await patchDataAPI(`posts/${status._id}`, {
 			content, images: [...imgOldUrl, ...media].map(file => file.key)
