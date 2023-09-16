@@ -21,7 +21,7 @@ import io from 'socket.io-client'
 import { GLOBALTYPES } from './redux/actions/globalTypes'
 import SocketClient from './SocketClient'
 
-import { getNotifies } from './redux/actions/notifyAction'
+import { getNotifications } from './redux/actions/notificationAction'
 import CallModal from './components/message/CallModal'
 import Peer from 'peerjs'
 
@@ -44,7 +44,7 @@ const App = () => {
     if (auth.token) {
       dispatch(getPosts(auth.token))
       dispatch(getSuggestions(auth.token))
-      dispatch(getNotifies(auth.token))
+      dispatch(getNotifications(auth.token))
     }
   }, [dispatch, auth.token])
 

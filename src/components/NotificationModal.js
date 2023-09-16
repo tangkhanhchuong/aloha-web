@@ -5,28 +5,28 @@ import moment from 'moment'
 
 import Avatar from './Avatar'
 import NoNotice from '../images/notice.png'
-import { readNotify, NOTIFY_TYPES, deleteAllNotifies } from '../redux/actions/notifyAction'
+import { readNotification, NOTIFICATION_TYPES, deleteAllNotifications } from '../redux/actions/notificationAction'
 
-const NotifyModal = () => {
-	const { auth, notify } = useSelector(state => state)
+const NotificationModal = () => {
+	const { auth, notification } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	const handleIsRead = (msg) => {
-		dispatch(readNotify({ msg, auth }))
+		dispatch(readNotification({ msg, auth }))
 	}
 
 	const handleSound = () => {
-		dispatch({ type: NOTIFY_TYPES.UPDATE_SOUND, payload: !notify.sound })
+		dispatch({ type: NOTIFICATION_TYPES.UPDATE_SOUND, payload: !notification.sound })
 	}
 
 	const handleDeleteAll = () => {
-		const newArr = notify.data.filter(item => item.isRead === false)
+		const newArr = notification.data.filter(item => item.isRead === false)
 		if (newArr.length === 0) {
-			return dispatch(deleteAllNotifies(auth.token))
+			return dispatch(deleteAllNotifications(auth.token))
 		}
 
 		if (window.confirm(`You have ${newArr.length} unread notices. Are you sure you want to delete all?`)) {
-			return dispatch(deleteAllNotifies(auth.token))
+			return dispatch(deleteAllNotifications(auth.token))
 		}
 	}
 
@@ -35,7 +35,7 @@ const NotifyModal = () => {
 			<div className='d-flex justify-content-between align-items-center px-3'>
 				<h3>Notification</h3>
 				{
-					notify.sound ? (
+					notification.sound ? (
 						<i
 							className='fas fa-bell text-danger'
 							style={{
@@ -58,13 +58,13 @@ const NotifyModal = () => {
 			</div>
 			<hr className='mt-0' />
 			{
-				notify.data.length === 0 &&
+				notification.data.length === 0 &&
 				<img src={NoNotice} alt='NoNotice' className='w-100' />
 			}
 
 			<div style={{ maxHeight: 'calc(100vh - 200px)', overflow: 'auto' }}>
 				{
-					notify.data.map((msg, index) => (
+					notification.data.map((msg, index) => (
 						<div key={index} className='px-2 mb-3' >
 							<Link
 								to={`${msg.url}`}
@@ -102,4 +102,4 @@ const NotifyModal = () => {
 	)
 }
 
-export default NotifyModal
+export default NotificationModal

@@ -1,61 +1,53 @@
-import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import { follow, unfollow } from '../redux/actions/profileAction'
+import { follow, unfollow } from "../redux/actions/profileAction";
 
 const FollowBtn = ({ user }) => {
-	const { auth, profile, socket } = useSelector(state => state)
-	const dispatch = useDispatch()
-	
-	const [followed, setFollowed] = useState(false)
-	const [load, setLoad] = useState(false)
+  const { auth, profile, socket } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-	useEffect(() => {
-		if (auth.user.following.find(item => item._id === user._id)) {
-			setFollowed(true)
-		}
-		return () => setFollowed(false)
-	}, [auth.user.following, user._id])
+  const [followed, setFollowed] = useState(false);
+  const [load, setLoad] = useState(false);
 
-	const handleFollow = async () => {
-		if (load) return
+  useEffect(() => {
+    if (auth.user.following.find((item) => item._id === user._id)) {
+      setFollowed(true);
+    }
+    return () => setFollowed(false);
+  }, [auth.user.following, user._id]);
 
-		setFollowed(true)
-		setLoad(true)
-		await dispatch(follow({ users: profile.users, user, auth, socket }))
-		setLoad(false)
-	}
+  const handleFollow = async () => {
+    if (load) return;
 
-	const handleUnfollow = async () => {
-		if (load) return
+    setFollowed(true);
+    setLoad(true);
+    await dispatch(follow({ users: profile.users, user, auth, socket }));
+    setLoad(false);
+  };
 
-		setFollowed(false)
-		setLoad(true)
-		await dispatch(unfollow({ users: profile.users, user, auth, socket }))
-		setLoad(false)
-	}
+  const handleUnfollow = async () => {
+    if (load) return;
 
-	return (
-		<>
-			{
-				followed ? (
-					<button
-						className='btn btn-outline-danger'
-						onClick={handleUnfollow}
-					>
-						Unfollow
-					</button>
-				) : (
-					<button
-						className='btn btn-outline-info'
-						onClick={handleFollow}
-					>
-						Follow
-					</button>
-				)
-			}
-		</>
-	)
-}
+    setFollowed(false);
+    setLoad(true);
+    await dispatch(unfollow({ users: profile.users, user, auth, socket }));
+    setLoad(false);
+  };
 
-export default FollowBtn
+  return (
+    <>
+      {followed ? (
+        <button className="btn btn-outline-danger" onClick={handleUnfollow}>
+          Unfollow
+        </button>
+      ) : (
+        <button className="btn btn-outline-info" onClick={handleFollow}>
+          Follow
+        </button>
+      )}
+    </>
+  );
+};
+
+export default FollowBtn;

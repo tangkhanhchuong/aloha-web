@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { GLOBALTYPES } from './redux/actions/globalTypes'
-import { NOTIFY_TYPES } from './redux/actions/notifyAction'
+import { NOTIFICATION_TYPES } from './redux/actions/notificationAction'
 import { MESS_TYPES } from './redux/actions/messageAction'
 
 import audiobell from './audio/got-it-done-613.mp3'
@@ -20,7 +20,7 @@ const spawnNotification = (body, icon, url, title) => {
 }
 
 const SocketClient = () => {
-	const { auth, socket, notify, online } = useSelector(state => state)
+	const { auth, socket, notification, online } = useSelector(state => state)
 	const dispatch = useDispatch()
 
 	const audioRef = useRef()
@@ -39,12 +39,12 @@ const SocketClient = () => {
 
 	}, [socket, auth.user])
 
-	// notify user
+	// notification user
 	useEffect(() => {
 		socket.on('send_notifcation', msg => {
-			dispatch({ type: NOTIFY_TYPES.CREATE_NOTIFY, payload: msg })
+			dispatch({ type: NOTIFICATION_TYPES.CREATE_NOTIFICATION, payload: msg })
 
-			if (notify.sound)
+			if (notification.sound)
 				audioRef.current.play()
 			spawnNotification(
 				msg.user.username + ' ' + msg.text,
@@ -55,7 +55,7 @@ const SocketClient = () => {
 		})
 		return () => socket.off('send_notifcation')
 
-	}, [socket, dispatch, notify.sound])
+	}, [socket, dispatch, notification.sound])
 
 	// user send message
 	useEffect(() => {
