@@ -1,12 +1,12 @@
-import { GLOBALTYPES } from "../actions/globalTypes";
+import { GLOBALTYPES } from '../actions/globalTypes'
 
 const socketReducer = (state = [], action) => {
   switch (action.type) {
     case GLOBALTYPES.SOCKET:
-      return action.payload;
+      return action.payload
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default socketReducer;
+export default socketReducer

@@ -9,6 +9,7 @@ import {
   MESS_TYPES,
   getConversations,
 } from "../../redux/actions/messageAction";
+import { mapMessages } from "../../utils/mapMessages";
 
 const LeftSide = () => {
   const { auth, message, online } = useSelector((state) => state);
@@ -36,7 +37,7 @@ const LeftSide = () => {
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: err.response.data.msg },
+        payload: { error: mapMessages(err.response.data.msg) },
       });
     }
   };

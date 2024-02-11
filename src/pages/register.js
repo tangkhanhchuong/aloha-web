@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { useHistory, Link } from "react-router-dom"
 
-import { register } from "../redux/actions/authAction";
+import { register } from "../redux/actions/authAction"
 
 const Register = () => {
-  const { auth, alert } = useSelector((state) => state);
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const { auth, alert } = useSelector((state) => state)
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const initialState = {
     fullname: "",
@@ -16,28 +16,28 @@ const Register = () => {
     password: "",
     cf_password: "",
     gender: "male",
-  };
-  const [userData, setUserData] = useState(initialState);
-  const { fullname, username, email, password, cf_password } = userData;
+  }
+  const [userData, setUserData] = useState(initialState)
+  const { fullname, username, email, password, cf_password } = userData
 
-  const [typePass, setTypePass] = useState(false);
-  const [typeCfPass, setTypeCfPass] = useState(false);
+  const [typePass, setTypePass] = useState(false)
+  const [typeCfPass, setTypeCfPass] = useState(false)
 
   useEffect(() => {
     if (auth.token) {
-      history.push("/");
+      history.push("/")
     }
-  }, [auth.token, history]);
+  }, [auth.token, history])
 
   const handleChangeInput = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
+    const { name, value } = e.target
+    setUserData({ ...userData, [name]: value })
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(register(userData));
-  };
+    e.preventDefault()
+    dispatch(register(userData))
+  }
 
   return (
     <div className="auth_page">
@@ -62,14 +62,14 @@ const Register = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="username">User Name</label>
+          <label htmlFor="username">Username</label>
           <input
             id="username"
             name="username"
             type="text"
             className="form-control"
             onChange={handleChangeInput}
-            value={username.toLowerCase().replace(/ /g, "")}
+            value={username}
             style={{ background: `${alert.username ? "#fd2d6a14" : ""}` }}
           />
 
@@ -190,7 +190,7 @@ const Register = () => {
         </p>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default Register

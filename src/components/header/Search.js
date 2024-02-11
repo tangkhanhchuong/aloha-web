@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getDataAPI } from "../../utils/fetchData";
-import { GLOBALTYPES } from "../../redux/actions/globalTypes";
-import UserCard from "../UserCard";
+
 import LoadIcon from "../../images/loading.gif";
+import { getDataAPI } from "../../utils/fetchData";
+import UserCard from "../UserCard";
+import { mapMessages } from "../../utils/mapMessages";
+import { GLOBALTYPES } from "../../redux/actions/globalTypes";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -27,7 +29,7 @@ const Search = () => {
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: err.response.data.msg },
+        payload: { error: mapMessages(err.response.data.msg) },
       });
     }
   };

@@ -1,28 +1,28 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react"
+import { useSelector } from "react-redux"
 
-import Status from "../components/home/Status";
-import Posts from "../components/home/Posts";
-import RightSideBar from "../components/home/RightSideBar";
-import LoadIcon from "../images/loading.gif";
+import Status from "../components/home/Status"
+import Posts from "../components/home/Posts"
+import RightSideBar from "../components/home/RightSideBar"
+import LoadIcon from "../images/loading.gif"
 
-let scroll = 0;
+let scroll = 0
 
 const Home = () => {
-  const { homePosts } = useSelector((state) => state);
+  const { homePosts } = useSelector((state) => state)
 
   window.addEventListener("scroll", () => {
     if (window.location.pathname === "/") {
-      scroll = window.pageYOffset;
-      return scroll;
+      scroll = window.pageYOffset
+      return scroll
     }
-  });
+  })
 
   useEffect(() => {
     setTimeout(() => {
-      window.scrollTo({ top: scroll, behavior: "smooth" });
-    }, 100);
-  }, []);
+      window.scrollTo({ top: scroll, behavior: "smooth" })
+    }, 100)
+  }, [])
 
   return (
     <div className="home row mx-0">
@@ -41,7 +41,7 @@ const Home = () => {
         <RightSideBar />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

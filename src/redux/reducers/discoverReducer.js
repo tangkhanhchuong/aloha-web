@@ -1,4 +1,4 @@
-import { DISCOVER_TYPES } from "../actions/discoverAction";
+import { DISCOVER_TYPES } from '../actions/discoverAction'
 
 const initialState = {
   loading: false,
@@ -6,7 +6,7 @@ const initialState = {
   count: 0,
   page: 0,
   firstLoad: false,
-};
+}
 
 const discoverReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -14,24 +14,24 @@ const discoverReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: action.payload,
-      };
+      }
     case DISCOVER_TYPES.GET_POSTS:
       return {
         ...state,
         posts: action.payload.posts,
         count: action.payload.count,
         firstLoad: true,
-      };
+      }
     case DISCOVER_TYPES.UPDATE_POST:
       return {
         ...state,
         posts: action.payload.posts,
         count: action.payload.count,
         page: state.page + 1,
-      };
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default discoverReducer;
+export default discoverReducer

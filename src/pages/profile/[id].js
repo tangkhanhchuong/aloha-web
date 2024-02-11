@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { useParams } from "react-router-dom"
 
-import Info from "../../components/profile/Info";
-import Posts from "../../components/profile/Posts";
-import Saved from "../../components/profile/Saved";
-import LoadIcon from "../../images/loading.gif";
-import { getProfileUsers } from "../../redux/actions/profileAction";
+import Info from "../../components/profile/Info"
+import Posts from "../../components/profile/Posts"
+import Saved from "../../components/profile/Saved"
+import LoadIcon from "../../images/loading.gif"
+import { getProfileUsers } from "../../redux/actions/profileAction"
 
 const Profile = () => {
-  const { profile, auth } = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const { profile, auth } = useSelector((state) => state)
+  const dispatch = useDispatch()
 
-  const { id } = useParams();
-  const [saveTab, setSaveTab] = useState(false);
+  const { id } = useParams()
+  const [saveTab, setSaveTab] = useState(false)
 
   useEffect(() => {
     if (profile.ids.every((item) => item !== id)) {
-      dispatch(getProfileUsers({ id, auth }));
+      dispatch(getProfileUsers({ id, auth }))
     }
-  }, [id, auth, dispatch, profile.ids]);
+  }, [id, auth, dispatch, profile.ids])
 
   return (
     <div className="profile">
@@ -53,7 +53,7 @@ const Profile = () => {
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

@@ -1,6 +1,6 @@
-import React from "react";
+import React from "react"
 
-import LeftSide from "../../components/message/LeftSide";
+import LeftSide from "../../components/message/LeftSide"
 
 const Message = () => {
   return (
@@ -22,7 +22,7 @@ const Message = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Message;
+export default Message

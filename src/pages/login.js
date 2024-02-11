@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react"
+import { Link, useHistory } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
 
-import { login } from "../redux/actions/authAction";
+import { login } from "../redux/actions/authAction"
 
 const Login = () => {
-  const initialState = { email: "", password: "" };
-  const [userData, setUserData] = useState(initialState);
-  const { email, password } = userData;
+  const initialState = { email: "", password: "" }
+  const [userData, setUserData] = useState(initialState)
+  const { email, password } = userData
 
-  const [typePass, setTypePass] = useState(false);
+  const [typePass, setTypePass] = useState(false)
 
-  const { auth } = useSelector((state) => state);
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const { auth } = useSelector((state) => state)
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
-    if (auth.token) history.push("/");
-  }, [auth.token, history]);
+    if (auth.token) history.push("/")
+  }, [auth.token, history])
 
   const handleChangeInput = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
+    const { name, value } = e.target
+    setUserData({ ...userData, [name]: value })
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(login(userData));
-  };
+    e.preventDefault()
+    dispatch(login(userData))
+  }
 
   return (
     <div className="auth_page">
@@ -86,7 +86,7 @@ const Login = () => {
         </p>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
