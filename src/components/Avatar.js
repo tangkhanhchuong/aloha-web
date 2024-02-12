@@ -1,17 +1,17 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 const Avatar = ({ src, size }) => {
-  const { theme } = useSelector((state) => state);
+  const { theme } = useSelector((state) => state)
 
   return (
     <img
       src={src}
-      alt="avatar"
+      alt='avatar'
       className={size}
-      style={{ filter: `${theme ? "invert(1)" : "invert(0)"}` }}
+      style={{ filter: `${theme ? 'invert(1)' : 'invert(0)'}` }}
     />
-  );
-};
+  )
+}
 
-export default Avatar;
+export default Avatar

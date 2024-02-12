@@ -63,7 +63,7 @@ const App = () => {
     dispatch({ type: GLOBALTYPES.PEER, payload: newPeer })
   }, [dispatch])
 
-
+  
   return (
     <Router>
       <Alert />

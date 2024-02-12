@@ -23,6 +23,6 @@ export const imageUpload = async (images, token) => {
       formData.append('files', item)
     }
   }
-  const res = await postDataAPI('files/upload', formData, token)
+  const res = await postDataAPI(null, 'files/upload', formData, token)
   return res.data.files
 }

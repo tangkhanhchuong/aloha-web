@@ -5,7 +5,7 @@ const initialState = {
   users: [],
 }
 
-const suggestionsReducer = (state = initialState, action) => {
+const suggestionReducer = (state = initialState, action) => {
   switch (action.type) {
     case SUGGESTION_TYPES.LOADING:
       return {
@@ -22,4 +22,4 @@ const suggestionsReducer = (state = initialState, action) => {
   }
 }
 
-export default suggestionsReducer
+export default suggestionReducer

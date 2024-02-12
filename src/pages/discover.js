@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 import {
   getDiscoverPosts,
   DISCOVER_TYPES,
-} from "../redux/actions/discoverAction"
-import LoadIcon from "../images/loading.gif"
-import PostThumb from "../components/PostThumb"
-import LoadMoreBtn from "../components/LoadMoreBtn"
-import { getDataAPI } from "../utils/fetchData"
+} from '../redux/actions/discoverAction'
+import LoadIcon from '../images/loading.gif'
+import PostThumb from '../components/PostThumb'
+import LoadMoreBtn from '../components/LoadMoreBtn'
+import { getDataAPI } from '../utils/fetchData'
 
 const Discover = () => {
   const { auth, discover } = useSelector((state) => state)
@@ -25,6 +25,7 @@ const Discover = () => {
   const handleLoadMore = async () => {
     setLoad(true)
     const res = await getDataAPI(
+      dispatch,
       `users/discover-posts?num=${discover.page * 9}`,
       auth.token
     )
@@ -35,12 +36,12 @@ const Discover = () => {
   return (
     <div>
       {discover.loading ? (
-        <img src={LoadIcon} alt="loading" className="d-block mx-auto my-4" />
+        <img src={LoadIcon} alt='loading' className='d-block mx-auto my-4' />
       ) : (
         <PostThumb posts={discover.posts} count={discover.count} />
       )}
 
-      {load && <img src={LoadIcon} alt="loading" className="d-block mx-auto" />}
+      {load && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />}
 
       {!discover.loading && (
         <LoadMoreBtn

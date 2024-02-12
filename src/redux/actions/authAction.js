@@ -7,14 +7,13 @@ import { mapMessages } from '../../utils/mapMessages'
 
 const TOKEN_LIFESPAN = 7 //days
 export const AUTH_TYPES = {
-  AUTH: 'AUTH',
-  TOKEN_REFRESHING: 'TOKEN_REFRESHING',
+  AUTHENTICATED: 'AUTHENTICATED',
 }
 
 export const login = (data) => async (dispatch) => {
   try {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
-    const res = await postDataAPI('auth/login', data)
+    const res = await postDataAPI(dispatch, 'auth/login', data)
     Cookies.set('access_token', res.data.access_token, {
       expires: TOKEN_LIFESPAN,
     })
@@ -26,7 +25,7 @@ export const login = (data) => async (dispatch) => {
     })
 
     dispatch({
-      type: AUTH_TYPES.AUTH,
+      type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         token: res.data.access_token,
         user: res.data.user,
@@ -36,6 +35,7 @@ export const login = (data) => async (dispatch) => {
       type: GLOBALTYPES.ALERT,
       payload: {
         success: mapMessages(res.data.msg),
+        loading: false
       },
     })
   } catch (err) {
@@ -56,7 +56,7 @@ export const initialize = () => async (dispatch) => {
   const localUser = JSON.parse(localUserJson)
   const accessToken = Cookies.get('access_token')
   dispatch({
-    type: AUTH_TYPES.AUTH,
+    type: AUTH_TYPES.AUTHENTICATED,
     payload: {
       token: accessToken,
       user: localUser,
@@ -64,20 +64,25 @@ export const initialize = () => async (dispatch) => {
   })
 }
 
-export const refreshToken = () => async (dispatch) => {
+export const refreshToken = () => async (dispatch, getState) => {
   try {
+    const alertState = getState().alert
+    if (!!alertState.loading) return
+
+    dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
     const refreshToken = Cookies.get('refresh_token')
-    const res = await postDataAPI('auth/refresh-token', { refreshToken })
+    const res = await postDataAPI(dispatch, 'auth/refresh-token', { refreshToken })
     Cookies.set('access_token', res.data.access_token, {
       expires: TOKEN_LIFESPAN,
     })
     dispatch({
-      type: AUTH_TYPES.AUTH,
+      type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         token: res.data.access_token,
         user: res.data.user,
       },
     })
+    window.location.reload()
   } catch (err) {
     dispatch({
       type: GLOBALTYPES.ALERT,
@@ -96,7 +101,7 @@ export const register = (data) => async (dispatch) => {
   try {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 
-    const res = await postDataAPI('auth/register', data)
+    const res = await postDataAPI(dispatch, 'auth/register', data)
     Cookies.set('access_token', res.data.access_token, {
       expires: TOKEN_LIFESPAN,
     })
@@ -107,7 +112,7 @@ export const register = (data) => async (dispatch) => {
       expires: TOKEN_LIFESPAN,
     })
     dispatch({
-      type: AUTH_TYPES.AUTH,
+      type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         token: res.data.access_token,
         user: res.data.user,
@@ -117,6 +122,7 @@ export const register = (data) => async (dispatch) => {
       type: GLOBALTYPES.ALERT,
       payload: {
         success: mapMessages(res.data.msg),
+        loading: false
       },
     })
   } catch (err) {
@@ -131,7 +137,7 @@ export const register = (data) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   try {
-    await postDataAPI('auth/logout')
+    await postDataAPI(dispatch, 'auth/logout')
     Cookies.remove('access_token')
     Cookies.remove('refresh_token')
     Cookies.remove('user')

@@ -1,34 +1,34 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
-import Times from "./Times";
-import Avatar from "../Avatar";
-import { imageShow, videoShow } from "../../utils/mediaShow";
-import { deleteMessages } from "../../redux/actions/messageAction";
+import Times from './Times'
+import Avatar from '../Avatar'
+import { imageShow, videoShow } from '../../utils/mediaShow'
+import { deleteMessages } from '../../redux/actions/messageAction'
 
 const MsgDisplay = ({ user, msg, theme, data }) => {
-  const { auth } = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state)
+  const dispatch = useDispatch()
 
   const handleDeleteMessages = () => {
-    if (!data) return;
+    if (!data) return
 
-    if (window.confirm("Do you want to delete?")) {
-      dispatch(deleteMessages({ msg, data, auth }));
+    if (window.confirm('Do you want to delete?')) {
+      dispatch(deleteMessages({ msg, data, auth }))
     }
-  };
+  }
 
   return (
     <>
-      <div className="chat_title">
-        <Avatar src={user.avatar} size="small-avatar" />
+      <div className='chat_title'>
+        <Avatar src={user.avatar} size='small-avatar' />
         <span>{user.username}</span>
       </div>
 
-      <div className="you_content">
+      <div className='you_content'>
         {user._id === auth.user._id && (
           <i
-            className="fas fa-trash text-danger"
+            className='fas fa-trash text-danger'
             onClick={handleDeleteMessages}
           />
         )}
@@ -36,8 +36,8 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
         <div>
           {msg.text && (
             <div
-              className="chat_text"
-              style={{ filter: theme ? "invert(1)" : "invert(0)" }}
+              className='chat_text'
+              style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
             >
               {msg.text}
             </div>
@@ -53,28 +53,28 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
 
         {msg.call && (
           <button
-            className="btn d-flex align-items-center py-3"
-            style={{ background: "#eee", borderRadius: "10px" }}
+            className='btn d-flex align-items-center py-3'
+            style={{ background: '#eee', borderRadius: '10px' }}
           >
             <span
-              className="material-icons font-weight-bold mr-1"
+              className='material-icons font-weight-bold mr-1'
               style={{
-                fontSize: "2.5rem",
-                color: msg.call.times === 0 ? "crimson" : "green",
-                filter: theme ? "invert(1)" : "invert(0)",
+                fontSize: '2.5rem',
+                color: msg.call.times === 0 ? 'crimson' : 'green',
+                filter: theme ? 'invert(1)' : 'invert(0)',
               }}
             >
               {msg.call.times === 0
                 ? msg.call.video
-                  ? "videocam_off"
-                  : "phone_disabled"
+                  ? 'videocam_off'
+                  : 'phone_disabled'
                 : msg.call.video
-                ? "video_camera_front"
-                : "call"}
+                ? 'video_camera_front'
+                : 'call'}
             </span>
 
-            <div className="text-left">
-              <h6>{msg.call.video ? "Video Call" : "Audio Call"}</h6>
+            <div className='text-left'>
+              <h6>{msg.call.video ? 'Video Call' : 'Audio Call'}</h6>
               <small>
                 {msg.call.times > 0 ? (
                   <Times total={msg.call.times} />
@@ -87,11 +87,11 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
         )}
       </div>
 
-      <div className="chat_time">
+      <div className='chat_time'>
         {new Date(msg.createdAt).toLocaleString()}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default MsgDisplay;
+export default MsgDisplay

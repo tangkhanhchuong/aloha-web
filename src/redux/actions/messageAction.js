@@ -23,7 +23,7 @@ export const addMessage = ({ msg, auth, socket }) =>
     })
 
     try {
-      await postDataAPI('messages', msg, auth.token)
+      await postDataAPI(dispatch, 'messages', msg, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -36,9 +36,11 @@ export const getConversations = ({ auth, page = 1 }) =>
   async (dispatch) => {
     try {
       const res = await getDataAPI(
+        dispatch,
         `conversations?limit=${page * 9}`,
         auth.token
       )
+      if (!res) return
 
       let newArr = []
       res.data.conversations.forEach((item) => {
@@ -70,9 +72,12 @@ export const getMessages = ({ auth, id, page = 1 }) =>
   async (dispatch) => {
     try {
       const res = await getDataAPI(
+        dispatch,
         `messages/${id}?limit=${page * 9}`,
         auth.token
       )
+      if (!res) return
+
       const newData = { ...res.data, messages: res.data.messages.reverse() }
       dispatch({
         type: MESS_TYPES.GET_MESSAGES,
@@ -90,9 +95,12 @@ export const loadMoreMessages = ({ auth, id, page = 1 }) =>
   async (dispatch) => {
     try {
       const res = await getDataAPI(
+        dispatch,
         `messages/${id}?limit=${page * 9}`,
         auth.token
       )
+      if (!res) return
+
       const newData = { ...res.data, messages: res.data.messages.reverse() }
 
       dispatch({
@@ -115,7 +123,7 @@ export const deleteMessages = ({ msg, data, auth }) =>
       payload: { newData, _id: msg.recipient },
     })
     try {
-      await deleteDataAPI(`messages/${msg._id}`, auth.token)
+      await deleteDataAPI(dispatch, `messages/${msg._id}`, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -128,7 +136,7 @@ export const deleteConversation = ({ auth, id }) =>
   async (dispatch) => {
     dispatch({ type: MESS_TYPES.DELETE_CONVERSATION, payload: id })
     try {
-      await deleteDataAPI(`conversations/${id}`, auth.token)
+      await deleteDataAPI(dispatch, `conversations/${id}`, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,

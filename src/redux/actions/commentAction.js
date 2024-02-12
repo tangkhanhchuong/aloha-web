@@ -18,7 +18,9 @@ export const createComment = ({ post, newComment, auth, socket }) =>
         postId: post._id,
         postUserId: post.user._id,
       }
-      const res = await postDataAPI('comments', data, auth.token)
+      const res = await postDataAPI(dispatch, 'comments', data, auth.token)
+      if (!res) return
+
       const newData = { ...res.data.newComment, user: auth.user }
       const newPost = { ...post, comments: [...post.comments, newData] }
       dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
@@ -42,7 +44,7 @@ export const updateComment = ({ comment, post, content, auth }) =>
 
     dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
     try {
-      patchDataAPI(`comments/${comment._id}`, { content }, auth.token)
+      await patchDataAPI(dispatch, `comments/${comment._id}`, { content }, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -59,7 +61,7 @@ export const likeComment = ({ comment, post, auth }) =>
     dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
 
     try {
-      await patchDataAPI(`comments/${comment._id}/like`, null, auth.token)
+      await patchDataAPI(dispatch, `comments/${comment._id}/like`, null, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -80,7 +82,7 @@ export const unLikeComment = ({ comment, post, auth }) =>
     dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
 
     try {
-      await patchDataAPI(`comments/${comment._id}/unlike`, null, auth.token)
+      await patchDataAPI(dispatch, `comments/${comment._id}/unlike`, null, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -107,7 +109,7 @@ export const deleteComment = ({ post, comment, auth, socket }) =>
     socket.emit('deleteComment', newPost)
     try {
       deleteArr.forEach((item) => {
-        deleteDataAPI(`comments/${item._id}`, auth.token)
+        deleteDataAPI(dispatch, `comments/${item._id}`, auth.token)
       })
     } catch (err) {
       dispatch({

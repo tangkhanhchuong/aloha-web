@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   EmailShareButton,
   EmailIcon,
@@ -12,13 +12,13 @@ import {
   WhatsappIcon,
   RedditShareButton,
   RedditIcon,
-} from "react-share";
+} from 'react-share'
 
 const ShareModal = ({ url, theme }) => {
   return (
     <div
-      className="d-flex justify-content-between px-4 py-2"
-      style={{ filter: theme ? "invert(1)" : "invert(0)" }}
+      className='d-flex justify-content-between px-4 py-2'
+      style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
     >
       <FacebookShareButton url={url}>
         <FacebookIcon round={true} size={32} />
@@ -44,7 +44,7 @@ const ShareModal = ({ url, theme }) => {
         <WhatsappIcon round={true} size={32} />
       </WhatsappShareButton>
     </div>
-  );
-};
+  )
+}
 
-export default ShareModal;
+export default ShareModal

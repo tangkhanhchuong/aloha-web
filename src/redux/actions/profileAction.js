@@ -5,44 +5,33 @@ import { imageUpload } from '../../utils/imageUpload'
 import { mapMessages } from '../../utils/mapMessages'
 
 export const PROFILE_TYPES = {
-  LOADING: 'LOADING_PROFILE',
-  GET_USER: 'GET_PROFILE_USER',
+  LOADING_PROFILE: 'LOADING_PROFILE',
+  GET_PROFILE_USER: 'GET_PROFILE_USER',
   FOLLOW: 'FOLLOW',
   UNFOLLOW: 'UNFOLLOW',
-  GET_ID: 'GET_PROFILEsID',
-  GET_POSTS: 'GET_PROFILE_POSTS',
-  UPDATE_POST: 'UPDATE_PROFILE_POST',
+  GET_PROFILE_ID: 'GET_PROFILE_ID',
+  GET_PROFILE_POSTS: 'GET_PROFILE_POSTS',
+  UPDATE_PROFILE_POST: 'UPDATE_PROFILE_POST',
 }
 
 export const getProfileUsers = ({ id, auth }) =>
   async (dispatch) => {
-    dispatch({ type: PROFILE_TYPES.GET_ID, payload: id })
+    dispatch({ type: PROFILE_TYPES.GET_PROFILE_ID, payload: id })
+    dispatch({ type: PROFILE_TYPES.LOADING_PROFILE, payload: true })
+    const usersRes = await getDataAPI(dispatch, `/users/${id}`, auth.token)
+    if (!usersRes) return
+    const postsRes = await getDataAPI(dispatch, `/users/${id}/posts`, auth.token)
+    if (!postsRes) return
 
-    try {
-      dispatch({ type: PROFILE_TYPES.LOADING, payload: true })
-      const res = getDataAPI(`/users/${id}`, auth.token)
-      const res1 = getDataAPI(`/users/${id}/posts`, auth.token)
-
-      const users = await res
-      const posts = await res1
-
-      dispatch({
-        type: PROFILE_TYPES.GET_USER,
-        payload: users.data,
-      })
-
-      dispatch({
-        type: PROFILE_TYPES.GET_POSTS,
-        payload: { ...posts.data, _id: id, page: posts?.data.length || 0 },
-      })
-
-      dispatch({ type: PROFILE_TYPES.LOADING, payload: false })
-    } catch (err) {
-      dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
-      })
-    }
+    dispatch({
+      type: PROFILE_TYPES.GET_PROFILE_USER,
+      payload: usersRes.data,
+    })
+    dispatch({
+      type: PROFILE_TYPES.GET_PROFILE_POSTS,
+      payload: { ...postsRes.data, _id: id, page: postsRes.data.length || 0 },
+    })
+    dispatch({ type: PROFILE_TYPES.LOADING_PROFILE, payload: false })
   }
 
 export const updateProfileUser = ({ userData, avatar, auth }) =>
@@ -72,7 +61,7 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
 
       if (avatar) media = await imageUpload([avatar], auth.token)
 
-      const res = await patchDataAPI(
+      const res = await patchDataAPI(dispatch, 
         'users',
         {
           ...userData,
@@ -82,7 +71,7 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
       )
 
       dispatch({
-        type: AUTH_TYPES.AUTH,
+        type: AUTH_TYPES.AUTHENTICATED,
         payload: {
           ...auth,
           user: {
@@ -118,7 +107,7 @@ export const follow = ({ users, user, auth, socket }) =>
 
     dispatch({ type: PROFILE_TYPES.FOLLOW, payload: updatedUser })
     dispatch({
-      type: AUTH_TYPES.AUTH,
+      type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         ...auth,
         user: {
@@ -129,7 +118,7 @@ export const follow = ({ users, user, auth, socket }) =>
     })
 
     try {
-      const res = await patchDataAPI(
+      const res = await patchDataAPI(dispatch, 
         `users/${user._id}/follow`,
         null,
         auth.token
@@ -165,7 +154,7 @@ export const unfollow = ({ users, user, auth, socket }) =>
 
     dispatch({ type: PROFILE_TYPES.UNFOLLOW, payload: updatedUser })
     dispatch({
-      type: AUTH_TYPES.AUTH,
+      type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         ...auth,
         user: {
@@ -176,7 +165,7 @@ export const unfollow = ({ users, user, auth, socket }) =>
     })
 
     try {
-      const res = await patchDataAPI(
+      const res = await patchDataAPI(dispatch, 
         `users/${user._id}/unfollow`,
         null,
         auth.token
