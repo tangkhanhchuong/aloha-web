@@ -67,7 +67,6 @@ const App = () => {
   return (
     <Router>
       <Alert />
-
       <input type='checkbox' id='theme' />
       <div className={`App ${(status || modal) && 'mode'}`}>
         {auth.token && <Header />}
@@ -80,7 +79,6 @@ const App = () => {
           <Route exact path='/register' component={Register} />
           <PrivateRouter exact path='/:page' component={PageRender} />
           <PrivateRouter exact path='/:page/:id' component={PageRender} />
-
         </div>
       </div>
     </Router>

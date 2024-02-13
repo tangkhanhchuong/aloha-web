@@ -14,7 +14,6 @@ const MenuDropdownItem = ({ appearance, content, showDropdownIcon = false }) => 
       <div
         className='dropdown-menu'
         aria-labelledby='navbarDropdown'
-        style={{ transform: 'translateX(75px)' }}
       >
         {content}
       </div>

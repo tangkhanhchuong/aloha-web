@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { TwitterCircleFilled } from '@ant-design/icons'
+import { Avatar } from 'antd'
 
 import Menu from './menu/Menu'
 import Search from './Search'
+import logo from '../../images/konoha-logo.png'
 
 const Header = () => {
   return (
@@ -15,12 +16,15 @@ const Header = () => {
         <div className='row align-items-center pl-4' style={{ gap: '16px' }}>
           <Link to='/' className='logo'>
             <h1 className='p-0 m-0' onClick={() => window.scrollTo({ top: 0 })}>
-              <TwitterCircleFilled />
+              <Avatar
+                src={logo}
+                size={40}
+                shape='circle'
+              />
             </h1>
           </Link>
           <Search />
         </div>
-
         <div>
           <Menu />
         </div>
