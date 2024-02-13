@@ -50,7 +50,7 @@ const SocketClient = () => {
 				msg.user.username + ' ' + msg.text,
 				msg.user.avatar,
 				msg.url,
-				'Aloha'
+				'Konoha'
 			)
 		})
 		return () => socket.off('send_notifcation')

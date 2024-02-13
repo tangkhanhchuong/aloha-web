@@ -1,5 +1,5 @@
-<h1>Aloha Web</h1>
-<p>Aloha is MERN stack application with some social media's main features</p>
+<h1>Konoha Web</h1>
+<p>Konoha is MERN stack application with some social media's main features</p>
 
 ### Techstack
 - React
