@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 
 import Carousel from '../../Carousel'
 
-const CardBody = ({ post, theme }) => {
+const CardBody = ({ post }) => {
+  const { userSettings } = useSelector((state) => state)
   const [readMore, setReadMore] = useState(false)
 
+  console.log(userSettings.isDarkTheme)
   const createMarkedUp = () => {
     if (!post.content) return
     const formattedContent = post.content.replace('\n', '<br/>')
@@ -21,8 +24,8 @@ const CardBody = ({ post, theme }) => {
       <div
         className='card_body-content'
         style={{
-          filter: theme ? 'invert(1)' : 'invert(0)',
-          color: theme ? 'white' : '#111',
+          filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)',
+          color: userSettings.isDarkTheme ? 'white' : '#111',
         }}
       >
         <span dangerouslySetInnerHTML={createMarkedUp()} />

@@ -3,6 +3,7 @@ import { editData } from '../actions/globalTypes'
 
 const initialState = {
   loading: false,
+  isDarkTheme: false, 
   ids: [],
   users: [],
   posts: [],

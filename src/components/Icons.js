@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Icons = ({ setContent, content, theme }) => {
+const Icons = ({ setContent, content, isDarkTheme }) => {
   const reactions = [
     '❤️',
     '😆',
@@ -31,7 +31,7 @@ const Icons = ({ setContent, content, theme }) => {
   return (
     <div
       className='nav-item dropdown'
-      style={{ opacity: 1, filter: theme ? 'invert(1)' : 'invert(0)' }}
+      style={{ opacity: 1, filter: isDarkTheme ? 'invert(1)' : 'invert(0)' }}
     >
       <span
         className='nav-link position-relative px-1'

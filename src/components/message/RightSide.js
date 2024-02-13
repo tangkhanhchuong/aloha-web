@@ -17,7 +17,7 @@ import {
 import LoadIcon from '../../images/loading.gif'
 
 const RightSide = () => {
-  const { auth, message, theme, socket, peer } = useSelector((state) => state)
+  const { auth, message, userSettings, socket, peer } = useSelector((state) => state)
   const dispatch = useDispatch()
 
   const { id } = useParams()
@@ -227,18 +227,13 @@ const RightSide = () => {
             <div key={index}>
               {msg.sender !== auth.user._id && (
                 <div className='chat_row other_message'>
-                  <MsgDisplay user={user} msg={msg} theme={theme} />
+                  <MsgDisplay user={user} msg={msg}  />
                 </div>
               )}
 
               {msg.sender === auth.user._id && (
                 <div className='chat_row you_message'>
-                  <MsgDisplay
-                    user={auth.user}
-                    msg={msg}
-                    theme={theme}
-                    data={data}
-                  />
+                  <MsgDisplay user={auth.user} msg={msg} data={data} />
                 </div>
               )}
             </div>
@@ -259,8 +254,8 @@ const RightSide = () => {
         {media.map((item, index) => (
           <div key={index} id='file_media'>
             {item.type.match(/video/i)
-              ? videoShow(URL.createObjectURL(item), theme)
-              : imageShow(URL.createObjectURL(item), theme)}
+              ? videoShow(URL.createObjectURL(item), userSettings.isDarkTheme)
+              : imageShow(URL.createObjectURL(item), userSettings.isDarkTheme)}
             <span onClick={() => handleDeleteMedia(index)}>&times;</span>
           </div>
         ))}
@@ -273,13 +268,13 @@ const RightSide = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
           style={{
-            filter: theme ? 'invert(1)' : 'invert(0)',
-            background: theme ? '#040404' : '',
-            color: theme ? 'white' : '',
+            filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)',
+            background: userSettings.isDarkTheme ? '#040404' : '',
+            color: userSettings.isDarkTheme ? 'white' : '',
           }}
         />
 
-        <Icons setContent={setText} content={text} theme={theme} />
+        <Icons setContent={setText} content={text} isDarkTheme={userSettings.isDarkTheme} />
 
         <div className='file_upload'>
           <i className='fas fa-image text-danger' />

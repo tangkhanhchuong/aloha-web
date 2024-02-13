@@ -2,12 +2,12 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Times from './Times'
-import Avatar from '../Avatar'
 import { imageShow, videoShow } from '../../utils/mediaShow'
 import { deleteMessages } from '../../redux/actions/messageAction'
+import { Avatar } from 'antd'
 
-const MsgDisplay = ({ user, msg, theme, data }) => {
-  const { auth } = useSelector((state) => state)
+const MsgDisplay = ({ user, msg, data }) => {
+  const { auth, userSettings } = useSelector((state) => state)
   const dispatch = useDispatch()
 
   const handleDeleteMessages = () => {
@@ -37,7 +37,7 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
           {msg.text && (
             <div
               className='chat_text'
-              style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+              style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}
             >
               {msg.text}
             </div>
@@ -45,8 +45,8 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
           {msg.media.map((item, index) => (
             <div key={index}>
               {item.url.match(/video/i)
-                ? videoShow(item.url, theme)
-                : imageShow(item.url, theme)}
+                ? videoShow(item.url, userSettings.isDarkTheme)
+                : imageShow(item.url, userSettings.isDarkTheme)}
             </div>
           ))}
         </div>
@@ -61,7 +61,7 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
               style={{
                 fontSize: '2.5rem',
                 color: msg.call.times === 0 ? 'crimson' : 'green',
-                filter: theme ? 'invert(1)' : 'invert(0)',
+                filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)',
               }}
             >
               {msg.call.times === 0

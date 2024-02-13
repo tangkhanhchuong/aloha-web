@@ -14,7 +14,7 @@ const Carousel = ({ images, id }) => {
     if (index === 0) return 'active'
   }
 
-  const { theme } = useSelector((state) => state)
+  const { userSettings } = useSelector((state) => state)
 
   return (
     <div id={`image${id}`} className='carousel slide haha' data-ride='carousel'>
@@ -43,7 +43,7 @@ const Carousel = ({ images, id }) => {
                   className='d-block w-100 carousel-el'
                   alt={img.url}
                   style={{
-                    filter: theme ? 'invert(1)' : 'invert(0)',
+                    filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)',
                   }}
                 />
               ) : (
@@ -53,7 +53,7 @@ const Carousel = ({ images, id }) => {
                   alt={img.url}
                   height={400}
                   style={{
-                    filter: theme ? 'invert(1)' : 'invert(0)',
+                    filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)',
                   }}
                   preview={{
                     toolbarRender: (

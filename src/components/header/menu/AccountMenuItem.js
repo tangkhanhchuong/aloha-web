@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min'
 
 import MenuDropdownItem from './MenuDropdownItem'
 import Avatar from '../../Avatar'
-import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { logout } from '../../../redux/actions/authAction'
+import { switchTheme } from '../../../redux/actions/userSettingsAction'
 
 const AccountMenuItem = () => {
-  const { auth, theme } = useSelector((state) => state)
+  const { auth, userSettings } = useSelector((state) => state)
   const dispatch = useDispatch()
   return (
     <MenuDropdownItem
@@ -19,16 +19,11 @@ const AccountMenuItem = () => {
           </Link>
 
           <label
-            htmlFor='theme'
+            htmlFor='themes'
             className='dropdown-item'
-            onClick={() =>
-              dispatch({
-                type: GLOBALTYPES.THEME,
-                payload: !theme,
-              })
-            }
+            onClick={() => {dispatch(switchTheme())}}
           >
-            {theme ? 'Light mode' : 'Dark mode'}
+            {userSettings.isDarkTheme ? 'Light mode' : 'Dark mode'}
           </label>
 
           <div className='dropdown-divider'></div>
