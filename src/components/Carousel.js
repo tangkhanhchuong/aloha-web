@@ -1,24 +1,24 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Image, Space } from "antd";
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { Image, Space } from 'antd'
 import {
   RotateLeftOutlined,
   RotateRightOutlined,
   SwapOutlined,
   ZoomInOutlined,
   ZoomOutOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
 
 const Carousel = ({ images, id }) => {
   const isActive = (index) => {
-    if (index === 0) return "active";
-  };
+    if (index === 0) return 'active'
+  }
 
-  const { theme } = useSelector((state) => state);
+  const { theme } = useSelector((state) => state)
 
   return (
-    <div id={`image${id}`} className="carousel slide haha" data-ride="carousel">
-      <ol className="carousel-indicators" style={{ zIndex: 1 }}>
+    <div id={`image${id}`} className='carousel slide haha' data-ride='carousel'>
+      <ol className='carousel-indicators' style={{ zIndex: 1 }}>
         {images.map((img, index) => (
           <li
             key={index}
@@ -28,32 +28,32 @@ const Carousel = ({ images, id }) => {
           />
         ))}
       </ol>
-      <div className="carousel-inner">
+      <div className='carousel-inner'>
         {images.map((img, index) => {
           return (
             <div
               key={index}
               className={`carousel-item ${isActive(index)}`}
-              style={{ textAlign: "center" }}
+              style={{ textAlign: 'center' }}
             >
               {img.url.match(/video/i) ? (
                 <video
                   controls
                   src={img.url}
-                  className="d-block w-100 carousel-el"
+                  className='d-block w-100 carousel-el'
                   alt={img.url}
                   style={{
-                    filter: theme ? "invert(1)" : "invert(0)",
+                    filter: theme ? 'invert(1)' : 'invert(0)',
                   }}
                 />
               ) : (
                 <Image
                   src={img.url}
-                  className="d-block w-100 carousel-el"
+                  className='d-block w-100 carousel-el'
                   alt={img.url}
                   height={400}
                   style={{
-                    filter: theme ? "invert(1)" : "invert(0)",
+                    filter: theme ? 'invert(1)' : 'invert(0)',
                   }}
                   preview={{
                     toolbarRender: (
@@ -70,7 +70,7 @@ const Carousel = ({ images, id }) => {
                         },
                       }
                     ) => (
-                      <Space size={12} className="toolbar-wrapper">
+                      <Space size={12} className='toolbar-wrapper'>
                         <SwapOutlined rotate={90} onClick={onFlipY} />
                         <SwapOutlined size={48} onClick={onFlipX} />
                         <RotateLeftOutlined onClick={onRotateLeft} />
@@ -89,42 +89,42 @@ const Carousel = ({ images, id }) => {
                 />
               )}
             </div>
-          );
+          )
         })}
       </div>
       {images.length > 1 && (
         <>
           <a
-            className="carousel-control-prev"
+            className='carousel-control-prev'
             href={`#image${id}`}
-            role="button"
-            data-slide="prev"
-            style={{ width: "5%" }}
+            role='button'
+            data-slide='prev'
+            style={{ width: '5%' }}
           >
             <span
-              className="carousel-control-prev-icon"
-              aria-hidden="true"
+              className='carousel-control-prev-icon'
+              aria-hidden='true'
             ></span>
-            <span className="sr-only">Previous</span>
+            <span className='sr-only'>Previous</span>
           </a>
 
           <a
-            className="carousel-control-next"
+            className='carousel-control-next'
             href={`#image${id}`}
-            role="button"
-            data-slide="next"
-            style={{ width: "5%" }}
+            role='button'
+            data-slide='next'
+            style={{ width: '5%' }}
           >
             <span
-              className="carousel-control-next-icon"
-              aria-hidden="true"
+              className='carousel-control-next-icon'
+              aria-hidden='true'
             ></span>
-            <span className="sr-only">Next</span>
+            <span className='sr-only'>Next</span>
           </a>
         </>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Carousel;
+export default Carousel

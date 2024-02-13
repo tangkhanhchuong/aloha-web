@@ -1,12 +1,12 @@
-import { GLOBALTYPES } from "../actions/globalTypes";
+import { GLOBALTYPES } from '../actions/globalTypes'
 
 const peerReducer = (state = null, action) => {
   switch (action.type) {
     case GLOBALTYPES.PEER:
-      return action.payload;
+      return action.payload
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default peerReducer;
+export default peerReducer

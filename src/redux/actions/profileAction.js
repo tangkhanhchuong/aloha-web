@@ -1,88 +1,77 @@
-import { GLOBALTYPES, deleteData } from "./globalTypes";
-import { getDataAPI, patchDataAPI } from "../../utils/fetchData";
-import { imageUpload } from "../../utils/imageUpload";
+import { AUTH_TYPES } from './authAction'
+import { GLOBALTYPES, deleteData } from './globalTypes'
+import { getDataAPI, patchDataAPI } from '../../utils/fetchData'
+import { imageUpload } from '../../utils/imageUpload'
+import { mapMessages } from '../../utils/mapMessages'
 
 export const PROFILE_TYPES = {
-  LOADING: "LOADING_PROFILE",
-  GET_USER: "GET_PROFILE_USER",
-  FOLLOW: "FOLLOW",
-  UNFOLLOW: "UNFOLLOW",
-  GET_ID: "GET_PROFILEsID",
-  GET_POSTS: "GET_PROFILE_POSTS",
-  UPDATE_POST: "UPDATE_PROFILE_POST",
-};
+  LOADING_PROFILE: 'LOADING_PROFILE',
+  GET_PROFILE_USER: 'GET_PROFILE_USER',
+  FOLLOW: 'FOLLOW',
+  UNFOLLOW: 'UNFOLLOW',
+  GET_PROFILE_ID: 'GET_PROFILE_ID',
+  GET_PROFILE_POSTS: 'GET_PROFILE_POSTS',
+  UPDATE_PROFILE_POST: 'UPDATE_PROFILE_POST',
+}
 
-export const getProfileUsers =
-  ({ id, auth }) =>
+export const getProfileUsers = ({ id, auth }) =>
   async (dispatch) => {
-    dispatch({ type: PROFILE_TYPES.GET_ID, payload: id });
+    dispatch({ type: PROFILE_TYPES.GET_PROFILE_ID, payload: id })
+    dispatch({ type: PROFILE_TYPES.LOADING_PROFILE, payload: true })
+    const usersRes = await getDataAPI(dispatch, `/users/${id}`, auth.token)
+    if (!usersRes) return
+    const postsRes = await getDataAPI(dispatch, `/users/${id}/posts`, auth.token)
+    if (!postsRes) return
 
-    try {
-      dispatch({ type: PROFILE_TYPES.LOADING, payload: true });
-      const res = getDataAPI(`/users/${id}`, auth.token);
-      const res1 = getDataAPI(`/users/${id}/posts`, auth.token);
+    dispatch({
+      type: PROFILE_TYPES.GET_PROFILE_USER,
+      payload: usersRes.data,
+    })
+    dispatch({
+      type: PROFILE_TYPES.GET_PROFILE_POSTS,
+      payload: { ...postsRes.data, _id: id, page: postsRes.data.length || 0 },
+    })
+    dispatch({ type: PROFILE_TYPES.LOADING_PROFILE, payload: false })
+  }
 
-      const users = await res;
-      const posts = await res1;
-
-      dispatch({
-        type: PROFILE_TYPES.GET_USER,
-        payload: users.data,
-      });
-
-      dispatch({
-        type: PROFILE_TYPES.GET_POSTS,
-        payload: { ...posts.data, _id: id, page: posts?.data.length || 0 },
-      });
-
-      dispatch({ type: PROFILE_TYPES.LOADING, payload: false });
-    } catch (err) {
-      dispatch({
-        type: GLOBALTYPES.ALERT,
-        payload: { error: err.response.data.msg },
-      });
-    }
-  };
-
-export const updateProfileUser =
-  ({ userData, avatar, auth }) =>
+export const updateProfileUser = ({ userData, avatar, auth }) =>
   async (dispatch) => {
     if (!userData.fullname) {
       return dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: "Please add your fullname." },
-      });
+        payload: { error: 'Please add your fullname.' },
+      })
     }
     if (userData.fullname.length > 25) {
       return dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: "Your full name too long." },
-      });
+        payload: { error: 'Your full name too long.' },
+      })
     }
     if (userData.story.length > 200) {
       return dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: "Your story too long." },
-      });
+        payload: { error: 'Your story too long.' },
+      })
     }
 
     try {
-      let media;
-      dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } });
+      let media
+      dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 
-      if (avatar) media = await imageUpload([avatar], auth.token);
+      if (avatar) media = await imageUpload([avatar], auth.token)
 
-      const res = await patchDataAPI(
-        "users",
+      const res = await patchDataAPI(dispatch, 
+        'users',
         {
           ...userData,
           avatar: avatar ? media[0].key : auth.user.avatar,
         },
         auth.token
-      );
+      )
 
       dispatch({
-        type: GLOBALTYPES.AUTH,
+        type: AUTH_TYPES.AUTHENTICATED,
         payload: {
           ...auth,
           user: {
@@ -91,35 +80,34 @@ export const updateProfileUser =
             avatar: avatar ? media[0].url : auth.user.avatar,
           },
         },
-      });
+      })
 
-      dispatch({ type: GLOBALTYPES.ALERT, payload: { success: res.data.msg } });
+      dispatch({ type: GLOBALTYPES.ALERT, payload: { success: mapMessages(res.data.msg) } })
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: err.response.data.msg },
-      });
+        payload: { error: mapMessages(err.response.data.msg) },
+      })
     }
-  };
+  }
 
-export const follow =
-  ({ users, user, auth, socket }) =>
+export const follow = ({ users, user, auth, socket }) =>
   async (dispatch) => {
-    let updatedUser;
+    let updatedUser
 
     if (users.every((item) => item._id !== user._id)) {
-      updatedUser = { ...user, followers: [...user.followers, auth.user] };
+      updatedUser = { ...user, followers: [...user.followers, auth.user] }
     } else {
       users.forEach((item) => {
         if (item._id === user._id) {
-          updatedUser = { ...item, followers: [...item.followers, auth.user] };
+          updatedUser = { ...item, followers: [...item.followers, auth.user] }
         }
-      });
+      })
     }
 
-    dispatch({ type: PROFILE_TYPES.FOLLOW, payload: updatedUser });
+    dispatch({ type: PROFILE_TYPES.FOLLOW, payload: updatedUser })
     dispatch({
-      type: GLOBALTYPES.AUTH,
+      type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         ...auth,
         user: {
@@ -127,47 +115,46 @@ export const follow =
           following: [...auth.user.following, updatedUser],
         },
       },
-    });
+    })
 
     try {
-      const res = await patchDataAPI(
+      const res = await patchDataAPI(dispatch, 
         `users/${user._id}/follow`,
         null,
         auth.token
-      );
-      socket.emit("follow", res.data.user);
+      )
+      socket.emit('follow', res.data.user)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: err.response.data.msg },
-      });
+        payload: { error: mapMessages(err.response.data.msg) },
+      })
     }
-  };
+  }
 
-export const unfollow =
-  ({ users, user, auth, socket }) =>
+export const unfollow = ({ users, user, auth, socket }) =>
   async (dispatch) => {
-    let updatedUser;
+    let updatedUser
 
     if (users.every((item) => item._id !== user._id)) {
       updatedUser = {
         ...user,
         followers: deleteData(user.followers, auth.user._id),
-      };
+      }
     } else {
       users.forEach((item) => {
         if (item._id === user._id) {
           updatedUser = {
             ...item,
             followers: deleteData(item.followers, auth.user._id),
-          };
+          }
         }
-      });
+      })
     }
 
-    dispatch({ type: PROFILE_TYPES.UNFOLLOW, payload: updatedUser });
+    dispatch({ type: PROFILE_TYPES.UNFOLLOW, payload: updatedUser })
     dispatch({
-      type: GLOBALTYPES.AUTH,
+      type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         ...auth,
         user: {
@@ -175,19 +162,19 @@ export const unfollow =
           following: deleteData(auth.user.following, updatedUser._id),
         },
       },
-    });
+    })
 
     try {
-      const res = await patchDataAPI(
+      const res = await patchDataAPI(dispatch, 
         `users/${user._id}/unfollow`,
         null,
         auth.token
-      );
-      socket.emit("unFollow", res.data.user);
+      )
+      socket.emit('unFollow', res.data.user)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: err.response.data.msg },
-      });
+        payload: { error: mapMessages(err.response.data.msg) },
+      })
     }
-  };
+  }

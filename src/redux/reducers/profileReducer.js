@@ -1,53 +1,53 @@
-import { PROFILE_TYPES } from "../actions/profileAction";
-import { editData } from "../actions/globalTypes";
+import { PROFILE_TYPES } from '../actions/profileAction'
+import { editData } from '../actions/globalTypes'
 
 const initialState = {
   loading: false,
   ids: [],
   users: [],
   posts: [],
-};
+}
 
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
-    case PROFILE_TYPES.LOADING:
+    case PROFILE_TYPES.LOADING_PROFILE:
       return {
         ...state,
         loading: action.payload,
-      };
-    case PROFILE_TYPES.GET_USER:
+      }
+    case PROFILE_TYPES.GET_PROFILE_USER:
       return {
         ...state,
         users: [...state.users, action.payload.user],
-      };
+      }
     case PROFILE_TYPES.FOLLOW:
       return {
         ...state,
         users: editData(state.users, action.payload._id, action.payload),
-      };
+      }
     case PROFILE_TYPES.UNFOLLOW:
       return {
         ...state,
         users: editData(state.users, action.payload._id, action.payload),
-      };
-    case PROFILE_TYPES.GET_ID:
+      }
+    case PROFILE_TYPES.GET_PROFILE_ID:
       return {
         ...state,
         ids: [...state.ids, action.payload],
-      };
-    case PROFILE_TYPES.GET_POSTS:
+      }
+    case PROFILE_TYPES.GET_PROFILE_POSTS:
       return {
         ...state,
         posts: [...state.posts, action.payload],
-      };
-    case PROFILE_TYPES.UPDATE_POST:
+      }
+    case PROFILE_TYPES.UPDATE_PROFILE_POST:
       return {
         ...state,
         posts: editData(state.posts, action.payload._id, action.payload),
-      };
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default profileReducer;
+export default profileReducer

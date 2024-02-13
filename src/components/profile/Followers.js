@@ -1,18 +1,18 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from 'react'
+import { useSelector } from 'react-redux'
 
-import UserCard from "../UserCard";
-import FollowBtn from "../FollowBtn";
+import UserCard from '../UserCard'
+import FollowBtn from '../FollowBtn'
 
 const Followers = ({ users, setShowFollowers }) => {
-  const { auth } = useSelector((state) => state);
+  const { auth } = useSelector((state) => state)
   return (
-    <div className="follow">
-      <div className="follow_box">
-        <h5 className="text-center">Followers</h5>
+    <div className='follow'>
+      <div className='follow_box'>
+        <h5 className='text-center'>Followers</h5>
         <hr />
 
-        <div className="follow_content">
+        <div className='follow_content'>
           {users.map((user) => (
             <UserCard
               key={user._id}
@@ -23,12 +23,12 @@ const Followers = ({ users, setShowFollowers }) => {
             </UserCard>
           ))}
         </div>
-        <div className="close" onClick={() => setShowFollowers(false)}>
+        <div className='close' onClick={() => setShowFollowers(false)}>
           &times;
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Followers;
+export default Followers

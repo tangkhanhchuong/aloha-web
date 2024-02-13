@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-import Avatar from "./Avatar";
+import Avatar from './Avatar'
 
 const UserCard = ({
   children,
@@ -13,40 +13,40 @@ const UserCard = ({
   setShowFollowing,
   msg,
 }) => {
-  const { theme } = useSelector((state) => state);
+  const { theme } = useSelector((state) => state)
 
   const handleCloseAll = () => {
-    if (handleClose) handleClose();
-    if (setShowFollowers) setShowFollowers(false);
-    if (setShowFollowing) setShowFollowing(false);
-  };
+    if (handleClose) handleClose()
+    if (setShowFollowers) setShowFollowers(false)
+    if (setShowFollowing) setShowFollowing(false)
+  }
 
   const showMsg = (user) => {
     return (
       <>
-        <div style={{ filter: theme ? "invert(1)" : "invert(0)" }}>
+        <div style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}>
           {user.text}
         </div>
         {user.media.length > 0 && (
           <div>
-            {user.media.length} <i className="fas fa-image" />
+            {user.media.length} <i className='fas fa-image' />
           </div>
         )}
 
         {user.call && (
-          <span className="material-icons">
+          <span className='material-icons'>
             {user.call.times === 0
               ? user.call.video
-                ? "videocam_off"
-                : "phone_disabled"
+                ? 'videocam_off'
+                : 'phone_disabled'
               : user.call.video
-              ? "video_camera_front"
-              : "call"}
+              ? 'video_camera_front'
+              : 'call'}
           </span>
         )}
       </>
-    );
-  };
+    )
+  }
 
   return (
     <div
@@ -56,12 +56,12 @@ const UserCard = ({
         <Link
           to={`/profile/${user._id}`}
           onClick={handleCloseAll}
-          className="d-flex align-items-center"
+          className='d-flex align-items-center'
         >
-          <Avatar src={user.avatar} size="big-avatar" />
+          <Avatar src={user.avatar} size='big-avatar' />
 
-          <div className="ml-1" style={{ transform: "translateY(-2px)" }}>
-            <span className="d-block">{user.username}</span>
+          <div className='ml-1' style={{ transform: 'translateY(-2px)' }}>
+            <span className='d-block'>{user.username}</span>
             <small style={{ opacity: 0.7 }}>
               {msg ? showMsg(user) : user.fullname}
             </small>
@@ -70,7 +70,7 @@ const UserCard = ({
       </div>
       {children}
     </div>
-  );
-};
+  )
+}
 
-export default UserCard;
+export default UserCard

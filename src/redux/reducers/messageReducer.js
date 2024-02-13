@@ -1,12 +1,12 @@
-import { MESS_TYPES } from "../actions/messageAction";
-import { editData, deleteData } from "../actions/globalTypes";
+import { MESS_TYPES } from '../actions/messageAction'
+import { editData, deleteData } from '../actions/globalTypes'
 
 const initialState = {
   users: [],
   resultUsers: 0,
   data: [],
   firstLoad: false,
-};
+}
 
 const messageReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -15,9 +15,9 @@ const messageReducer = (state = initialState, action) => {
         return {
           ...state,
           users: [action.payload, ...state.users],
-        };
+        }
       }
-      return state;
+      return state
     case MESS_TYPES.ADD_MESSAGE:
       return {
         ...state,
@@ -42,24 +42,24 @@ const messageReducer = (state = initialState, action) => {
               }
             : user
         ),
-      };
+      }
     case MESS_TYPES.GET_CONVERSATIONS:
       return {
         ...state,
         users: action.payload.newArr,
         resultUsers: action.payload.count,
         firstLoad: true,
-      };
+      }
     case MESS_TYPES.GET_MESSAGES:
       return {
         ...state,
         data: [...state.data, action.payload],
-      };
+      }
     case MESS_TYPES.UPDATE_MESSAGES:
       return {
         ...state,
         data: editData(state.data, action.payload._id, action.payload),
-      };
+      }
     case MESS_TYPES.DELETE_MESSAGES:
       return {
         ...state,
@@ -68,13 +68,13 @@ const messageReducer = (state = initialState, action) => {
             ? { ...item, messages: action.payload.newData }
             : item
         ),
-      };
+      }
     case MESS_TYPES.DELETE_CONVERSATION:
       return {
         ...state,
         users: deleteData(state.users, action.payload),
         data: deleteData(state.data, action.payload),
-      };
+      }
     case MESS_TYPES.CHECK_ONLINE_OFFLINE:
       return {
         ...state,
@@ -83,10 +83,10 @@ const messageReducer = (state = initialState, action) => {
             ? { ...user, online: true }
             : { ...user, online: false }
         ),
-      };
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default messageReducer;
+export default messageReducer

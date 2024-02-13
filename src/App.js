@@ -1,36 +1,31 @@
 import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import io from 'socket.io-client'
+import Peer from 'peerjs'
 
 import PageRender from './customRouter/PageRender'
 import PrivateRouter from './customRouter/PrivateRouter'
-
 import Home from './pages/home'
 import Login from './pages/login'
 import Register from './pages/register'
-
 import Alert from './components/alert/Alert'
 import Header from './components/header/Header'
 import StatusModal from './components/StatusModal'
-
-import { useSelector, useDispatch } from 'react-redux'
-import { refreshToken } from './redux/actions/authAction'
+import { initialize } from './redux/actions/authAction'
 import { getPosts } from './redux/actions/postAction'
 import { getSuggestions } from './redux/actions/suggestionsAction'
-
-import io from 'socket.io-client'
 import { GLOBALTYPES } from './redux/actions/globalTypes'
 import SocketClient from './SocketClient'
-
 import { getNotifications } from './redux/actions/notificationAction'
 import CallModal from './components/message/CallModal'
-import Peer from 'peerjs'
 
 const App = () => {
   const { auth, status, modal, call } = useSelector(state => state)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(refreshToken())
+    dispatch(initialize())
 
     const socket = io(process.env.REACT_APP_SERVER_URL, {
       reconnection: true,
@@ -68,7 +63,7 @@ const App = () => {
     dispatch({ type: GLOBALTYPES.PEER, payload: newPeer })
   }, [dispatch])
 
-
+  
   return (
     <Router>
       <Alert />
