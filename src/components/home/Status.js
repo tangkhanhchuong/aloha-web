@@ -13,7 +13,7 @@ const Status = () => {
       <Avatar src={auth.user.avatar} size='big-avatar' />
 
       <button
-        className='statusBtn flex-fill'
+        className='status_btn flex-fill'
         onClick={() => dispatch({ type: GLOBALTYPES.STATUS, payload: true })}
       >
         &nbsp;&nbsp;&nbsp;&nbsp;{auth.user.username}, what are you thinking?

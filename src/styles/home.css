@@ -6,7 +6,7 @@
     border-radius: 5px;
     border: 1px solid rgb(0, 0, 0, .125);
 }
-.status .statusBtn{
+.status .status_btn{
     background: #f1f1f1;
     border: none;
     outline: none;
@@ -16,7 +16,7 @@
     text-align: left;
     margin: 0 5px;
 }
-.status .statusBtn:hover{
+.status .status_btn:hover{
     background: #ddd;
 }
 

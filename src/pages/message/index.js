@@ -1,6 +1,8 @@
 import React from 'react'
+import { Avatar } from 'antd'
 
 import LeftSide from '../../components/message/LeftSide'
+import logo from '../../images/konoha-logo.png'
 
 const Message = () => {
   return (
@@ -14,11 +16,15 @@ const Message = () => {
           className='d-flex justify-content-center 
                 align-items-center flex-column h-100'
         >
-          <i
-            className='fab fa-facebook-messenger text-primary'
-            style={{ fontSize: '5rem' }}
-          />
-          <h4>Messenger</h4>
+          <h1 className='p-0 m-4' onClick={() => window.scrollTo({ top: 0 })}>
+            <Avatar
+              src={logo}
+              size={72}
+              shape='circle'
+            />
+          </h1>
+          <h4>Message</h4>
+          <p>Choose a conversation to send messages to your friend</p>
         </div>
       </div>
     </div>
