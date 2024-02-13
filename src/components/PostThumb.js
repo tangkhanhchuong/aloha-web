@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 const placeholder = 'https://placehold.co/600x400'
 
 const PostThumb = ({ posts, count }) => {
-  const { theme } = useSelector((state) => state)
+  const { userSettings } = useSelector((state) => state)
 
   if (count === 0) return <h2 className='text-center text-danger'>No Post</h2>
 
@@ -18,20 +18,20 @@ const PostThumb = ({ posts, count }) => {
               <img
                 src={placeholder}
                 alt='placeholder'
-                style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+                style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}
               />
             ) : post.images[0].url.match(/video/i) ? (
               <video
                 controls
                 src={post.images[0].url}
                 alt={post.images[0].url}
-                style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+                style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}
               />
             ) : (
               <img
                 src={post.images[0].url}
                 alt={post.images[0].url}
-                style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+                style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}
               />
             )}
             <div className='post_thumb_menu'>

@@ -7,7 +7,7 @@ import { createPost, updatePost } from '../redux/actions/postAction'
 import { imageShow, videoShow } from '../utils/mediaShow'
 
 const StatusModal = () => {
-  const { auth, theme, status, socket } = useSelector((state) => state)
+  const { auth, userSettings, status, socket } = useSelector((state) => state)
   const dispatch = useDispatch()
 
   const [content, setContent] = useState('')
@@ -131,33 +131,33 @@ const StatusModal = () => {
             placeholder={`${auth.user.username}, what are you thinking?`}
             onChange={(e) => setContent(e.target.value)}
             style={{
-              filter: theme ? 'invert(1)' : 'invert(0)',
-              color: theme ? 'white' : '#111',
-              background: theme ? 'rgba(0,0,0,.03)' : '',
+              filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)',
+              color: userSettings.isDarkTheme ? 'white' : '#111',
+              background: userSettings.isDarkTheme ? 'rgba(0,0,0,.03)' : '',
             }}
           />
 
           <div className='d-flex'>
             <div className='flex-fill'></div>
-            <Icons setContent={setContent} content={content} theme={theme} />
+            <Icons setContent={setContent} content={content} isDarkTheme={userSettings.isDarkTheme} />
           </div>
 
           <div className='show_images'>
             {images.map((img, index) => (
               <div key={index} id='file_img'>
                 {img.camera ? (
-                  imageShow(img.camera, theme)
+                  imageShow(img.camera, userSettings.isDarkTheme)
                 ) : img.url ? (
                   <>
                     {img.url.match(/video/i)
-                      ? videoShow(img.url, theme)
-                      : imageShow(img.url, theme)}
+                      ? videoShow(img.url, userSettings.isDarkTheme)
+                      : imageShow(img.url, userSettings.isDarkTheme)}
                   </>
                 ) : (
                   <>
                     {img.type.match(/video/i)
-                      ? videoShow(URL.createObjectURL(img), theme)
-                      : imageShow(URL.createObjectURL(img), theme)}
+                      ? videoShow(URL.createObjectURL(img), userSettings.isDarkTheme)
+                      : imageShow(URL.createObjectURL(img), userSettings.isDarkTheme)}
                   </>
                 )}
                 <span onClick={() => deleteImages(index)}>&times;</span>
@@ -172,7 +172,7 @@ const StatusModal = () => {
                 ref={videoRef}
                 width='100%'
                 height='100%'
-                style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+                style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}
               />
 
               <span onClick={handleStopStream}>&times;</span>

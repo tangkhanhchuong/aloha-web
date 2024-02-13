@@ -6,7 +6,7 @@ import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 import { updateProfileUser } from '../../redux/actions/profileAction'
 
 const EditProfile = ({ setOnEdit }) => {
-  const { auth, theme } = useSelector((state) => state)
+  const { auth, userSettings } = useSelector((state) => state)
   const dispatch = useDispatch()
 
   const initState = {
@@ -62,7 +62,7 @@ const EditProfile = ({ setOnEdit }) => {
           <img
             src={avatar ? URL.createObjectURL(avatar) : auth.user.avatar}
             alt='avatar'
-            style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+            style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}
           />
           <span>
             <i className='fas fa-camera' />

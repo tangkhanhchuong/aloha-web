@@ -13,7 +13,7 @@ import {
 } from '../../../redux/actions/postAction'
 
 const CardFooter = ({ post }) => {
-  const { auth, theme, socket } = useSelector((state) => state)
+  const { auth, socket } = useSelector((state) => state)
   const dispatch = useDispatch()
 
   const [isLike, setIsLike] = useState(false)
@@ -101,10 +101,7 @@ const CardFooter = ({ post }) => {
         </h6>
       </div>
       {isShare && (
-        <ShareModal
-          url={`${process.env.REACT_APP_WEB_URL}/posts/${post._id}`}
-          theme={theme}
-        />
+        <ShareModal url={`${process.env.REACT_APP_WEB_URL}/posts/${post._id}`} />
       )}
     </div>
   )

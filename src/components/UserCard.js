@@ -13,7 +13,7 @@ const UserCard = ({
   setShowFollowing,
   msg,
 }) => {
-  const { theme } = useSelector((state) => state)
+  const { userSettings } = useSelector((state) => state)
 
   const handleCloseAll = () => {
     if (handleClose) handleClose()
@@ -24,7 +24,7 @@ const UserCard = ({
   const showMsg = (user) => {
     return (
       <>
-        <div style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}>
+        <div style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}>
           {user.text}
         </div>
         {user.media.length > 0 && (

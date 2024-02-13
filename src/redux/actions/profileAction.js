@@ -71,7 +71,6 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
         },
         auth.token
       )
-      console.log({ res })
 
       dispatch({
         type: AUTH_TYPES.AUTHENTICATED,

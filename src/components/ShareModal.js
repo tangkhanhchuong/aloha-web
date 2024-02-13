@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import {
   EmailShareButton,
   EmailIcon,
@@ -14,11 +15,12 @@ import {
   RedditIcon,
 } from 'react-share'
 
-const ShareModal = ({ url, theme }) => {
+const ShareModal = ({ url }) => {
+  const { userSettings } = useSelector((state) => state)
   return (
     <div
       className='d-flex justify-content-between px-4 py-2'
-      style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+      style={{ filter: userSettings.isDarkTheme ? 'invert(1)' : 'invert(0)' }}
     >
       <FacebookShareButton url={url}>
         <FacebookIcon round={true} size={32} />
