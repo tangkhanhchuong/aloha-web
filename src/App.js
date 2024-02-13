@@ -70,8 +70,8 @@ const App = () => {
 
       <input type='checkbox' id='theme' />
       <div className={`App ${(status || modal) && 'mode'}`}>
+        {auth.token && <Header />}
         <div className='main'>
-          {auth.token && <Header />}
           {status && <StatusModal />}
           {auth.token && <SocketClient />}
           {call && <CallModal />}
