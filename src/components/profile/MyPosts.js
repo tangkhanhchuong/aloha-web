@@ -4,9 +4,11 @@ import Posts from "../home/Posts"
 import { PROFILE_TYPES } from "../../redux/actions/profileAction"
 import { getDataAPI } from "../../utils/fetchData"
 
+const PER_PAGE = 10;
+
 const MyPosts = ({ auth, id, dispatch, profile }) => {
   const [posts, setPosts] = useState([])
-  const [count, setCount] = useState(9)
+  const [count, setCount] = useState(0)
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(false)
 
@@ -24,7 +26,7 @@ const MyPosts = ({ auth, id, dispatch, profile }) => {
     setLoading(true)
     const res = await getDataAPI(
       dispatch,
-      `users/${id}/posts?limit=${page * 9}`,
+      `users/${id}/posts?limit=${PER_PAGE}`,
       auth.token
     )
     const newData = { ...res.data, page: page + 1, _id: id }
@@ -37,6 +39,7 @@ const MyPosts = ({ auth, id, dispatch, profile }) => {
       loading={loading}
       posts={posts}
       count={count}
+      page={page}
       handleLoadMore={handleLoadMore}
     />
   )

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Status from '../components/home/Status'
 import Posts from '../components/home/Posts'
 import RightSideBar from '../components/home/RightSideBar'
+import LoadIcon from '../images/loading.gif'
 import { getDataAPI } from '../utils/fetchData'
 import { POST_TYPES } from '../redux/actions/postAction'
 
@@ -19,7 +20,7 @@ const Home = () => {
 
     const res = await getDataAPI(
       dispatch,
-      `posts?limit=${homePosts.page * 9}`,
+      `posts?limit=9`,
       auth.token
     )
     dispatch({
@@ -47,13 +48,19 @@ const Home = () => {
     <div className='home row'>
       <div className='col-md-8'>
         <Status />
-        <Posts
-          loading={loading}
-          posts={homePosts.posts}
-          count={homePosts.count}
-          page={homePosts.page}
-          handleLoadMore={handleLoadMore}
-        />
+        {homePosts.loading ? (
+          <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
+        ) : homePosts.count === 0 && homePosts.posts.length === 0 ? (
+          <h2 className='text-center'>No Post</h2>
+        ) : (
+          <Posts
+            loading={loading}
+            posts={homePosts.posts}
+            handleLoadMore={handleLoadMore}
+            page={homePosts.page}
+            count={homePosts.count}
+          />
+        )}
       </div>
 
       <div className='col-md-4'>
