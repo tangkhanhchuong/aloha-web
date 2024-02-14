@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from 'react'
 
-import PostThumb from '../PostThumb'
-import LoadIcon from '../../images/loading.gif'
-import LoadMoreBtn from '../LoadMoreBtn'
+import Posts from '../home/Posts'
+import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 import { getDataAPI } from '../../utils/fetchData'
 import { mapMessages } from '../../utils/mapMessages'
-import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 
-const Saved = ({ auth, dispatch }) => {
+const SavedPosts = ({ auth, dispatch }) => {
   const [savedPosts, setSavedPosts] = useState([])
-  const [count, setCount] = useState(9)
   const [page, setPage] = useState(2)
-  const [load, setLoad] = useState(false)
+  const [count, setCount] = useState(9)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setLoad(true)
+    setLoading(true)
     getDataAPI(dispatch, 'users/saved-posts', auth.token)
       .then((res) => {
         setSavedPosts(res.data.savedPosts)
-        setCount(res.data.count)
-        setLoad(false)
+        setLoading(false)
       })
       .catch((err) => {
         dispatch({
@@ -32,30 +29,26 @@ const Saved = ({ auth, dispatch }) => {
   }, [auth.token, dispatch])
 
   const handleLoadMore = async () => {
-    setLoad(true)
+    setLoading(true)
     const res = await getDataAPI(
       dispatch,
       `users/saved-posts?limit=${page * 9}`,
       auth.token
     )
     setSavedPosts(res.data.savedPosts)
-    setCount(res.data.count)
     setPage(page + 1)
-    setLoad(false)
+    setCount(res.data.count)
+    setLoading(false)
   }
 
   return (
-    <div>
-      <PostThumb posts={savedPosts} count={count} />
-      {load && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />}
-      <LoadMoreBtn
-        count={count}
-        page={page}
-        load={load}
-        handleLoadMore={handleLoadMore}
-      />
-    </div>
+    <Posts
+      loading={loading}
+      posts={savedPosts}
+      count={count}
+      handleLoadMore={handleLoadMore}
+    />
   )
 }
 
-export default Saved
+export default SavedPosts

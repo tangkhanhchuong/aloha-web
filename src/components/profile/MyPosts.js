@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react"
 
-import PostThumb from "../PostThumb"
-import LoadIcon from "../../images/loading.gif"
-import LoadMoreBtn from "../LoadMoreBtn"
-import { getDataAPI } from "../../utils/fetchData"
+import Posts from "../home/Posts"
 import { PROFILE_TYPES } from "../../redux/actions/profileAction"
+import { getDataAPI } from "../../utils/fetchData"
 
-const Posts = ({ auth, id, dispatch, profile }) => {
+const MyPosts = ({ auth, id, dispatch, profile }) => {
   const [posts, setPosts] = useState([])
   const [count, setCount] = useState(9)
   const [page, setPage] = useState(0)
-  const [load, setLoad] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     profile.posts.forEach((data) => {
@@ -23,7 +21,7 @@ const Posts = ({ auth, id, dispatch, profile }) => {
   }, [profile.posts, id])
 
   const handleLoadMore = async () => {
-    setLoad(true)
+    setLoading(true)
     const res = await getDataAPI(
       dispatch,
       `users/${id}/posts?limit=${page * 9}`,
@@ -31,21 +29,17 @@ const Posts = ({ auth, id, dispatch, profile }) => {
     )
     const newData = { ...res.data, page: page + 1, _id: id }
     dispatch({ type: PROFILE_TYPES.UPDATE_PROFILE_POST, payload: newData })
-    setLoad(false)
+    setLoading(false)
   }
 
   return (
-    <div>
-      <PostThumb posts={posts} count={count} />
-      {load && <img src={LoadIcon} alt="loading" className="d-block mx-auto" />}
-      <LoadMoreBtn
-        count={count}
-        page={page}
-        load={load}
-        handleLoadMore={handleLoadMore}
-      />
-    </div>
+    <Posts
+      loading={loading}
+      posts={posts}
+      count={count}
+      handleLoadMore={handleLoadMore}
+    />
   )
 }
 
-export default Posts
+export default MyPosts

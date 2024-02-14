@@ -14,7 +14,7 @@ const Discover = () => {
   const { auth, discover } = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  const [load, setLoad] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (!discover.firstLoad) {
@@ -23,14 +23,14 @@ const Discover = () => {
   }, [dispatch, auth.token, discover.firstLoad])
 
   const handleLoadMore = async () => {
-    setLoad(true)
+    setLoading(true)
     const res = await getDataAPI(
       dispatch,
       `users/discover-posts?num=${discover.page * 9}`,
       auth.token
     )
     dispatch({ type: DISCOVER_TYPES.UPDATE_POST, payload: res.data })
-    setLoad(false)
+    setLoading(false)
   }
 
   return (
@@ -41,13 +41,13 @@ const Discover = () => {
         <PostThumb posts={discover.posts} count={discover.count} />
       )}
 
-      {load && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />}
+      {loading && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />}
 
       {!discover.loading && (
         <LoadMoreBtn
           count={discover.count}
           page={discover.page}
-          load={load}
+          loading={loading}
           handleLoadMore={handleLoadMore}
         />
       )}

@@ -1,47 +1,37 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 import PostCard from '../PostCard'
 import LoadIcon from '../../images/loading.gif'
 import LoadMoreBtn from '../LoadMoreBtn'
-import { getDataAPI } from '../../utils/fetchData'
-import { POST_TYPES } from '../../redux/actions/postAction'
 
-const Posts = () => {
-  const { homePosts, auth, theme } = useSelector((state) => state)
-  const dispatch = useDispatch()
-
-  const [load, setLoad] = useState(false)
-
-  const handleLoadMore = async () => {
-    setLoad(true)
-
-    const res = await getDataAPI(
-      dispatch,
-      `posts?limit=${homePosts.page * 9}`,
-      auth.token
-    )
-    dispatch({
-      type: POST_TYPES.GET_POSTS,
-      payload: { ...res.data, page: homePosts.page + 1 },
-    })
-
-    setLoad(false)
-  }
+const Posts = ({ loading, posts, count, page, handleLoadMore }) => {
+  const { theme } = useSelector((state) => state)
 
   return (
-    <div className='posts'>
-      {homePosts.posts.map((post) => (
-        <PostCard key={post._id} post={post} theme={theme} />
-      ))}
-      {load && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />}
-      <LoadMoreBtn
-        count={homePosts.count}
-        page={homePosts.page}
-        load={load}
-        handleLoadMore={handleLoadMore}
-      />
-    </div>
+    <>
+      { 
+        loading ? (
+          <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
+        ) : count === 0 && posts.length === 0 ? (
+          <h2 className='text-center'>No Post</h2>
+        ) :
+        (
+          <div className='posts'>
+            {posts.map((post) => (
+              <PostCard key={post._id} post={post} theme={theme} />
+            ))}
+            {loading && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />}
+            <LoadMoreBtn
+              count={count}
+              page={page}
+              loading={loading}
+              handleLoadMore={handleLoadMore}
+            />
+          </div>
+        )
+      }
+    </>
   )
 }
 
