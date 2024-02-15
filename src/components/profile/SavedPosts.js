@@ -50,7 +50,7 @@ const SavedPosts = ({ auth, dispatch }) => {
         firstLoadloading ? (
           <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
         ) : count === 0 && savedPosts.length === 0 ? (
-          <h2 className='text-center'>No Post</h2>
+          <h4 className='text-center my-3'>No Post</h4>
         ) : (
           <Posts
             loading={loadMoreLoading}

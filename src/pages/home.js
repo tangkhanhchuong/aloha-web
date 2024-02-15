@@ -5,8 +5,7 @@ import Status from '../components/home/Status'
 import Posts from '../components/home/Posts'
 import RightSideBar from '../components/home/RightSideBar'
 import LoadIcon from '../images/loading.gif'
-import { getDataAPI } from '../utils/fetchData'
-import { POST_TYPES } from '../redux/actions/postAction'
+import { loadMorePosts } from '../redux/actions/postAction'
 
 let scroll = 0
 
@@ -17,17 +16,7 @@ const Home = () => {
 
   const handleLoadMore = async () => {
     setLoading(true)
-
-    const res = await getDataAPI(
-      dispatch,
-      `posts?limit=9`,
-      auth.token
-    )
-    dispatch({
-      type: POST_TYPES.GET_POSTS,
-      payload: { ...res.data, page: homePosts.page + 1 },
-    })
-
+    dispatch(loadMorePosts({ auth }))
     setLoading(false)
   }
 
@@ -51,7 +40,7 @@ const Home = () => {
         {homePosts.loading ? (
           <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
         ) : homePosts.count === 0 && homePosts.posts.length === 0 ? (
-          <h2 className='text-center'>No Post</h2>
+          <h4 className='text-center my-3'>No Post</h4>
         ) : (
           <Posts
             loading={loading}
