@@ -1,12 +1,13 @@
 import React from 'react'
 
+import { ITEMS_PER_PAGE } from '../constants'
+
 const LoadMoreBtn = ({ count, page, loading, handleLoadMore }) => {
-  console.log(count, page)
   return (
     <div className='my-3'>
       {
-        count < 9 * (page - 1)
-          ? ''
+        count < ITEMS_PER_PAGE * (page - 1)
+          ? <></>
           : !loading && (
             <button
               className='btn btn-dark mx-auto d-block'

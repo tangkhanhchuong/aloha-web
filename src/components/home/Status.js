@@ -1,8 +1,8 @@
-import React from 'react'
+import { Avatar } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 
-import Avatar from '../Avatar'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
+import { AVATAR_LG } from '../../constants'
 
 const Status = () => {
   const { auth } = useSelector((state) => state)
@@ -10,7 +10,7 @@ const Status = () => {
 
   return (
     <div className='status my-3 d-flex'>
-      <Avatar src={auth.user.avatar} size='big-avatar' />
+      <Avatar src={auth.user.avatar} size={AVATAR_LG} />
 
       <button
         className='status_btn flex-fill'

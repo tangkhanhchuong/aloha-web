@@ -1,8 +1,7 @@
-import React from 'react'
+import { Avatar } from 'antd' 
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
-import Avatar from './Avatar'
+import { AVATAR_LG } from '../constants'
 
 const UserCard = ({
   children,
@@ -58,7 +57,7 @@ const UserCard = ({
           onClick={handleCloseAll}
           className='d-flex align-items-center'
         >
-          <Avatar src={user.avatar} size='big-avatar' />
+          <Avatar src={user.avatar} size={AVATAR_LG} />
 
           <div className='ml-1' style={{ transform: 'translateY(-2px)' }}>
             <span className='d-block'>{user.username}</span>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react"
 
+import { ITEMS_PER_PAGE } from "../../constants"
 import Posts from "../home/Posts"
 import { PROFILE_TYPES } from "../../redux/actions/profileAction"
 import { getDataAPI } from "../../utils/fetchData"
-
-const PER_PAGE = 10;
 
 const MyPosts = ({ auth, id, dispatch, profile }) => {
   const [posts, setPosts] = useState([])
@@ -26,7 +25,7 @@ const MyPosts = ({ auth, id, dispatch, profile }) => {
     setLoading(true)
     const res = await getDataAPI(
       dispatch,
-      `users/${id}/posts?limit=${PER_PAGE}`,
+      `users/${id}/posts?limit=${ITEMS_PER_PAGE}`,
       auth.token
     )
     const newData = { ...res.data, page: page + 1, _id: id }

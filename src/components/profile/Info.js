@@ -1,6 +1,7 @@
+import { Avatar } from 'antd'
 import React, { useState, useEffect } from 'react'
 
-import Avatar from '../Avatar'
+import { AVATAR_XL } from '../../constants'
 import EditProfile from './EditProfile'
 import FollowBtn from '../FollowBtn'
 import Followers from './Followers'
@@ -35,7 +36,7 @@ const Info = ({ id, auth, profile, dispatch }) => {
       <div className='info'>
         {userData.map((user) => (
           <div className='info_container' key={user._id}>
-            <Avatar src={user.avatar} size='supper-avatar' />
+            <Avatar src={user.avatar} size={AVATAR_XL} />
             <div className='info_content'>
               <div className='info_content_title'>
                 <h2>{user.username}</h2>

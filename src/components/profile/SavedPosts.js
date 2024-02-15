@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
+import { ITEMS_PER_PAGE } from '../../constants'
 import Posts from '../home/Posts'
 import LoadIcon from '../../images/loading.gif'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 import { getDataAPI } from '../../utils/fetchData'
 import { mapMessages } from '../../utils/mapMessages'
-
-const PER_PAGE = 10;
 
 const SavedPosts = ({ auth, dispatch }) => {
   const [savedPosts, setSavedPosts] = useState([])
@@ -36,7 +35,7 @@ const SavedPosts = ({ auth, dispatch }) => {
     setLoadMoreLoading(true)
     const res = await getDataAPI(
       dispatch,
-      `users/saved-posts?limit=${PER_PAGE}`,
+      `users/saved-posts?limit=${ITEMS_PER_PAGE}`,
       auth.token
     )
     setSavedPosts(res.data.savedPosts)

@@ -1,9 +1,9 @@
-import React from 'react'
+import { Avatar } from 'antd'
 import { Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import moment from 'moment'
 
-import Avatar from '../../Avatar'
+import { AVATAR_LG } from '../../../constants'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { deletePost } from '../../../redux/actions/postAction'
 
@@ -33,7 +33,7 @@ const CardHeader = ({ post }) => {
   return (
     <div className='card_header'>
       <div className='d-flex'>
-        <Avatar src={post.user.avatar} size='big-avatar' />
+        <Avatar src={post.user.avatar} size={AVATAR_LG} />
         &nbsp;&nbsp;
         <div className='card_name'>
           <h6 className='m-0'>
