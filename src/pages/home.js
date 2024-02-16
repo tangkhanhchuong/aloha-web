@@ -1,15 +1,24 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Status from '../components/home/Status'
 import Posts from '../components/home/Posts'
 import RightSideBar from '../components/home/RightSideBar'
 import LoadIcon from '../images/loading.gif'
+import { loadMorePosts } from '../redux/actions/postAction'
 
 let scroll = 0
 
 const Home = () => {
-  const { homePosts } = useSelector((state) => state)
+  const { homePosts, auth } = useSelector((state) => state)
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
+
+  const handleLoadMore = async () => {
+    setLoading(true)
+    dispatch(loadMorePosts({ auth }))
+    setLoading(false)
+  }
 
   window.addEventListener('scroll', () => {
     if (window.location.pathname === '/') {
@@ -31,9 +40,15 @@ const Home = () => {
         {homePosts.loading ? (
           <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
         ) : homePosts.count === 0 && homePosts.posts.length === 0 ? (
-          <h2 className='text-center'>No Post</h2>
+          <h4 className='text-center my-3'>No Post</h4>
         ) : (
-          <Posts />
+          <Posts
+            loading={loading}
+            posts={homePosts.posts}
+            handleLoadMore={handleLoadMore}
+            page={homePosts.page}
+            count={homePosts.count}
+          />
         )}
       </div>
 

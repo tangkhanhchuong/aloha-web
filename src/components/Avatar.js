@@ -1,16 +1,24 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import { Avatar as AAvatar, Skeleton } from 'antd'
+import { useState } from 'react'
 
-const Avatar = ({ src, size }) => {
-  const { theme } = useSelector((state) => state)
+const Avatar = ({ src, size, alt }) => {
+  const [loading, setLoading] = useState(true)
+
+  const onLoad = () => {
+    setLoading(false)
+  }
 
   return (
-    <img
-      src={src}
-      alt='avatar'
-      className={size}
-      style={{ filter: `${theme ? 'invert(1)' : 'invert(0)'}` }}
-    />
+    <>
+      { loading && <Skeleton.Avatar size={size} /> }
+      <AAvatar
+        src={src}
+        alt={alt}
+        size={size}
+        onLoad={onLoad} 
+        style={{ display: loading ? 'none' : 'inline-block' }}
+      />
+    </>
   )
 }
 

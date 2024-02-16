@@ -1,19 +1,23 @@
 import React from 'react'
 
-const LoadMoreBtn = ({ count, page, load, handleLoadMore }) => {
+import { ITEMS_PER_PAGE } from '../constants'
+
+const LoadMoreBtn = ({ count, page, loading, handleLoadMore }) => {
   return (
-    <>
-      {count < 9 * (page - 1)
-        ? ''
-        : !load && (
+    <div className='my-3'>
+      {
+        count <= ITEMS_PER_PAGE * page
+          ? <></>
+          : !loading && (
             <button
               className='btn btn-dark mx-auto d-block'
               onClick={handleLoadMore}
             >
               Load more
             </button>
-          )}
-    </>
+          )
+      }
+    </div>
   )
 }
 

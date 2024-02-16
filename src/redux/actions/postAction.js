@@ -8,6 +8,7 @@ import {
   deleteDataAPI,
 } from '../../utils/fetchData'
 import { mapMessages } from '../../utils/mapMessages'
+import { ITEMS_PER_PAGE } from '../../constants'
 
 export const POST_TYPES = {
   CREATE_POST: 'CREATE_POST',
@@ -16,6 +17,7 @@ export const POST_TYPES = {
   UPDATE_POST: 'UPDATE_POST',
   GET_POST: 'GET_POST',
   DELETE_POST: 'DELETE_POST',
+  LOAD_MORE_POSTS: 'LOAD_MORE_POSTS',
 }
 
 export const createPost = ({ content, images, auth }) =>
@@ -50,7 +52,7 @@ export const getPosts = (token) => async (dispatch) => {
   if (!res) return
   dispatch({
     type: POST_TYPES.GET_POSTS,
-    payload: { ...res.data, page: res.data.length ?? 0 },
+    payload: { ...res.data },
   })
   dispatch({ type: POST_TYPES.LOADING_POST, payload: false })
 }
@@ -191,4 +193,18 @@ export const unsavePost = ({ post, auth }) =>
         payload: { error: mapMessages(err.response.data.msg) },
       })
     }
+  }
+
+export const loadMorePosts = ({ auth }) =>
+  async (dispatch, getState) => {
+    const state = getState().homePosts
+    const res = await getDataAPI(
+      dispatch,
+      `posts?limit=${ITEMS_PER_PAGE}&&page=${state.page + 1}`,
+      auth.token
+    )
+    dispatch({
+      type: POST_TYPES.LOAD_MORE_POSTS,
+      payload: { ...res.data, page: state.page + 1 },
+    })
   }

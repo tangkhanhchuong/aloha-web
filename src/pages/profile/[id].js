@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import Info from '../../components/profile/Info'
-import Posts from '../../components/profile/Posts'
-import Saved from '../../components/profile/Saved'
+import MyPosts from '../../components/profile/MyPosts'
+import SavedPosts from '../../components/profile/SavedPosts'
 import LoadIcon from '../../images/loading.gif'
 import { getProfileUsers } from '../../redux/actions/profileAction'
 
@@ -23,7 +23,9 @@ const Profile = () => {
 
   return (
     <div className='profile'>
-      <Info auth={auth} profile={profile} dispatch={dispatch} id={id} />
+      <div className='card-body my-3'>
+        <Info auth={auth} profile={profile} dispatch={dispatch} id={id} />
+      </div>
       {auth.user._id === id && (
         <div className='profile_tab'>
           <button
@@ -40,16 +42,17 @@ const Profile = () => {
           </button>
         </div>
       )}
-
       {profile.loading ? (
         <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
       ) : (
         <>
-          {saveTab ? (
-            <Saved auth={auth} dispatch={dispatch} />
-          ) : (
-            <Posts auth={auth} profile={profile} dispatch={dispatch} id={id} />
-          )}
+          {
+            saveTab ? (
+              <SavedPosts auth={auth} dispatch={dispatch} />
+            ) : (
+              <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
+            )
+          }
         </>
       )}
     </div>

@@ -1,11 +1,11 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import Times from './Times'
 import Avatar from '../Avatar'
-import { imageShow, videoShow } from '../../utils/mediaShow'
+import { AVATAR_SM } from '../../constants'
 import { deleteMessages } from '../../redux/actions/messageAction'
-
+import Times from './Times'
+import { imageShow, videoShow } from '../../utils/mediaShow'
 const MsgDisplay = ({ user, msg, theme, data }) => {
   const { auth } = useSelector((state) => state)
   const dispatch = useDispatch()
@@ -21,7 +21,7 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
   return (
     <>
       <div className='chat_title'>
-        <Avatar src={user.avatar} size='small-avatar' />
+        <Avatar src={user.avatar} size={AVATAR_SM} />
         <span>{user.username}</span>
       </div>
 

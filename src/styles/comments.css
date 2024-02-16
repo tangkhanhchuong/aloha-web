@@ -26,9 +26,8 @@
 }
 .comment_card .comment_content{
     background: #eee;
-    padding: 7px;
+    padding: 7px 20px;
     border-radius: 10px;
-    border-top-left-radius: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;

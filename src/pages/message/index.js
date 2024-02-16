@@ -1,6 +1,6 @@
 import React from 'react'
-import { Avatar } from 'antd'
 
+import Avatar from '../../components/Avatar'
 import LeftSide from '../../components/message/LeftSide'
 import logo from '../../images/konoha-logo.png'
 
@@ -17,11 +17,7 @@ const Message = () => {
                 align-items-center flex-column h-100'
         >
           <h1 className='p-0 m-4' onClick={() => window.scrollTo({ top: 0 })}>
-            <Avatar
-              src={logo}
-              size={72}
-              shape='circle'
-            />
+            <Avatar src={logo} size={72} shape='circle' />
           </h1>
           <h4>Message</h4>
           <p>Choose a conversation to send messages to your friend</p>

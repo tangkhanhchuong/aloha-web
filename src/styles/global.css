@@ -31,7 +31,6 @@ code {
 .main {
   max-width: 1000px;
   width: 100%;
-  min-height: 100vh;
   margin: auto;
 }
 
@@ -89,23 +88,23 @@ img {
     display: none;
   }
   .header .menu{
-      width: 100%;
-      height: 40px;
+    width: 100%;
+    height: 40px;
   }
   .header .menu .navbar-nav{
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
   
   .header .search_form{
-      width: 100%;
+    width: 100%;
   }
   .header .logo{
-      margin: auto;
+    margin: auto;
   }
   .header .logo h1{
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
   
   .message{
@@ -127,4 +126,13 @@ img {
   width: 100%;
   height: 100vh;
   overflow: hidden;
+}
+
+.card-body{
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 0 5px #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid rgb(0, 0, 0, .125);
 }

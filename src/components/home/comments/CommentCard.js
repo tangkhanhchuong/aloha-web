@@ -3,15 +3,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
-import LikeButton from '../../LikeButton'
 import Avatar from '../../Avatar'
 import CommentMenu from './CommentMenu'
+import { AVATAR_MD } from '../../../constants'
+import InputComment from '../InputComment'
+import LikeButton from '../../LikeButton'
 import {
   updateComment,
   likeComment,
   unLikeComment,
 } from '../../../redux/actions/commentAction'
-import InputComment from '../InputComment'
 
 const CommentCard = ({ children, comment, post, commentId }) => {
   const { auth, theme } = useSelector((state) => state)
@@ -73,9 +74,14 @@ const CommentCard = ({ children, comment, post, commentId }) => {
 
   return (
     <div className='comment_card mt-2' style={styleCard}>
-      <Link to={`/profile/${comment.user._id}`} className='d-flex text-dark'>
-        <Avatar src={comment.user.avatar} size='small-avatar' />
-        <h6 className='mx-1'>{comment.user.username}</h6>
+      <Link to={`/profile/${comment.user._id}`} className='d-flex align-items-center text-dark my-2'>
+        <Avatar src={comment.user.avatar} size={AVATAR_MD} />
+        <div className='d-flex flex-column'>
+          <h6 className='mx-1'>{comment.user.username}</h6>
+          <small className='text-muted mr-3'>
+            {moment(comment.createdAt).fromNow()}
+          </small>
+        </div>
       </Link>
 
       <div className='comment_content'>
@@ -118,10 +124,6 @@ const CommentCard = ({ children, comment, post, commentId }) => {
           )}
 
           <div style={{ cursor: 'pointer' }}>
-            <small className='text-muted mr-3'>
-              {moment(comment.createdAt).fromNow()}
-            </small>
-
             <small className='font-weight-bold mr-3'>
               {comment.likes.length} likes
             </small>

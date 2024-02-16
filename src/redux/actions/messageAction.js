@@ -1,4 +1,5 @@
 import { GLOBALTYPES, deleteData } from '../actions/globalTypes'
+import { ITEMS_PER_PAGE } from '../../constants'
 import { postDataAPI, getDataAPI, deleteDataAPI } from '../../utils/fetchData'
 import { mapMessages } from '../../utils/mapMessages'
 
@@ -37,7 +38,7 @@ export const getConversations = ({ auth, page = 1 }) =>
     try {
       const res = await getDataAPI(
         dispatch,
-        `conversations?limit=${page * 9}`,
+        `conversations?limit=${page * ITEMS_PER_PAGE}`,
         auth.token
       )
       if (!res) return
@@ -73,7 +74,7 @@ export const getMessages = ({ auth, id, page = 1 }) =>
     try {
       const res = await getDataAPI(
         dispatch,
-        `messages/${id}?limit=${page * 9}`,
+        `messages/${id}?limit=${page * ITEMS_PER_PAGE}`,
         auth.token
       )
       if (!res) return
@@ -96,7 +97,7 @@ export const loadMoreMessages = ({ auth, id, page = 1 }) =>
     try {
       const res = await getDataAPI(
         dispatch,
-        `messages/${id}?limit=${page * 9}`,
+        `messages/${id}?limit=${page * ITEMS_PER_PAGE}`,
         auth.token
       )
       if (!res) return

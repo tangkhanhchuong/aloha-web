@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min'
 
-import MenuDropdownItem from './MenuDropdownItem'
 import Avatar from '../../Avatar'
+import { AVATAR_SM } from '../../../constants'
+import MenuDropdownItem from './MenuDropdownItem'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { logout } from '../../../redux/actions/authAction'
 
@@ -11,7 +12,7 @@ const AccountMenuItem = () => {
   const dispatch = useDispatch()
   return (
     <MenuDropdownItem
-      appearance={<Avatar src={auth.user.avatar} size='medium-avatar' />}
+      appearance={<Avatar src={auth.user.avatar} size={AVATAR_SM}/>}
       content={
         <>
           <Link className='dropdown-item' to={`/profile/${auth.user._id}`}>
