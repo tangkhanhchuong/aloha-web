@@ -1,9 +1,9 @@
-import { Avatar } from 'antd'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
+import Avatar from '../../Avatar'
 import CommentMenu from './CommentMenu'
 import { AVATAR_MD } from '../../../constants'
 import InputComment from '../InputComment'

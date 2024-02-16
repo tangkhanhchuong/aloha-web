@@ -1,8 +1,8 @@
-import { Avatar } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 
+import Avatar from './Avatar'
 import { AVATAR_LG } from '../constants'
 import NoNotice from '../images/notice.png'
 import { readNotification, NOTIFICATION_TYPES, deleteAllNotifications } from '../redux/actions/notificationAction'

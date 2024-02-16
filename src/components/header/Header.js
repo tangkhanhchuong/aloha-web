@@ -1,10 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Avatar } from 'antd'
 
+import Avatar from '../Avatar'
+import logo from '../../images/konoha-logo.png'
 import Menu from './menu/Menu'
 import Search from './Search'
-import logo from '../../images/konoha-logo.png'
 
 const Header = () => {
   return (

@@ -1,8 +1,8 @@
-import { Avatar } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { GLOBALTYPES } from '../../redux/actions/globalTypes'
+import Avatar from '../Avatar'
 import { AVATAR_LG } from '../../constants'
+import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 
 const Status = () => {
   const { auth } = useSelector((state) => state)

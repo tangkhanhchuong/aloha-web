@@ -8,7 +8,7 @@ import { getDataAPI } from "../../utils/fetchData"
 const MyPosts = ({ auth, id, dispatch, profile }) => {
   const [posts, setPosts] = useState([])
   const [count, setCount] = useState(0)
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -23,9 +23,10 @@ const MyPosts = ({ auth, id, dispatch, profile }) => {
 
   const handleLoadMore = async () => {
     setLoading(true)
+    console.log(page)
     const res = await getDataAPI(
       dispatch,
-      `users/${id}/posts?limit=${ITEMS_PER_PAGE}`,
+      `users/${id}/posts?limit=${ITEMS_PER_PAGE}&&page=${page + 1}`,
       auth.token
     )
     const newData = { ...res.data, page: page + 1, _id: id }

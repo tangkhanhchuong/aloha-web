@@ -1,12 +1,11 @@
-import { Avatar } from 'antd'
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+import Avatar from '../Avatar'
 import RingRing from '../../audio/ringring.mp3'
 import { AVATAR_LG } from '../../constants'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 import { addMessage } from '../../redux/actions/messageAction'
-
 const CallModal = () => {
   const { call, auth, peer, socket, theme } = useSelector((state) => state)
   const dispatch = useDispatch()

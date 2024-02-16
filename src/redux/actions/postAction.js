@@ -52,7 +52,7 @@ export const getPosts = (token) => async (dispatch) => {
   if (!res) return
   dispatch({
     type: POST_TYPES.GET_POSTS,
-    payload: { ...res.data, page: res.data.length ?? 0 },
+    payload: { ...res.data },
   })
   dispatch({ type: POST_TYPES.LOADING_POST, payload: false })
 }
@@ -200,7 +200,7 @@ export const loadMorePosts = ({ auth }) =>
     const state = getState().homePosts
     const res = await getDataAPI(
       dispatch,
-      `posts?limit=${ITEMS_PER_PAGE}&&page=${state.page + 2}`,
+      `posts?limit=${ITEMS_PER_PAGE}&&page=${state.page + 1}`,
       auth.token
     )
     dispatch({

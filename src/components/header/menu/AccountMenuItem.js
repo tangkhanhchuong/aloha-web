@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min'
-import { Avatar } from 'antd'
 
+import Avatar from '../../Avatar'
+import { AVATAR_SM } from '../../../constants'
 import MenuDropdownItem from './MenuDropdownItem'
 import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { logout } from '../../../redux/actions/authAction'
-import { AVATAR_SM } from '../../../constants'
 
 const AccountMenuItem = () => {
   const { auth, theme } = useSelector((state) => state)

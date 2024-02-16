@@ -1,6 +1,6 @@
-import { Avatar } from 'antd'
 import React, { useState, useEffect } from 'react'
 
+import Avatar from '../Avatar'
 import { AVATAR_XL } from '../../constants'
 import EditProfile from './EditProfile'
 import FollowBtn from '../FollowBtn'

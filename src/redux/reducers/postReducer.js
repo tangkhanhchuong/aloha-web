@@ -5,7 +5,7 @@ const initialState = {
   loading: false,
   posts: [],
   count: 0,
-  page: 0,
+  page: 1,
 }
 
 const postReducer = (state = initialState, action) => {
@@ -25,7 +25,6 @@ const postReducer = (state = initialState, action) => {
         ...state,
         posts: action.payload.posts,
         count: action.payload.count,
-        page: action.payload.page,
       }
     case POST_TYPES.LOAD_MORE_POSTS:
       return {

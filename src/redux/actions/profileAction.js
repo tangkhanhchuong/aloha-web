@@ -12,6 +12,7 @@ export const PROFILE_TYPES = {
   GET_PROFILE_ID: 'GET_PROFILE_ID',
   GET_PROFILE_POSTS: 'GET_PROFILE_POSTS',
   UPDATE_PROFILE_POST: 'UPDATE_PROFILE_POST',
+  LOAD_MORE_PROFILE_POSTS: 'LOAD_MORE_PROFILE_POSTS',
 }
 
 export const getProfileUsers = ({ id, auth }) =>
@@ -71,7 +72,6 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
         },
         auth.token
       )
-      console.log({ res })
 
       dispatch({
         type: AUTH_TYPES.AUTHENTICATED,
