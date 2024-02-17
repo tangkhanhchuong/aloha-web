@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route } from 'react-router-dom'
 import io from 'socket.io-client'
 import Peer from 'peerjs'
 
 import PageRender from './customRouter/PageRender'
-import PrivateRouter from './customRouter/PrivateRouter'
 import Home from './pages/home'
 import Login from './pages/login'
 import Register from './pages/register'
@@ -77,8 +76,8 @@ const App = () => {
 
           <Route exact path='/' component={auth.token ? Home : Login} />
           <Route exact path='/register' component={Register} />
-          <PrivateRouter exact path='/:page' component={PageRender} />
-          <PrivateRouter exact path='/:page/:id' component={PageRender} />
+          <Route exact path='/:page/:id' component={PageRender} />
+          <Route exact path='/:page' component={PageRender} />
         </div>
       </div>
     </Router>

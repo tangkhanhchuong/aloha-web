@@ -41,7 +41,7 @@ export const createPost = ({ content, images, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -91,7 +91,7 @@ export const updatePost = ({ content, images, auth, status }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -108,7 +108,7 @@ export const likePost = ({ post, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -128,7 +128,7 @@ export const unlikePost = ({ post, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -142,7 +142,7 @@ export const getPost = ({ detailPost, id, auth }) =>
       } catch (err) {
         dispatch({
           type: GLOBALTYPES.ALERT,
-          payload: { error: mapMessages(err.response.data.msg) },
+          payload: { error: mapMessages(err.response.data.msg), loading: false },
         })
       }
     }
@@ -157,7 +157,7 @@ export const deletePost = ({ post, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -172,7 +172,7 @@ export const savePost = ({ post, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -190,7 +190,7 @@ export const unsavePost = ({ post, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }

@@ -43,6 +43,7 @@ export const login = (data) => async (dispatch) => {
       type: GLOBALTYPES.ALERT,
       payload: {
         error: mapMessages(err.response.data.msg),
+        loading: false
       },
     })
   }
@@ -88,6 +89,7 @@ export const refreshToken = () => async (dispatch, getState) => {
       type: GLOBALTYPES.ALERT,
       payload: {
         error: mapMessages(err.response.data.msg),
+        loading: false
       },
     })
   }
@@ -130,6 +132,7 @@ export const register = (data) => async (dispatch) => {
       type: GLOBALTYPES.ALERT,
       payload: {
         error: mapMessages(err.response.data.msg),
+        loading: false
       },
     })
   }
@@ -147,6 +150,7 @@ export const logout = () => async (dispatch) => {
       type: GLOBALTYPES.ALERT,
       payload: {
         error: mapMessages(err.response.data.msg),
+        loading: false
       },
     })
   }

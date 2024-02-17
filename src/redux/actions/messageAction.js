@@ -28,7 +28,7 @@ export const addMessage = ({ msg, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -64,7 +64,7 @@ export const getConversations = ({ auth, page = 1 }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -87,7 +87,7 @@ export const getMessages = ({ auth, id, page = 1 }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -111,7 +111,7 @@ export const loadMoreMessages = ({ auth, id, page = 1 }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -128,7 +128,7 @@ export const deleteMessages = ({ msg, data, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -141,7 +141,7 @@ export const deleteConversation = ({ auth, id }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }

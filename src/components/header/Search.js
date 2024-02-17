@@ -30,7 +30,7 @@ const Search = () => {
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }

@@ -23,7 +23,10 @@ export const readNotification = ({ msg, auth }) => async (dispatch) => {
 	try {
 		await patchDataAPI(dispatch, `notifications/${msg._id}/read`, null, auth.token)
 	} catch (err) {
-		dispatch({ type: GLOBALTYPES.ALERT, payload: { error: mapMessages(err.response.data.msg) } })
+		dispatch({ type: GLOBALTYPES.ALERT, payload: {
+			error: mapMessages(err.response.data.msg),
+			loading: false
+		}})
 	}
 }
 
@@ -32,6 +35,9 @@ export const deleteAllNotifications = (token) => async (dispatch) => {
 	try {
 		await deleteDataAPI(dispatch, 'notifications', token)
 	} catch (err) {
-		dispatch({ type: GLOBALTYPES.ALERT, payload: { error: mapMessages(err.response.data.msg) } })
+		dispatch({ type: GLOBALTYPES.ALERT, payload: {
+			error: mapMessages(err.response.data.msg),
+			loading: false
+		}})
 	}
 }

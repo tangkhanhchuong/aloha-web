@@ -29,7 +29,7 @@ export const createComment = ({ post, newComment, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -48,7 +48,7 @@ export const updateComment = ({ comment, post, content, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -65,7 +65,7 @@ export const likeComment = ({ comment, post, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -86,7 +86,7 @@ export const unLikeComment = ({ comment, post, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -114,7 +114,7 @@ export const deleteComment = ({ post, comment, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }

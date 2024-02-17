@@ -1,8 +1,6 @@
 import axios from 'axios'
 
 import { refreshToken } from '../redux/actions/authAction'
-import { GLOBALTYPES } from '../redux/actions/globalTypes'
-import { mapMessages } from './mapMessages'
 
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL + '/api/v1',
@@ -16,12 +14,9 @@ export const getDataAPI = async (dispatch, url, token) => {
   } catch (err) {
     if (!dispatch)  return
     if (err.response.status === 401) {
-      return dispatch(refreshToken(getDataAPI))
+      return dispatch(refreshToken())
     }
-    dispatch({
-      type: GLOBALTYPES.ALERT,
-      payload: { error: mapMessages(err.response.data.msg) },
-    })
+    throw err
   }
 }
 
@@ -33,12 +28,9 @@ export const postDataAPI = async (dispatch, url, data, token) => {
   } catch (err) {
     if (!dispatch)  return
     if (err.response.status === 401) {
-      return dispatch(refreshToken(getDataAPI))
+      return dispatch(refreshToken())
     }
-    dispatch({
-      type: GLOBALTYPES.ALERT,
-      payload: { error: mapMessages(err.response.data.msg) },
-    })
+    throw err
   }
 }
 
@@ -50,12 +42,9 @@ export const putDataAPI = async (dispatch, url, data, token) => {
   } catch (err) {
     if (!dispatch)  return
     if (err.response.status === 401) {
-      return dispatch(refreshToken(getDataAPI))
+      return dispatch(refreshToken())
     }
-    dispatch({
-      type: GLOBALTYPES.ALERT,
-      payload: { error: mapMessages(err.response.data.msg) },
-    })
+    throw err
   }
 }
 
@@ -67,12 +56,9 @@ export const patchDataAPI = async (dispatch, url, data, token) => {
   } catch (err) {
     if (!dispatch)  return
     if (err.response.status === 401) {
-      return dispatch(refreshToken(getDataAPI))
+      return dispatch(refreshToken())
     }
-    dispatch({
-      type: GLOBALTYPES.ALERT,
-      payload: { error: mapMessages(err.response.data.msg) },
-    })
+    throw err
   }
 }
 
@@ -84,11 +70,8 @@ export const deleteDataAPI = async (dispatch, url, token) => {
   } catch (err) {
     if (!dispatch)  return
     if (err.response.status === 401) {
-      return dispatch(refreshToken(getDataAPI))
+      return dispatch(refreshToken())
     }
-    dispatch({
-      type: GLOBALTYPES.ALERT,
-      payload: { error: mapMessages(err.response.data.msg) },
-    })
+    throw err
   }
 }

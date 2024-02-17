@@ -95,7 +95,7 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -136,7 +136,7 @@ export const follow = ({ users, user, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
@@ -183,7 +183,7 @@ export const unfollow = ({ users, user, auth, socket }) =>
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: { error: mapMessages(err.response.data.msg) },
+        payload: { error: mapMessages(err.response.data.msg), loading: false },
       })
     }
   }
