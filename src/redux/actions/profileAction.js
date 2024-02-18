@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie'
+
 import { AUTH_TYPES } from './authAction'
 import { GLOBALTYPES, deleteData } from './globalTypes'
 import { getDataAPI, patchDataAPI } from '../../utils/fetchData'
@@ -59,38 +61,32 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
     try {
       let media
       dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
-
       if (avatar) {
         media = await imageUpload([avatar], auth.token)
       }
-
       const res = await patchDataAPI(dispatch, 
         'users',
         {
           ...userData,
-          avatar: avatar ? media[0].key : auth.user.avatar,
+          avatar: avatar ? media[0].key : null,
         },
         auth.token
       )
 
+      const user = {
+        ...auth.user,
+        ...userData,
+        avatar: avatar ? media[0].url : auth.user.avatar,
+      }
       dispatch({
         type: AUTH_TYPES.AUTHENTICATED,
-        payload: {
-          ...auth,
-          user: {
-            ...auth.user,
-            ...userData,
-            avatar: avatar ? media[0].url : auth.user.avatar,
-          },
-        },
+        payload: { ...auth, user },
       })
+      Cookies.set('user', JSON.stringify(user))
 
       dispatch({
         type: GLOBALTYPES.ALERT,
-        payload: {
-          success: mapMessages(res.data.msg),
-          loading: false
-        }
+        payload: { success: mapMessages(res.data.msg), loading: false }
       })
     } catch (err) {
       dispatch({
@@ -105,33 +101,33 @@ export const follow = ({ users, user, auth, socket }) =>
     let updatedUser
 
     if (users.every((item) => item._id !== user._id)) {
-      updatedUser = { ...user, followers: [...user.followers, auth.user] }
+      updatedUser = { ...user, following: [...user.following, auth.user] }
     } else {
       users.forEach((item) => {
         if (item._id === user._id) {
-          updatedUser = { ...item, followers: [...item.followers, auth.user] }
+          updatedUser = { ...item, following: [...item.following, auth.user] }
         }
       })
     }
 
+    const following = [...auth.user.following, updatedUser]
     dispatch({ type: PROFILE_TYPES.FOLLOW, payload: updatedUser })
     dispatch({
       type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         ...auth,
-        user: {
-          ...auth.user,
-          following: [...auth.user.following, updatedUser],
-        },
+        user: { ...auth.user, following },
       },
     })
 
     try {
-      const res = await patchDataAPI(dispatch, 
+      const res = await patchDataAPI(
+        dispatch, 
         `users/${user._id}/follow`,
         null,
         auth.token
       )
+      Cookies.set('user', JSON.stringify({ ...JSON.parse(Cookies.get('user')), following }))
       socket.emit('follow', res.data.user)
     } catch (err) {
       dispatch({
@@ -148,37 +144,37 @@ export const unfollow = ({ users, user, auth, socket }) =>
     if (users.every((item) => item._id !== user._id)) {
       updatedUser = {
         ...user,
-        followers: deleteData(user.followers, auth.user._id),
+        following: deleteData(user.following, auth.user._id),
       }
     } else {
       users.forEach((item) => {
         if (item._id === user._id) {
           updatedUser = {
             ...item,
-            followers: deleteData(item.followers, auth.user._id),
+            following: deleteData(item.following, auth.user._id),
           }
         }
       })
     }
 
+    const following = deleteData(auth.user.following, updatedUser._id)
     dispatch({ type: PROFILE_TYPES.UNFOLLOW, payload: updatedUser })
     dispatch({
       type: AUTH_TYPES.AUTHENTICATED,
       payload: {
         ...auth,
-        user: {
-          ...auth.user,
-          following: deleteData(auth.user.following, updatedUser._id),
-        },
+        user: { ...auth.user, following },
       },
     })
 
     try {
-      const res = await patchDataAPI(dispatch, 
+      const res = await patchDataAPI(
+        dispatch,
         `users/${user._id}/unfollow`,
         null,
         auth.token
       )
+      Cookies.set('user', JSON.stringify({ ...JSON.parse(Cookies.get('user')), following }))
       socket.emit('unFollow', res.data.user)
     } catch (err) {
       dispatch({

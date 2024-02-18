@@ -9,11 +9,54 @@ import {
   ZoomOutOutlined,
 } from '@ant-design/icons'
 
+const CarouselItem = ({ url }) => {
+  const { theme } = useSelector((state) => state)
+  return (
+    <Image
+      src={url}
+      className='d-block w-100 carousel-el'
+      alt={url}
+      height={400}
+      style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+      preview={{
+        toolbarRender: (
+          _,
+          {
+            transform: { scale },
+            actions: {
+              onFlipY,
+              onFlipX,
+              onRotateLeft,
+              onRotateRight,
+              onZoomOut,
+              onZoomIn,
+            },
+          }
+        ) => (
+          <Space size={12} className='toolbar-wrapper'>
+            <SwapOutlined rotate={90} onClick={onFlipY} />
+            <SwapOutlined size={48} onClick={onFlipX} />
+            <RotateLeftOutlined onClick={onRotateLeft} />
+            <RotateRightOutlined onClick={onRotateRight} />
+            <ZoomOutOutlined
+              disabled={scale === 1}
+              onClick={onZoomOut}
+            />
+            <ZoomInOutlined
+              disabled={scale === 50}
+              onClick={onZoomIn}
+            />
+          </Space>
+        ),
+      }}
+    />
+  )
+}
+
 const Carousel = ({ images, id }) => {
   const isActive = (index) => {
     if (index === 0) return 'active'
   }
-
   const { theme } = useSelector((state) => state)
 
   return (
@@ -47,46 +90,7 @@ const Carousel = ({ images, id }) => {
                   }}
                 />
               ) : (
-                <Image
-                  src={img.url}
-                  className='d-block w-100 carousel-el'
-                  alt={img.url}
-                  height={400}
-                  style={{
-                    filter: theme ? 'invert(1)' : 'invert(0)',
-                  }}
-                  preview={{
-                    toolbarRender: (
-                      _,
-                      {
-                        transform: { scale },
-                        actions: {
-                          onFlipY,
-                          onFlipX,
-                          onRotateLeft,
-                          onRotateRight,
-                          onZoomOut,
-                          onZoomIn,
-                        },
-                      }
-                    ) => (
-                      <Space size={12} className='toolbar-wrapper'>
-                        <SwapOutlined rotate={90} onClick={onFlipY} />
-                        <SwapOutlined size={48} onClick={onFlipX} />
-                        <RotateLeftOutlined onClick={onRotateLeft} />
-                        <RotateRightOutlined onClick={onRotateRight} />
-                        <ZoomOutOutlined
-                          disabled={scale === 1}
-                          onClick={onZoomOut}
-                        />
-                        <ZoomInOutlined
-                          disabled={scale === 50}
-                          onClick={onZoomIn}
-                        />
-                      </Space>
-                    ),
-                  }}
-                />
+                <CarouselItem url={img.url}/>
               )}
             </div>
           )
