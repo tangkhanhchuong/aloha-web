@@ -23,7 +23,7 @@ yarn start
 
 - Server runs on `https://localhost:3000`
 
-### Screens
+### Features
 - Login, Register
 ![image](public/login.png)
 ![image](public/register.png)
@@ -45,4 +45,4 @@ yarn start
 ![image](public/follow.png)
 
 ### Demo
-Please click [here](https://aloha-web-git-master-tangkhanhchuong.vercel.app/) for demo
+Please click [here](https://www.konoha.chuongtk.click/) for demo

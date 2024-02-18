@@ -43,9 +43,11 @@ const EditProfile = ({ setOnEdit }) => {
     setUserData({ ...userData, [name]: value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    dispatch(updateProfileUser({ userData, avatar, auth }))
+    delete userData.avatar
+    await dispatch(updateProfileUser({ avatar, auth, userData }))
+    setOnEdit(false)
   }
 
   return (

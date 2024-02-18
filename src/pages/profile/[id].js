@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import Info from '../../components/profile/Info'
+import ProfileInfo from '../../components/profile/ProfileInfo'
 import MyPosts from '../../components/profile/MyPosts'
 import SavedPosts from '../../components/profile/SavedPosts'
 import LoadIcon from '../../images/loading.gif'
@@ -24,24 +24,26 @@ const Profile = () => {
   return (
     <div className='profile'>
       <div className='card-body my-3'>
-        <Info auth={auth} profile={profile} dispatch={dispatch} id={id} />
+        <ProfileInfo auth={auth} profile={profile} dispatch={dispatch} id={id} />
       </div>
-      {auth.user._id === id && (
-        <div className='profile_tab'>
-          <button
-            className={saveTab ? '' : 'active'}
-            onClick={() => setSaveTab(false)}
-          >
-            Posts
-          </button>
-          <button
-            className={saveTab ? 'active' : ''}
-            onClick={() => setSaveTab(true)}
-          >
-            Saved
-          </button>
-        </div>
-      )}
+      {
+        auth.user._id === id && (
+          <div className='profile_tab'>
+            <button
+              className={saveTab ? '' : 'active'}
+              onClick={() => setSaveTab(false)}
+            >
+              Posts
+            </button>
+            <button
+              className={saveTab ? 'active' : ''}
+              onClick={() => setSaveTab(true)}
+            >
+              Saved
+            </button>
+          </div>
+        )
+      }
       {profile.loading ? (
         <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
       ) : (
