@@ -51,7 +51,17 @@
     margin-top: -10px;
     margin-bottom: 10px;
 }
-.posts .card_body-content .readMore{
+.posts .card_body-content p{
+    margin-bottom: 10px;
+}
+.posts .card_body-content.read-more-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.posts .card_body .read-more{
+    padding: 0 25px;
     color: crimson;
     cursor: pointer;
 }

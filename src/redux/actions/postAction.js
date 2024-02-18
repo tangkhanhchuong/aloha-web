@@ -87,7 +87,7 @@ export const updatePost = ({ content, images, auth, status }) =>
       )
 
       dispatch({ type: POST_TYPES.UPDATE_POST, payload: res.data.post })
-      dispatch({ type: GLOBALTYPES.ALERT, payload: { success: mapMessages(res.data.msg) } })
+      dispatch({ type: GLOBALTYPES.ALERT, payload: { success: mapMessages(res.data.msg), loading: false } })
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,

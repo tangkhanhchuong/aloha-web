@@ -23,7 +23,6 @@ const MyPosts = ({ auth, id, dispatch, profile }) => {
 
   const handleLoadMore = async () => {
     setLoading(true)
-    console.log(page)
     const res = await getDataAPI(
       dispatch,
       `users/${id}/posts?limit=${ITEMS_PER_PAGE}&&page=${page + 1}`,
