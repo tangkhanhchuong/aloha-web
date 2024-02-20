@@ -65,14 +65,14 @@ export const initialize = () => async (dispatch) => {
   })
 }
 
-export const refreshToken = () => async (dispatch, getState) => {
+export const autoLogin = () => async (dispatch, getState) => {
   try {
     const alertState = getState().alert
     if (!!alertState.loading) return
 
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
     const refreshToken = Cookies.get('refresh_token')
-    const res = await postDataAPI(dispatch, 'auth/refresh-token', { refreshToken })
+    const res = await postDataAPI(dispatch, 'auth/auto-login', { refreshToken })
     Cookies.set('access_token', res.data.access_token, {
       expires: TOKEN_LIFESPAN,
     })
