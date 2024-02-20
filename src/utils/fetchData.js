@@ -1,6 +1,7 @@
 import axios from 'axios'
+import HttpStatusCodes from 'http-status-codes'
 
-import { refreshToken } from '../redux/actions/authAction'
+import { autoLogin } from '../redux/actions/authAction'
 
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_SERVER_URL + '/api/v1',
@@ -13,8 +14,8 @@ export const getDataAPI = async (dispatch, url, token) => {
     })
   } catch (err) {
     if (!dispatch)  return
-    if (err.response.status === 401) {
-      return dispatch(refreshToken())
+    if (err.response.status === HttpStatusCodes.UNAUTHORIZED) {
+      return dispatch(autoLogin())
     }
     throw err
   }
@@ -27,8 +28,8 @@ export const postDataAPI = async (dispatch, url, data, token) => {
     })
   } catch (err) {
     if (!dispatch)  return
-    if (err.response.status === 401) {
-      return dispatch(refreshToken())
+    if (err.response.status === HttpStatusCodes.UNAUTHORIZED) {
+      return dispatch(autoLogin())
     }
     throw err
   }
@@ -41,8 +42,8 @@ export const putDataAPI = async (dispatch, url, data, token) => {
     })
   } catch (err) {
     if (!dispatch)  return
-    if (err.response.status === 401) {
-      return dispatch(refreshToken())
+    if (err.response.status === HttpStatusCodes.UNAUTHORIZED) {
+      return dispatch(autoLogin())
     }
     throw err
   }
@@ -55,8 +56,8 @@ export const patchDataAPI = async (dispatch, url, data, token) => {
     })
   } catch (err) {
     if (!dispatch)  return
-    if (err.response.status === 401) {
-      return dispatch(refreshToken())
+    if (err.response.status === HttpStatusCodes.UNAUTHORIZED) {
+      return dispatch(autoLogin())
     }
     throw err
   }
@@ -69,8 +70,8 @@ export const deleteDataAPI = async (dispatch, url, token) => {
     })
   } catch (err) {
     if (!dispatch)  return
-    if (err.response.status === 401) {
-      return dispatch(refreshToken())
+    if (err.response.status === HttpStatusCodes.UNAUTHORIZED) {
+      return dispatch(autoLogin())
     }
     throw err
   }
