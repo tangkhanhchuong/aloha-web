@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie'
-
 import { AUTH_TYPES } from './authAction'
 import { GLOBALTYPES, deleteData } from './globalTypes'
 import { getDataAPI, patchDataAPI } from '../../utils/fetchData'
@@ -82,8 +80,6 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
         type: AUTH_TYPES.AUTHENTICATED,
         payload: { ...auth, user },
       })
-      Cookies.set('user', JSON.stringify(user))
-
       dispatch({
         type: GLOBALTYPES.ALERT,
         payload: { success: mapMessages(res.data.msg), loading: false }
@@ -127,7 +123,6 @@ export const follow = ({ users, user, auth, socket }) =>
         null,
         auth.token
       )
-      Cookies.set('user', JSON.stringify({ ...JSON.parse(Cookies.get('user')), following }))
       socket.emit('follow', res.data.user)
     } catch (err) {
       dispatch({
@@ -174,7 +169,6 @@ export const unfollow = ({ users, user, auth, socket }) =>
         null,
         auth.token
       )
-      Cookies.set('user', JSON.stringify({ ...JSON.parse(Cookies.get('user')), following }))
       socket.emit('unFollow', res.data.user)
     } catch (err) {
       dispatch({
