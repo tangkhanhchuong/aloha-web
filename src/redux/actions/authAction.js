@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie'
 
 import { GLOBALTYPES } from './globalTypes'
-import { postDataAPI } from '../../utils/fetchData'
+import { getDataAPI, postDataAPI } from '../../utils/fetchData'
 import valid from '../../utils/valid'
 import { mapMessages } from '../../utils/mapMessages'
 
@@ -14,15 +14,9 @@ export const login = (data) => async (dispatch) => {
   try {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
     const res = await postDataAPI(dispatch, 'auth/login', data)
-    Cookies.set('access_token', res.data.access_token, {
-      expires: TOKEN_LIFESPAN,
-    })
-    Cookies.set('refresh_token', res.data.refresh_token, {
-      expires: TOKEN_LIFESPAN,
-    })
-    Cookies.set('user', JSON.stringify(res.data.user), {
-      expires: TOKEN_LIFESPAN,
-    })
+    Cookies.set('access_token', res.data.access_token)
+    Cookies.set('refresh_token', res.data.refresh_token)
+    Cookies.set('user_id', res.data.user?._id)
 
     dispatch({
       type: AUTH_TYPES.AUTHENTICATED,
@@ -50,17 +44,16 @@ export const login = (data) => async (dispatch) => {
 }
 
 export const initialize = () => async (dispatch) => {
-  const localUserJson = Cookies.get('user')
-  if (!localUserJson) {
-    return
-  }
-  const localUser = JSON.parse(localUserJson)
   const accessToken = Cookies.get('access_token')
-  dispatch({
+  const userId = Cookies.get('user_id')
+  if (!accessToken || !userId)  return
+
+  const usersRes = await getDataAPI(dispatch, `/users/${userId}`, accessToken)
+  dispatch({  
     type: AUTH_TYPES.AUTHENTICATED,
     payload: {
       token: accessToken,
-      user: localUser,
+      user: usersRes.data.user,
     },
   })
 }
@@ -104,15 +97,9 @@ export const register = (data) => async (dispatch) => {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 
     const res = await postDataAPI(dispatch, 'auth/register', data)
-    Cookies.set('access_token', res.data.access_token, {
-      expires: TOKEN_LIFESPAN,
-    })
-    Cookies.set('refresh_token', res.data.refresh_token, {
-      expires: TOKEN_LIFESPAN,
-    })
-    Cookies.set('user', JSON.stringify(res.data.user), {
-      expires: TOKEN_LIFESPAN,
-    })
+    Cookies.set('access_token', res.data.access_token)
+    Cookies.set('refresh_token', res.data.refresh_token)
+    Cookies.set('user_id', res.data.user?._id)
     dispatch({
       type: AUTH_TYPES.AUTHENTICATED,
       payload: {
