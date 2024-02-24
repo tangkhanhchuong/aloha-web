@@ -11,7 +11,7 @@ import {
 } from "../../redux/actions/messageAction"
 import { mapMessages } from "../../utils/mapMessages"
 
-const LeftSide = () => {
+const ConversationList = () => {
   const { auth, message, online } = useSelector((state) => state)
   const dispatch = useDispatch()
 
@@ -95,7 +95,7 @@ const LeftSide = () => {
 
   return (
     <>
-      <form className="message_header" onSubmit={handleSearch}>
+      <form className="conversation_header" onSubmit={handleSearch}>
         <input
           type="text"
           value={search}
@@ -108,40 +108,48 @@ const LeftSide = () => {
         </button>
       </form>
 
-      <div className="message_chat_list">
-        {searchUsers.length !== 0 ? (
-          <>
-            {searchUsers.map((user) => (
-              <div
-                key={user._id}
-                className={`message_user`}
-                onClick={() => handleAddUser(user)}
-              >
-                <UserCard user={user} />
-              </div>
-            ))}
-          </>
-        ) : (
-          <>
-            {message.users.map((user) => (
-              <div
-                key={user._id}
-                className={`message_user ${isActive(user)}`}
-                onClick={() => handleAddUser(user)}
-              >
-                <UserCard user={user} msg={true}>
-                  {user.online ? (
-                    <i className="fas fa-circle text-success" />
-                  ) : (
-                    auth.user.following.find(
-                      (item) => item._id === user._id
-                    ) && <i className="fas fa-circle" />
-                  )}
-                </UserCard>
-              </div>
-            ))}
-          </>
-        )}
+      <div className="conversation_list">
+        {
+          searchUsers.length !== 0 ? (
+            <>
+              {
+                searchUsers.map((user) => (
+                  <div
+                    key={user._id}
+                    className={`message_user`}
+                    onClick={() => handleAddUser(user)}
+                  >
+                    <UserCard user={user} />
+                  </div>
+                ))
+              }
+            </>
+          ) : (
+            <>
+              {
+                message.users.map((user) => (
+                  <div
+                    key={user._id}
+                    className={`message_user ${isActive(user)}`}
+                    onClick={() => handleAddUser(user)}
+                  >
+                    <UserCard user={user} msg={true}>
+                      {
+                        user.online ? (
+                          <i className="fas fa-circle text-success" />
+                        ) : (
+                          auth.user.following.find(
+                            (item) => item._id === user._id
+                          ) && <i className="fas fa-circle" />
+                        )
+                      }
+                    </UserCard>
+                  </div>
+                ))
+              }
+            </>
+          )
+        }
 
         <button ref={pageEnd} style={{ opacity: 0 }}>
           Load More
@@ -151,4 +159,4 @@ const LeftSide = () => {
   )
 }
 
-export default LeftSide
+export default ConversationList

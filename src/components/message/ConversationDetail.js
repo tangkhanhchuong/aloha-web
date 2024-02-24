@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom'
 
-import MsgDisplay from './MsgDisplay'
+import MessageBubble from './MessageBubble'
 import UserCard from '../UserCard'
 import Icons from '../Icons'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
@@ -16,7 +16,7 @@ import {
 } from '../../redux/actions/messageAction'
 import LoadIcon from '../../images/loading.gif'
 
-const RightSide = () => {
+const ConversationDetail = () => {
   const { auth, message, theme, socket, peer } = useSelector((state) => state)
   const dispatch = useDispatch()
 
@@ -87,14 +87,14 @@ const RightSide = () => {
     setMedia([])
     setLoadMedia(true)
 
-    let newArr = []
-    if (media.length > 0) newArr = await imageUpload(media, auth.token)
+    let uploadedFiles = []
+    if (media.length > 0) uploadedFiles = await imageUpload(media, auth.token)
 
     const msg = {
       sender: auth.user._id,
       recipient: id,
       text,
-      media: newArr,
+      media: uploadedFiles,
       createdAt: new Date().toISOString(),
     }
 
@@ -197,25 +197,31 @@ const RightSide = () => {
 
   return (
     <>
-      <div className='message_header' style={{ cursor: 'pointer' }}>
-        {user.length !== 0 && (
-          <UserCard user={user}>
-            <div>
-              <i className='fas fa-phone-alt' onClick={handleAudioCall} />
-
-              <i className='fas fa-video mx-3' onClick={handleVideoCall} />
-
-              <i
-                className='fas fa-trash text-danger'
-                onClick={handleDeleteConversation}
-              />
-            </div>
-          </UserCard>
-        )}
+      <div className='conversation_header' style={{ cursor: 'pointer' }}>
+        {
+          user.length !== 0 && (
+            <UserCard user={user}>
+              <div>
+                <i
+                  className='fas fa-phone-alt'
+                  onClick={handleAudioCall} 
+                />
+                <i
+                  className='fas fa-video mx-3'
+                  onClick={handleVideoCall}
+                />
+                <i
+                  className='fas fa-trash text-danger'
+                  onClick={handleDeleteConversation}
+                />
+              </div>
+            </UserCard>
+          )
+        }
       </div>
 
       <div
-        className='chat_container'
+        className='chat_container p-3'
         style={{ height: media.length > 0 ? 'calc(100% - 180px)' : '' }}
       >
         <div className='chat_display' ref={refDisplay}>
@@ -223,32 +229,38 @@ const RightSide = () => {
             Load more
           </button>
 
-          {data.map((msg, index) => (
-            <div key={index}>
-              {msg.sender !== auth.user._id && (
-                <div className='chat_row other_message'>
-                  <MsgDisplay user={user} msg={msg} theme={theme} />
-                </div>
-              )}
-
-              {msg.sender === auth.user._id && (
-                <div className='chat_row you_message'>
-                  <MsgDisplay
-                    user={auth.user}
-                    msg={msg}
-                    theme={theme}
-                    data={data}
-                  />
-                </div>
-              )}
-            </div>
-          ))}
-
-          {loadMedia && (
-            <div className='chat_row you_message'>
-              <img src={LoadIcon} alt='loading' />
-            </div>
-          )}
+          {
+            data.map((msg, index) => (
+              <div key={index}>
+                {
+                  msg.sender !== auth.user._id && (
+                    <div className='chat_row other_message'>
+                      <MessageBubble user={user} msg={msg} theme={theme} />
+                    </div>
+                  )
+                }
+                {
+                  msg.sender === auth.user._id && (
+                    <div className='chat_row you_message'>
+                      <MessageBubble
+                        user={auth.user}
+                        msg={msg}
+                        theme={theme}
+                        data={data}
+                      />
+                    </div>
+                  )
+                }
+              </div>
+            ))
+          }
+          {
+            loadMedia && (
+              <div className='chat_row you_message'>
+                <img src={LoadIcon} alt='loading' />
+              </div>
+            )
+          }
         </div>
       </div>
 
@@ -305,4 +317,4 @@ const RightSide = () => {
   )
 }
 
-export default RightSide
+export default ConversationDetail

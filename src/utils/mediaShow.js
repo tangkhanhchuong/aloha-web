@@ -4,7 +4,7 @@ export const imageShow = (src, theme) => {
       src={src}
       alt='images'
       className='img-thumbnail'
-      style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+      style={{ filter: theme ? 'invert(1)' : 'invert(0)', maxHeight: '150px' }}
     />
   )
 }

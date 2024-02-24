@@ -18,13 +18,15 @@ export const addMessage = ({ msg, auth, socket }) =>
   async (dispatch) => {
     dispatch({ type: MESS_TYPES.ADD_MESSAGE, payload: msg })
     const { _id, avatar, fullname, username } = auth.user
+    
+    const mappedMsg = { ...msg, media: msg.media?.map(m => m.key) }
     socket.emit('add_message', {
-      ...msg,
+      ...mappedMsg,
       user: { _id, avatar, fullname, username },
     })
-
+    
     try {
-      await postDataAPI(dispatch, 'messages', msg, auth.token)
+      await postDataAPI(dispatch, 'messages', mappedMsg, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,

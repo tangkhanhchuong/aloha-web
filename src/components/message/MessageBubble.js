@@ -6,7 +6,8 @@ import { AVATAR_SM } from '../../constants'
 import { deleteMessages } from '../../redux/actions/messageAction'
 import Times from './Times'
 import { imageShow, videoShow } from '../../utils/mediaShow'
-const MsgDisplay = ({ user, msg, theme, data }) => {
+
+const MessageBubble = ({ user, msg, theme, data }) => {
   const { auth } = useSelector((state) => state)
   const dispatch = useDispatch()
 
@@ -22,7 +23,7 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
     <>
       <div className='chat_title'>
         <Avatar src={user.avatar} size={AVATAR_SM} />
-        <span>{user.username}</span>
+        <span className='ml-1'>{user.username}</span>
       </div>
 
       <div className='you_content'>
@@ -34,21 +35,27 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
         )}
 
         <div>
-          {msg.text && (
-            <div
-              className='chat_text'
-              style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
-            >
-              {msg.text}
-            </div>
-          )}
-          {msg.media.map((item, index) => (
-            <div key={index}>
-              {item.url.match(/video/i)
-                ? videoShow(item.url, theme)
-                : imageShow(item.url, theme)}
-            </div>
-          ))}
+          {
+            msg.text && (
+              <div
+                className='chat_text'
+                style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}
+              >
+                {msg.text}
+              </div>
+            )
+          }
+          {
+            msg.media.map((item, index) => (
+              <div key={index} style={{ maxWidth: '300px' }}>
+                {
+                  item.url.match(/video/i)
+                    ? videoShow(item.url, theme)
+                    : imageShow(item.url, theme)
+                }
+              </div>
+            ))
+          }
         </div>
 
         {msg.call && (
@@ -94,4 +101,4 @@ const MsgDisplay = ({ user, msg, theme, data }) => {
   )
 }
 
-export default MsgDisplay
+export default MessageBubble
