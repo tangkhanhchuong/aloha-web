@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 
 import Carousel from '../../Carousel'
 
-
 const CardBody = ({ post, theme }) => {
   const [readMore, setReadMore] = useState(false)
 

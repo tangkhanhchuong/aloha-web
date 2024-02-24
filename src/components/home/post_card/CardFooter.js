@@ -73,6 +73,14 @@ const CardFooter = ({ post }) => {
 
   return (
     <div className='card_footer'>
+      <div className='card_figures'>
+        <h6 style={{ cursor: 'pointer' }}>
+          {post.likes.length} likes
+        </h6>
+        <h6 style={{ cursor: 'pointer' }}>
+          {post.comments.length} comments
+        </h6>
+      </div>
       <div className='card_icon_menu'>
         <div>
           <LikeButton
@@ -90,15 +98,6 @@ const CardFooter = ({ post }) => {
         ) : (
           <i className='far fa-bookmark' onClick={handleSavePost} />
         )}
-      </div>
-
-      <div className='d-flex justify-content-between'>
-        <h6 style={{ padding: '0 25px', cursor: 'pointer' }}>
-          {post.likes.length} likes
-        </h6>
-        <h6 style={{ padding: '0 25px', cursor: 'pointer' }}>
-          {post.comments.length} comments
-        </h6>
       </div>
       {isShare && (
         <ShareModal
