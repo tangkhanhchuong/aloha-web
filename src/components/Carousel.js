@@ -60,7 +60,7 @@ const Carousel = ({ images, id }) => {
   const { theme } = useSelector((state) => state)
 
   return (
-    <div id={`image${id}`} className='carousel slide haha' data-ride='carousel'>
+    <div id={`image${id}`} className='carousel slide my-2' data-ride='carousel'>
       <ol className='carousel-indicators' style={{ zIndex: 1 }}>
         {images.map((img, index) => (
           <li
@@ -77,7 +77,7 @@ const Carousel = ({ images, id }) => {
             <div
               key={index}
               className={`carousel-item ${isActive(index)}`}
-              style={{ textAlign: 'center' }}
+              style={{ textAlign: 'center', backgroundColor: '#000' }}
             >
               {img.url.match(/video/i) ? (
                 <video

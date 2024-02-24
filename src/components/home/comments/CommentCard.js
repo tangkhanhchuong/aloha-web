@@ -77,8 +77,8 @@ const CommentCard = ({ children, comment, post, commentId }) => {
       <Link to={`/profile/${comment.user._id}`} className='d-flex align-items-center text-dark my-2'>
         <Avatar src={comment.user.avatar} size={AVATAR_MD} />
         <div className='d-flex flex-column'>
-          <h6 className='mx-1'>{comment.user.username}</h6>
-          <small className='text-muted mr-3'>
+          <h6 className='mx-2'>{comment.user.username}</h6>
+          <small className='text-muted mx-2'>
             {moment(comment.createdAt).fromNow()}
           </small>
         </div>
