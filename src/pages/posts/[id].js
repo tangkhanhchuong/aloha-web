@@ -24,13 +24,17 @@ const Post = () => {
 
   return (
     <div className='posts'>
-      {post.length === 0 && (
-        <img src={LoadIcon} alt='loading' className='d-block mx-auto my-4' />
-      )}
+      {
+        post.length === 0 && (
+          <img src={LoadIcon} alt='loading' className='d-block mx-auto my-4' />
+        )
+      }
 
-      {post.map((item) => (
-        <PostCard key={item._id} post={item} />
-      ))}
+      {
+        post.map((item) => (
+          <PostCard key={item._id} post={item} />
+        ))
+      }
     </div>
   )
 }

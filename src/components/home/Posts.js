@@ -10,10 +10,14 @@ const Posts = ({ loading, posts, count, page, handleLoadMore }) => {
 
   return (
     <div className='posts'>
-      {posts.map((post) => (
-        <PostCard key={post._id} post={post} theme={theme} />
-      ))}
-      {loading && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />}
+      {
+        posts.map((post) => (
+          <PostCard key={post._id} post={post} theme={theme} />
+        ))
+      }
+      {
+        loading && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
+      }
       <LoadMoreBtn
         count={count}
         page={page}

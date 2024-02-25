@@ -10,7 +10,6 @@ export const PROFILE_TYPES = {
   FOLLOW: 'FOLLOW',
   UNFOLLOW: 'UNFOLLOW',
   GET_PROFILE_ID: 'GET_PROFILE_ID',
-  GET_PROFILE_POSTS: 'GET_PROFILE_POSTS',
   UPDATE_PROFILE_POST: 'UPDATE_PROFILE_POST',
   LOAD_MORE_PROFILE_POSTS: 'LOAD_MORE_PROFILE_POSTS',
 }
@@ -21,16 +20,10 @@ export const getProfileUsers = ({ id, auth }) =>
     dispatch({ type: PROFILE_TYPES.LOADING_PROFILE, payload: true })
     const usersRes = await getDataAPI(dispatch, `/users/${id}`, auth.token)
     if (!usersRes) return
-    const postsRes = await getDataAPI(dispatch, `/users/${id}/posts`, auth.token)
-    if (!postsRes) return
 
     dispatch({
       type: PROFILE_TYPES.GET_PROFILE_USER,
       payload: usersRes.data,
-    })
-    dispatch({
-      type: PROFILE_TYPES.GET_PROFILE_POSTS,
-      payload: { ...postsRes.data, _id: id, page: postsRes.data.length || 0 },
     })
     dispatch({ type: PROFILE_TYPES.LOADING_PROFILE, payload: false })
   }

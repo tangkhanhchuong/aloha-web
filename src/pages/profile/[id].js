@@ -44,19 +44,21 @@ const Profile = () => {
           </div>
         )
       }
-      {profile.loading ? (
-        <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
-      ) : (
-        <>
-          {
-            saveTab ? (
-              <SavedPosts auth={auth} dispatch={dispatch} />
-            ) : (
-              <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
-            )
-          }
-        </>
-      )}
+      {
+        profile.loading ? (
+          <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
+        ) : (
+          <>
+            {
+              saveTab ? (
+                <SavedPosts auth={auth} dispatch={dispatch} />
+              ) : (
+                <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
+              )
+            }
+          </>
+        )
+      }
     </div>
   )
 }

@@ -23,14 +23,18 @@ const CardBody = ({ post, theme }) => {
       >
         <p dangerouslySetInnerHTML={createMarkedUp()} />
       </div>
-        {post.content.length > 60 && (
+      {
+        post.content.length > 60 && (
           <span className='read-more' onClick={() => setReadMore(!readMore)}>
             {readMore ? 'Hide content' : 'Read more'}
           </span>
-        )}
-      {post.images.length > 0 && (
-        <Carousel images={post.images} id={post._id} />
-      )}
+        )
+      }
+      {
+        post.images.length > 0 && (
+          <Carousel images={post.images} id={post._id} />
+        )
+      }
     </div>
   )
 }

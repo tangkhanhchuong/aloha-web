@@ -9,7 +9,7 @@ import { mapMessages } from '../../utils/mapMessages'
 
 const SavedPosts = ({ auth, dispatch }) => {
   const [savedPosts, setSavedPosts] = useState([])
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [count, setCount] = useState(0)
   const [firstLoadloading, setFirstLoadloading] = useState(false)
   const [loadMoreLoading, setLoadMoreLoading] = useState(false)
@@ -18,8 +18,10 @@ const SavedPosts = ({ auth, dispatch }) => {
     setFirstLoadloading(true)
     getDataAPI(dispatch, 'users/saved-posts', auth.token)
       .then((res) => {
-        setSavedPosts(res.data.savedPosts)
-        setFirstLoadloading(false)
+        setSavedPosts(() => res.data.savedPosts)
+        setPage(page => page + 1)
+        setCount(() => res.data.count)
+        setFirstLoadloading(() => false)
       })
       .catch((err) => {
         dispatch({
@@ -35,13 +37,13 @@ const SavedPosts = ({ auth, dispatch }) => {
     setLoadMoreLoading(true)
     const res = await getDataAPI(
       dispatch,
-      `users/saved-posts?limit=${ITEMS_PER_PAGE}`,
+      `users/saved-posts?limit=${ITEMS_PER_PAGE}&&page=${page}`,
       auth.token
     )
-    setSavedPosts(res.data.savedPosts)
-    setPage(page + 1)
-    setCount(res.data.count)
-    setLoadMoreLoading(false)
+    setSavedPosts((prevPosts) => [...prevPosts, ...res.data.savedPosts])
+    setPage(page => page + 1)
+    setCount(() => res.data.count)
+    setLoadMoreLoading(() => false)
   }
 
   return (

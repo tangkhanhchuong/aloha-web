@@ -16,19 +16,11 @@ const CardFooter = ({ post }) => {
   const { auth, theme, socket } = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  const [isLike, setIsLike] = useState(false)
+  const [isLike, setIsLike] = useState(post.likes.find((like) => like._id === auth.user._id))
   const [loadLike, setLoadLike] = useState(false)
   const [isShare, setIsShare] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saveLoad, setSaveLoad] = useState(false)
-
-  useEffect(() => {
-    if (post.likes.find((like) => like._id === auth.user._id)) {
-      setIsLike(true)
-    } else {
-      setIsLike(false)
-    }
-  }, [post.likes, auth.user._id])
 
   const handleLike = async () => {
     if (loadLike) return
@@ -36,6 +28,7 @@ const CardFooter = ({ post }) => {
     setLoadLike(true)
     await dispatch(likePost({ post, auth, socket }))
     setLoadLike(false)
+    setIsLike(true)
   }
 
   const handleUnLike = async () => {
@@ -44,6 +37,7 @@ const CardFooter = ({ post }) => {
     setLoadLike(true)
     await dispatch(unlikePost({ post, auth, socket }))
     setLoadLike(false)
+    setIsLike(false)
   }
 
   // Saved
@@ -93,18 +87,22 @@ const CardFooter = ({ post }) => {
           </Link>
           <img src={Send} alt='Send' onClick={() => setIsShare(!isShare)} />
         </div>
-        {saved ? (
-          <i className='fas fa-bookmark text-info' onClick={handleUnSavePost} />
-        ) : (
-          <i className='far fa-bookmark' onClick={handleSavePost} />
-        )}
+        {
+          saved ? (
+            <i className='fas fa-bookmark text-info' onClick={handleUnSavePost} />
+          ) : (
+            <i className='far fa-bookmark' onClick={handleSavePost} />
+          )
+        }
       </div>
-      {isShare && (
-        <ShareModal
-          url={`${process.env.REACT_APP_WEB_URL}/posts/${post._id}`}
-          theme={theme}
-        />
-      )}
+      {
+        isShare && (
+          <ShareModal
+            url={`${process.env.REACT_APP_WEB_URL}/posts/${post._id}`}
+            theme={theme}
+          />
+        )
+      }
     </div>
   )
 }

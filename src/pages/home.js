@@ -37,19 +37,21 @@ const Home = () => {
     <div className='home row'>
       <div className='col-md-8'>
         <Status />
-        {homePosts.loading ? (
-          <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
-        ) : homePosts.count === 0 && homePosts.posts.length === 0 ? (
-          <h4 className='text-center my-3'>No Post</h4>
-        ) : (
-          <Posts
-            loading={loading}
-            posts={homePosts.posts}
-            handleLoadMore={handleLoadMore}
-            page={homePosts.page}
-            count={homePosts.count}
-          />
-        )}
+        {
+          homePosts.loading ? (
+            <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
+          ) : homePosts.count === 0 && homePosts.posts.length === 0 ? (
+            <h4 className='text-center my-3'>No Post</h4>
+          ) : (
+            <Posts
+              loading={loading}
+              posts={homePosts.posts}
+              handleLoadMore={handleLoadMore}
+              page={homePosts.page + 1}
+              count={homePosts.count}
+            />
+          )
+        }
       </div>
 
       <div className='col-md-4'>

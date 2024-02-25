@@ -100,7 +100,6 @@ export const likePost = ({ post, auth, socket }) =>
   async (dispatch) => {
     const newPost = { ...post, likes: [...post.likes, auth.user] }
     dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
-
     socket.emit('likePost', newPost)
 
     try {
@@ -120,7 +119,6 @@ export const unlikePost = ({ post, auth, socket }) =>
       likes: post.likes.filter((like) => like._id !== auth.user._id),
     }
     dispatch({ type: POST_TYPES.UPDATE_POST, payload: newPost })
-
     socket.emit('unLikePost', newPost)
 
     try {

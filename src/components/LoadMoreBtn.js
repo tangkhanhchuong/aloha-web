@@ -6,7 +6,7 @@ const LoadMoreBtn = ({ count, page, loading, handleLoadMore }) => {
   return (
     <div className='my-3'>
       {
-        count <= ITEMS_PER_PAGE * page
+        count < ITEMS_PER_PAGE * (page - 1)
           ? <></>
           : !loading && (
             <button
