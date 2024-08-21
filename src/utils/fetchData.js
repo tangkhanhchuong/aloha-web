@@ -4,13 +4,13 @@ import HttpStatusCodes from 'http-status-codes'
 import { autoLogin } from '../redux/actions/authAction'
 
 const axiosClient = axios.create({
-  baseURL: process.env.REACT_APP_SERVER_URL + '/api/v1',
+  baseURL: process.env.REACT_APP_SERVER_URL,
 })
 
 export const getDataAPI = async (dispatch, url, token) => {
   try {
     return await axiosClient.get(url, {
-      headers: { Authorization: token },
+      headers: { Authorization: 'Bearer ' + token },
     })
   } catch (err) {
     if (!dispatch)  return
@@ -23,9 +23,10 @@ export const getDataAPI = async (dispatch, url, token) => {
 
 export const postDataAPI = async (dispatch, url, data, token) => {
   try {
-    return await axiosClient.post(url, data, {
-      headers: { Authorization: token },
+    const response = await axiosClient.post(url, data, {
+      headers: { Authorization: 'Bearer ' + token },
     })
+    return response?.data;
   } catch (err) {
     if (!dispatch)  return
     if (err.response.status === HttpStatusCodes.UNAUTHORIZED) {

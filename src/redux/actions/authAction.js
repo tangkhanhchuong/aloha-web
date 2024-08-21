@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie'
 
-import { GLOBALTYPES } from './globalTypes'
 import { getDataAPI, postDataAPI } from '../../utils/fetchData'
-import valid from '../../utils/valid'
 import { mapMessages } from '../../utils/mapMessages'
+import valid from '../../utils/valid'
+import { GLOBALTYPES } from './globalTypes'
 
 const TOKEN_LIFESPAN = 7 //days
 export const AUTH_TYPES = {
@@ -13,16 +13,22 @@ export const AUTH_TYPES = {
 export const login = (data) => async (dispatch) => {
   try {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
+    
     const res = await postDataAPI(dispatch, 'auth/login', data)
-    Cookies.set('access_token', res.data.access_token)
-    Cookies.set('refresh_token', res.data.refresh_token)
-    Cookies.set('user_id', res.data.user?._id)
+    
+    const { accessToken, refreshToken } = res.data
+
+    Cookies.set('accessToken', accessToken)
+    Cookies.set('refreshToken', refreshToken)
+
+    const userRes = await getDataAPI(dispatch, `/me`, accessToken)
+    const userData = userRes.data.data
 
     dispatch({
       type: AUTH_TYPES.AUTHENTICATED,
       payload: {
-        token: res.data.access_token,
-        user: res.data.user,
+        token: accessToken,
+        user: userData,
       },
     })
     dispatch({
@@ -44,17 +50,24 @@ export const login = (data) => async (dispatch) => {
 }
 
 export const initialize = () => async (dispatch) => {
-  const accessToken = Cookies.get('access_token')
-  const userId = Cookies.get('user_id')
-  if (!accessToken || !userId)  return
+  const accessToken = Cookies.get('accessToken')
+  if (!accessToken) {
+    return
+  }
 
-  const usersRes = await getDataAPI(dispatch, `/users/${userId}`, accessToken)
-  dispatch({  
+  const userRes = await getDataAPI(dispatch, `/me`, accessToken)
+  const userData = userRes.data.data
+  if (!userData?.userId) {
+    return
+  }
+  Cookies.set('user', JSON.stringify(userData))
+  const userProfile = await getDataAPI(dispatch, `users/${userData?.userId}`, accessToken)
+  dispatch({
     type: AUTH_TYPES.AUTHENTICATED,
     payload: {
       token: accessToken,
-      user: usersRes.data.user,
-    },
+      user: userProfile,
+    }
   })
 }
 
@@ -64,18 +77,25 @@ export const autoLogin = () => async (dispatch, getState) => {
     if (!!alertState.loading) return
 
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
-    const refreshToken = Cookies.get('refresh_token')
+    const refreshToken = Cookies.get('refreshToken')
     const res = await postDataAPI(dispatch, 'auth/auto-login', { refreshToken })
-    Cookies.set('access_token', res.data.access_token, {
-      expires: TOKEN_LIFESPAN,
-    })
+
+    const { accessToken } = res.data
+    const userRes = await getDataAPI(dispatch, `/me`, accessToken)
+    const userData = userRes.data.data
     dispatch({
       type: AUTH_TYPES.AUTHENTICATED,
       payload: {
-        token: res.data.access_token,
-        user: res.data.user,
+        token: accessToken,
+        user: userData,
       },
     })
+    Cookies.set('accessToken', accessToken, {
+      expires: TOKEN_LIFESPAN,
+    })
+    Cookies.set('user', userData, {
+      expires: TOKEN_LIFESPAN,
+    })  
     window.location.reload()
   } catch (err) {
     dispatch({
@@ -97,13 +117,12 @@ export const register = (data) => async (dispatch) => {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
 
     const res = await postDataAPI(dispatch, 'auth/register', data)
-    Cookies.set('access_token', res.data.access_token)
-    Cookies.set('refresh_token', res.data.refresh_token)
-    Cookies.set('user_id', res.data.user?._id)
+    Cookies.set('accessToken', res.data.accessToken)
+    Cookies.set('refreshToken', res.data.refreshToken)
     dispatch({
       type: AUTH_TYPES.AUTHENTICATED,
       payload: {
-        token: res.data.access_token,
+        token: res.data.accessToken,
         user: res.data.user,
       },
     })
@@ -125,11 +144,11 @@ export const register = (data) => async (dispatch) => {
   }
 }
 
-export const logout = () => async (dispatch) => {
+export const logout = (accessToken) => async (dispatch) => {
   try {
-    await postDataAPI(dispatch, 'auth/logout')
-    Cookies.remove('access_token')
-    Cookies.remove('refresh_token')
+    await postDataAPI(dispatch, 'auth/logout', null, accessToken)
+    Cookies.remove('accessToken')
+    Cookies.remove('refreshToken')
     Cookies.remove('user')
     window.location.href = '/'
   } catch (err) {

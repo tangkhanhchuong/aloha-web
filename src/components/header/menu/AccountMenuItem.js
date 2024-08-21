@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom/cjs/react-router-dom.min'
 
-import Avatar from '../../Avatar'
 import { AVATAR_SM } from '../../../constants'
-import MenuDropdownItem from './MenuDropdownItem'
-import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
 import { logout } from '../../../redux/actions/authAction'
+import { GLOBALTYPES } from '../../../redux/actions/globalTypes'
+import Avatar from '../../Avatar'
+import MenuDropdownItem from './MenuDropdownItem'
 
 const AccountMenuItem = () => {
   const { auth, theme } = useSelector((state) => state)
@@ -36,7 +36,7 @@ const AccountMenuItem = () => {
           <Link
             className='dropdown-item'
             to='/'
-            onClick={() => dispatch(logout())}
+            onClick={() => dispatch(logout(auth.token))}
           >
             Logout
           </Link>

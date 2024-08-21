@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useHistory, useParams } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
 
-import UserCard from "../UserCard"
-import { getDataAPI } from "../../utils/fetchData"
 import { GLOBALTYPES } from "../../redux/actions/globalTypes"
 import {
-  MESS_TYPES,
-  getConversations,
+  MESS_TYPES
 } from "../../redux/actions/messageAction"
+import { getDataAPI } from "../../utils/fetchData"
 import { mapMessages } from "../../utils/mapMessages"
+import UserCard from "../UserCard"
 
 const ConversationList = () => {
   const { auth, message, online } = useSelector((state) => state)
@@ -61,7 +60,7 @@ const ConversationList = () => {
 
   useEffect(() => {
     if (message.firstLoad) return
-    dispatch(getConversations({ auth }))
+    // dispatch(getConversations({ auth }))
   }, [dispatch, auth, message.firstLoad])
 
   // Load More
@@ -82,7 +81,7 @@ const ConversationList = () => {
 
   useEffect(() => {
     if (message.resultUsers >= (page - 1) * 9 && page > 1) {
-      dispatch(getConversations({ auth, page }))
+      // dispatch(getConversations({ auth, page }))
     }
   }, [message.resultUsers, page, auth, dispatch])
 
