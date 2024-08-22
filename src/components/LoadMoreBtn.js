@@ -4,7 +4,7 @@ import { ITEMS_PER_PAGE } from '../constants'
 
 const LoadMoreBtn = ({ count, page, loading, handleLoadMore }) => {
   return (
-    <div className='my-3'>
+    <div className='my-2'>
       {
         count < ITEMS_PER_PAGE * (page - 1)
           ? <></>

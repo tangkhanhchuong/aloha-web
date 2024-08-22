@@ -15,7 +15,7 @@ const AccountMenuItem = () => {
       appearance={<Avatar src={auth.user.avatar} size={AVATAR_SM}/>}
       content={
         <>
-          <Link className='dropdown-item' to={`/profile/${auth.user._id}`}>
+          <Link className='dropdown-item' to={`/profile/${auth.user.userId}`}>
             Profile
           </Link>
 

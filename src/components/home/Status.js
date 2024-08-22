@@ -9,7 +9,7 @@ const Status = () => {
   const dispatch = useDispatch()
 
   return (
-    <div className='status my-3 d-flex'>
+    <div className='status my-2 d-flex'>
       <Avatar src={auth.user.avatar} size={AVATAR_LG} />
 
       <button

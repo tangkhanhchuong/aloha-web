@@ -66,7 +66,7 @@ export const initialize = () => async (dispatch) => {
     type: AUTH_TYPES.AUTHENTICATED,
     payload: {
       token: accessToken,
-      user: userProfile,
+      user: userProfile.data.data,
     }
   })
 }
@@ -79,7 +79,7 @@ export const autoLogin = () => async (dispatch, getState) => {
     dispatch({ type: GLOBALTYPES.ALERT, payload: { loading: true } })
     const refreshToken = Cookies.get('refreshToken')
     const res = await postDataAPI(dispatch, 'auth/auto-login', { refreshToken })
-
+    
     const { accessToken } = res.data
     const userRes = await getDataAPI(dispatch, `/me`, accessToken)
     const userData = userRes.data.data
@@ -98,13 +98,10 @@ export const autoLogin = () => async (dispatch, getState) => {
     })  
     window.location.reload()
   } catch (err) {
-    dispatch({
-      type: GLOBALTYPES.ALERT,
-      payload: {
-        error: mapMessages(err.response.data.msg),
-        loading: false
-      },
-    })
+    Cookies.remove('accessToken')
+    Cookies.remove('refreshToken')
+    Cookies.remove('user')
+    window.location.href = '/'
   }
 }
 

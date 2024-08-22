@@ -27,7 +27,7 @@ const MyPosts = ({ auth, id, dispatch }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getMyPosts();
+      // await getMyPosts();
     };
     fetchData();
     return () => {

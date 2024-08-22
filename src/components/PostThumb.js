@@ -7,7 +7,7 @@ const placeholder = 'https://placehold.co/600x400'
 const PostThumb = ({ posts, count }) => {
   const { theme } = useSelector((state) => state)
 
-  if (count === 0) return <h4 className='text-center text-danger my-3'>No Post</h4>
+  if (count === 0) return <h4 className='text-center text-danger my-2'>No Post</h4>
 
   return (
     <div className='post_thumb'>

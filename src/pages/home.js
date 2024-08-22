@@ -41,7 +41,7 @@ const Home = () => {
           homePosts.loading ? (
             <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
           ) : homePosts.count === 0 && homePosts.posts.length === 0 ? (
-            <h4 className='text-center my-3'>No Post</h4>
+            <h4 className='text-center my-2'>No Post</h4>
           ) : (
             <Posts
               loading={loading}
