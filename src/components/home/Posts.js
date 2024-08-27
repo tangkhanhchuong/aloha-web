@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-import PostCard from '../PostCard'
 import LoadIcon from '../../images/loading.gif'
 import LoadMoreBtn from '../LoadMoreBtn'
+import PostCard from '../PostCard'
 
 const Posts = ({ loading, posts, count, page, handleLoadMore }) => {
   const { theme } = useSelector((state) => state)
@@ -12,7 +12,7 @@ const Posts = ({ loading, posts, count, page, handleLoadMore }) => {
     <div className='posts'>
       {
         posts.map((post) => (
-          <PostCard key={post._id} post={post} theme={theme} />
+          <PostCard key={post.postId} post={post} theme={theme} />
         ))
       }
       {

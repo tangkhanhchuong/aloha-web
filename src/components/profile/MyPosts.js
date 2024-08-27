@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback, useRef } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 
 import { ITEMS_PER_PAGE } from "../../constants"
-import Posts from "../home/Posts"
 import { getDataAPI } from "../../utils/fetchData"
+import Posts from "../home/Posts"
 
 const MyPosts = ({ auth, id, dispatch }) => {
   const [posts, setPosts] = useState([])
@@ -12,22 +12,21 @@ const MyPosts = ({ auth, id, dispatch }) => {
   const mountedRef = useRef(true)
 
   const getMyPosts = useCallback(async () => {
-    if (!loading) return
     const res = await getDataAPI(
       dispatch,
       `users/${id}/posts?limit=${ITEMS_PER_PAGE}&&page=${page}`,
       auth.token
     )
     if (!mountedRef.current) return null;
-    setPosts(() => [...res.data?.posts])
-    setCount(() => res.data?.count)
+    setPosts(() => [...res.data.data?.items])
+    setCount(() => res.data.data?.total)
     setPage((prevPage) => prevPage + 1)
     setLoading(() => false)
-  }, [page, dispatch, auth.token, loading, id])
+  }, [page, dispatch, auth.token, id])
 
   useEffect(() => {
     const fetchData = async () => {
-      // await getMyPosts();
+      await getMyPosts();
     };
     fetchData();
     return () => {
@@ -41,9 +40,9 @@ const MyPosts = ({ auth, id, dispatch }) => {
       `users/${id}/posts?limit=${ITEMS_PER_PAGE}&&page=${page}`,
       auth.token
     )
-    const newData = { ...res.data, page: page + 1, _id: id }
-    setPosts((prevPosts) => [...prevPosts, ...newData?.posts])
-    setCount(() => newData?.count)
+    const newData = { ...res.data.data, page: page + 1, _id: id }
+    setPosts((prevPosts) => [...prevPosts, ...newData?.items])
+    setCount(() => newData?.total)
     setPage((prevPage) => prevPage + 1)
     setLoading(() => false)
   }

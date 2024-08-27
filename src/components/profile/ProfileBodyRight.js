@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { getProfileUsers } from '../../redux/actions/profileAction'
+import LoadIcon from '../../images/loading.gif'
+import MyPosts from './MyPosts'
+import SavedPosts from './SavedPosts'
 
 const tabItems = [
     {
@@ -66,21 +69,23 @@ const ProfileBodyRight = () => {
                     )
                 }
             </div>
-            {/* {
-                profile.loading ? (
-                    <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
-                ) : (
-                    <>
-                        {
-                            saveTab ? (
-                                <SavedPosts auth={auth} dispatch={dispatch} />
-                            ) : (
-                                <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
-                            )
-                        }
-                    </>
-                )
-            } */}
+            {
+                // profile.loading ? (
+                //     <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
+                // ) :
+                <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
+                // (
+                //     <>
+                //         {
+                //             saveTab ? (
+                //                 <SavedPosts auth={auth} dispatch={dispatch} />
+                //             ) : (
+                //                 <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
+                //             )
+                //         }
+                //     </>
+                // )
+            }
             {
                 tabIndex === 1 ?
                     'My Posts' :

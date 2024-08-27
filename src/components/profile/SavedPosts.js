@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { ITEMS_PER_PAGE } from '../../constants'
-import Posts from '../home/Posts'
 import LoadIcon from '../../images/loading.gif'
 import { GLOBALTYPES } from '../../redux/actions/globalTypes'
 import { getDataAPI } from '../../utils/fetchData'
 import { mapMessages } from '../../utils/mapMessages'
+import Posts from '../home/Posts'
 
 const SavedPosts = ({ auth, dispatch }) => {
   const [savedPosts, setSavedPosts] = useState([])
