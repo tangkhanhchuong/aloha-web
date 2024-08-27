@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { getProfileUsers } from '../../redux/actions/profileAction'
+import Followers from './Followers'
+import Followees from './Following'
 import MyPosts from './MyPosts'
 
 const tabItems = [
@@ -24,11 +26,18 @@ const tabItems = [
     }
 ]
 
-const TabItems = ({ tabIndex, auth, profile, dispatch, id }) => {
-    if (tabIndex === 1) {
-        return <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
+const TabItems = ({ tabIndex, auth, profile, id }) => {
+
+    switch (tabIndex) {
+        case 1:
+            return <MyPosts auth={auth} profile={profile} id={id} />
+        case 2:
+            return <Followers />
+        case 3:
+            return <Followees />
+        default:
+            return <>Not implemented</>
     }
-    return <>Not implemented</>
 }
 
 const ProfileBodyRight = () => {
@@ -80,7 +89,6 @@ const ProfileBodyRight = () => {
                     id={id}
                     auth={auth}
                     profile={profile}
-                    dispatch={dispatch}
                 />
             }
         </div>

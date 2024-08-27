@@ -136,3 +136,12 @@ img {
   box-shadow: 0 0 5px #ddd;
   border: 1px solid rgb(0, 0, 0, .125);
 }
+
+.user-card-fullname {
+  color: black;
+  font-weight: bold;
+}
+
+.user-card-username {
+  font-size: 14px;
+}

@@ -1,37 +1,60 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import FollowBtn from '../FollowBtn'
+import LoadIcon from '../../images/loading.gif'
+import { getDataAPI } from '../../utils/fetchData'
 import UserCard from '../UserCard'
 
-const Following = ({ users, setShowFollowing }) => {
+const Followees = () => {
   const { auth } = useSelector((state) => state)
+  const [followers, setFollowees] = useState([])
+  const [loading, setLoading] = useState(true)
+  const dispatch = useDispatch()
+  const mountedRef = useRef(true)
+
+  const getFollowees = useCallback(
+    async () => {
+      const res = await getDataAPI(
+        dispatch,
+        `users/${auth.user.userId}/followees`,
+        auth.token
+      )
+      if (!mountedRef.current) return null
+      console.log(res.data.data)
+      setFollowees(res.data?.data.items)
+      setLoading(() => false)
+    },
+    [dispatch, auth]
+  )
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getFollowees();
+    };
+    fetchData();
+    return () => {
+      mountedRef.current = false;
+    };
+  }, [getFollowees]);
+
 
   return (
-    <div className='follow'>
-      <div className='follow_box'>
-        <h5 className='text-center'>Following</h5>
-        <hr />
-
-        <div className='follow_content'>
+    <>
+      {
+        loading && <img src={LoadIcon} alt='loading' className='d-block mx-auto' />
+      }
+      <div className='follow mt-2'>
           {
-            users.map((user) => (
+            followers.map((user) => (
               <UserCard
-                key={user._id}
+                key={user.userId}
                 user={user}
-                setShowFollowing={setShowFollowing}
-              >
-                {auth.user._id !== user._id && <FollowBtn user={user} />}
-              </UserCard>
+              />
             ))
           }
         </div>
-        <div className='close mr-2' onClick={() => setShowFollowing(false)}>
-          &times;
-        </div>
-      </div>
-    </div>
+    </>
   )
 }
 
-export default Following
+export default Followees

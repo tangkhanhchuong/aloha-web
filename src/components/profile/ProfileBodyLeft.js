@@ -53,15 +53,6 @@ const ProfileBodyLeft = ({ user, auth, dispatch }) => {
           {user.website}
           </a>
       </h6>
-
-      <h6 className='follow_btn'>
-      {/* <span className='mr-4' onClick={() => setShowFollowers(true)}>
-          {user.numberOfFollowers} Followers
-      </span>
-      <span className='ml-4' onClick={() => setShowFollowing(true)}>
-          {user.numberOfFollowers} Following
-      </span> */}
-      </h6>
       {onEdit && <EditProfile setOnEdit={setOnEdit} />}
       <br />
       {

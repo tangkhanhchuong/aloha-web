@@ -1,77 +1,31 @@
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-
-import Avatar from './Avatar'
 import { AVATAR_LG } from '../constants'
+import Avatar from './Avatar'
 
 const UserCard = ({
   children,
   user,
-  border,
-  handleClose,
-  setShowFollowers,
-  setShowFollowing,
-  msg,
 }) => {
-  const { theme } = useSelector((state) => state)
-
-  const handleCloseAll = () => {
-    if (handleClose) handleClose()
-    if (setShowFollowers) setShowFollowers(false)
-    if (setShowFollowing) setShowFollowing(false)
-  }
-
-  const showMessage = (user) => {
-    return (
-      <>
-        <div style={{ filter: theme ? 'invert(1)' : 'invert(0)' }}>
-          {user.text}
-        </div>
-        {
-          user.media?.length > 0 && (
-            <div>
-              An image was sent
-            </div>
-          )
-        }
-        {
-          user.call && (
-            <span className='material-icons'>
-              {
-                user.call.times === 0
-                  ? user.call.video
-                    ? 'videocam_off'
-                    : 'phone_disabled'
-                  : user.call.video
-                  ? 'video_camera_front'
-                  : 'call'
-              }
-            </span>
-          )
-        }
-      </>
-    )
+  const redirectToUserProfile = (userId) => {
+    window.location = `#/profile/${userId}`
   }
 
   return (
     <div
-      className={`d-flex p-2 align-items-center justify-content-between w-100 ${border}`}
+      className={`d-flex p-2 align-items-center justify-content-between w-100`}
     >
       <div>
-        <Link
-          to={`/profile/${user._id}`}
-          onClick={handleCloseAll}
-          className='d-flex align-items-center'
-        >
-          <Avatar src={user.avatar} size={AVATAR_LG} />
-
-          <div className='ml-1' style={{ transform: 'translateY(-2px)' }}>
-            <span className='d-block'>{user.username}</span>
-            <small style={{ opacity: 0.7 }}>
-              {msg ? showMessage(user) : user.fullname}
-            </small>
+        <div className='d-flex align-items-center' onClick={() => redirectToUserProfile(user.userId)}>
+          <div>
+            <Avatar src={user.avatar} size={AVATAR_LG} />
           </div>
-        </Link>
+          <div className='mx-3'>
+            <div>
+              <span className='user-card-fullname'>{user.fullname}&nbsp;&nbsp;</span>
+              <span className='user-card-username'>@{user.username}</span>
+            </div>
+            <span><i>{user.bio}</i></span>
+          </div>
+        </div>
       </div>
       {children}
     </div>

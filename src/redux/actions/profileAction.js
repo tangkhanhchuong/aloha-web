@@ -1,8 +1,8 @@
-import { AUTH_TYPES } from './authAction'
-import { GLOBALTYPES, deleteData } from './globalTypes'
-import { getDataAPI, patchDataAPI } from '../../utils/fetchData'
+import { getDataAPI, patchDataAPI, postDataAPI } from '../../utils/fetchData'
 import { imageUpload } from '../../utils/imageUpload'
 import { mapMessages } from '../../utils/mapMessages'
+import { AUTH_TYPES } from './authAction'
+import { GLOBALTYPES } from './globalTypes'
 
 export const PROFILE_TYPES = {
   LOADING_PROFILE: 'LOADING_PROFILE',
@@ -85,38 +85,16 @@ export const updateProfileUser = ({ userData, avatar, auth }) =>
     }
   }
 
-export const follow = ({ users, user, auth, socket }) =>
+export const follow = ({ user, auth, socket }) =>
   async (dispatch) => {
-    let updatedUser
-
-    if (users.every((item) => item._id !== user._id)) {
-      updatedUser = { ...user, following: [...user.following, auth.user] }
-    } else {
-      users.forEach((item) => {
-        if (item._id === user._id) {
-          updatedUser = { ...item, following: [...item.following, auth.user] }
-        }
-      })
-    }
-
-    const following = [...auth.user.following, updatedUser]
-    dispatch({ type: PROFILE_TYPES.FOLLOW, payload: updatedUser })
-    dispatch({
-      type: AUTH_TYPES.AUTHENTICATED,
-      payload: {
-        ...auth,
-        user: { ...auth.user, following },
-      },
-    })
-
     try {
-      const res = await patchDataAPI(
+      await postDataAPI(
         dispatch, 
-        `users/${user._id}/follow`,
+        `users/${user.userId}/follow`,
         null,
         auth.token
       )
-      socket.emit('follow', res.data.user)
+      // socket.emit('follow', res.data.user)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -125,44 +103,16 @@ export const follow = ({ users, user, auth, socket }) =>
     }
   }
 
-export const unfollow = ({ users, user, auth, socket }) =>
+export const unfollow = ({ user, auth, socket }) =>
   async (dispatch) => {
-    let updatedUser
-
-    if (users.every((item) => item._id !== user._id)) {
-      updatedUser = {
-        ...user,
-        following: deleteData(user.following, auth.user._id),
-      }
-    } else {
-      users.forEach((item) => {
-        if (item._id === user._id) {
-          updatedUser = {
-            ...item,
-            following: deleteData(item.following, auth.user._id),
-          }
-        }
-      })
-    }
-
-    const following = deleteData(auth.user.following, updatedUser._id)
-    dispatch({ type: PROFILE_TYPES.UNFOLLOW, payload: updatedUser })
-    dispatch({
-      type: AUTH_TYPES.AUTHENTICATED,
-      payload: {
-        ...auth,
-        user: { ...auth.user, following },
-      },
-    })
-
     try {
-      const res = await patchDataAPI(
+      await postDataAPI(
         dispatch,
-        `users/${user._id}/unfollow`,
+        `users/${user.userId}/unfollow`,
         null,
         auth.token
       )
-      socket.emit('unFollow', res.data.user)
+      // socket.emit('unFollow', res.data.user)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,

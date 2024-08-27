@@ -1,15 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 import { ITEMS_PER_PAGE } from "../../constants"
 import { getDataAPI } from "../../utils/fetchData"
 import Posts from "../home/Posts"
 
-const MyPosts = ({ auth, id, dispatch }) => {
+const MyPosts = ({ id }) => {
+  const { auth } = useSelector((state) => state)
   const [posts, setPosts] = useState([])
   const [count, setCount] = useState(0)
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const mountedRef = useRef(true)
+  const dispatch = useDispatch()
 
   const getMyPosts = useCallback(async () => {
     const res = await getDataAPI(
