@@ -10,7 +10,7 @@ const PostCard = ({ post, theme }) => {
   return (
     <div className='card my-2'>
       <CardHeader post={post} />
-      {/* {/* <CardBody post={post} theme={theme} /> */}
+      <CardBody post={post} theme={theme} />
       <CardFooter post={post} />
       {/* <Comments post={post} />
       <InputComment post={post} /> */}

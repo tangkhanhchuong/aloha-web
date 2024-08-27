@@ -31,7 +31,7 @@ const CardBody = ({ post, theme }) => {
         )
       }
       {
-        post.images.length > 0 && (
+        post.fileUrls.length > 0 && (
           <Carousel images={post.images} id={post._id} />
         )
       }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,12 +13,10 @@ import LikeButton from '../../LikeButton'
 import ShareModal from '../../ShareModal'
 
 const CardFooter = ({ post }) => {
-  console.log({post})
   const { auth, theme, socket } = useSelector((state) => state)
   const dispatch = useDispatch()
 
-  // const [isLike, setIsLike] = useState(post.likes.find((like) => like._id === auth.user.userId))
-  const [isLike, setIsLike] = useState(false)
+  const [isLike, setIsLike] = useState(post?.isReacted || false)
   const [loadLike, setLoadLike] = useState(false)
   const [isShare, setIsShare] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -27,30 +25,18 @@ const CardFooter = ({ post }) => {
   const handleLike = async () => {
     if (loadLike) return
 
-    setLoadLike(true)
+    setIsLike(true)
     await dispatch(likePost({ post, auth, socket }))
     setLoadLike(false)
-    // setIsLike(true)
   }
 
   const handleUnLike = async () => {
     if (loadLike) return
 
-    setLoadLike(true)
+    setIsLike(false)
     await dispatch(unlikePost({ post, auth, socket }))
     setLoadLike(false)
-    setIsLike(false)
   }
-
-  // Saved
-  useEffect(() => {
-    // if (auth.user.saved.find((id) => id === post.postId)) {
-    //   setSaved(true)
-    // } else {
-    //   setSaved(false)
-    // }
-  }, [auth.user.saved, post.postId])
-
   const handleSavePost = async () => {
     if (saveLoad) return
 

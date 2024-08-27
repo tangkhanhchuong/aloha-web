@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import { getProfileUsers } from '../../redux/actions/profileAction'
-import LoadIcon from '../../images/loading.gif'
 import MyPosts from './MyPosts'
-import SavedPosts from './SavedPosts'
 
 const tabItems = [
     {
@@ -25,6 +23,13 @@ const tabItems = [
         label: 'Bookmarks',
     }
 ]
+
+const TabItems = ({ tabIndex, auth, profile, dispatch, id }) => {
+    if (tabIndex === 1) {
+        return <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
+    }
+    return <>Not implemented</>
+}
 
 const ProfileBodyRight = () => {
     const { profile, auth } = useSelector((state) => state)
@@ -70,30 +75,13 @@ const ProfileBodyRight = () => {
                 }
             </div>
             {
-                // profile.loading ? (
-                //     <img className='d-block mx-auto' src={LoadIcon} alt='loading' />
-                // ) :
-                <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
-                // (
-                //     <>
-                //         {
-                //             saveTab ? (
-                //                 <SavedPosts auth={auth} dispatch={dispatch} />
-                //             ) : (
-                //                 <MyPosts auth={auth} profile={profile} dispatch={dispatch} id={id} />
-                //             )
-                //         }
-                //     </>
-                // )
-            }
-            {
-                tabIndex === 1 ?
-                    'My Posts' :
-                    tabIndex === 2 ?
-                        'Followers' :
-                        tabIndex === 3 ? 
-                            'Following' :
-                            'Bookmarks'
+                <TabItems
+                    tabIndex={tabIndex}
+                    id={id}
+                    auth={auth}
+                    profile={profile}
+                    dispatch={dispatch}
+                />
             }
         </div>
     )

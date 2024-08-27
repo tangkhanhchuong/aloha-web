@@ -9,12 +9,12 @@ const ProfileCover = ({ user }) => {
     <div
       className='card-body cover_container my-2'
       key={user.userId}
+      style={{ backgroundImage: `url(${user.cover})`}}
     >
       <Avatar
         src={user.avatar}
         size={AVATAR_XL}
       />
-
     </div>
   )
 }

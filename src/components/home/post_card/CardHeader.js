@@ -52,19 +52,19 @@ const CardHeader = ({ post }) => {
           more_horiz
         </span>
         <div className='dropdown-menu'>
-          {auth.user.id === post.createdBy.userId && (
+          {auth.user.userId === post.createdBy.userId && (
             <>
               <div className='dropdown-item' onClick={handleEditPost}>
-                <span className='material-icons'>create</span> Edit Post
+                <span className='material-icons'>create</span>&nbsp;&nbsp;Edit Post
               </div>
               <div className='dropdown-item' onClick={handleDeletePost}>
-                <span className='material-icons'>delete_outline</span> Remove
+                <span className='material-icons'>delete_outline</span>&nbsp;&nbsp;Remove
                 Post
               </div>
             </>
           )}
           <div className='dropdown-item' onClick={handleCopyLink}>
-            <span className='material-icons'>content_copy</span> Copy Link
+            <span className='material-icons'>content_copy</span>&nbsp;&nbsp;Copy Link
           </div>
         </div>
       </div>
