@@ -6,6 +6,7 @@ import { getProfileUsers } from '../../redux/actions/profileAction'
 import Followers from './Followers'
 import Followees from './Following'
 import MyPosts from './MyPosts'
+import Bookmarks from './Bookmarks'
 
 const tabItems = [
     {
@@ -26,17 +27,19 @@ const tabItems = [
     }
 ]
 
-const TabItems = ({ tabIndex, auth, profile, id }) => {
+const TabItems = ({ tabIndex, id }) => {
 
     switch (tabIndex) {
         case 1:
-            return <MyPosts auth={auth} profile={profile} id={id} />
+            return <MyPosts id={id} />
         case 2:
             return <Followers />
         case 3:
             return <Followees />
+        case 4:
+            return <Bookmarks id={id} />
         default:
-            return <>Not implemented</>
+            return <>Not found</>
     }
 }
 
@@ -87,8 +90,6 @@ const ProfileBodyRight = () => {
                 <TabItems
                     tabIndex={tabIndex}
                     id={id}
-                    auth={auth}
-                    profile={profile}
                 />
             }
         </div>

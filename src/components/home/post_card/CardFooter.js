@@ -17,40 +17,43 @@ const CardFooter = ({ post }) => {
   const dispatch = useDispatch()
 
   const [isLike, setIsLike] = useState(post?.isReacted || false)
-  const [loadLike, setLoadLike] = useState(false)
-  const [isShare, setIsShare] = useState(false)
-  const [saved, setSaved] = useState(false)
-  const [saveLoad, setSaveLoad] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSharing, setIsSharing] = useState(false)
+  const [isSaved, setIsSaved] = useState(post?.isBookmarked || false)
 
   const handleLike = async () => {
-    if (loadLike) return
+    if (isLoading) return
 
-    setIsLike(true)
+    setIsLoading(true)
     await dispatch(likePost({ post, auth, socket }))
-    setLoadLike(false)
+    setIsLike(true)
+    setIsLoading(false)
   }
 
   const handleUnLike = async () => {
-    if (loadLike) return
+    if (isLoading) return
 
-    setIsLike(false)
+    setIsLoading(true)
     await dispatch(unlikePost({ post, auth, socket }))
-    setLoadLike(false)
+    setIsLike(false)
+    setIsLoading(false)
   }
   const handleSavePost = async () => {
-    if (saveLoad) return
+    if (isLoading) return
 
-    setSaveLoad(true)
+    setIsLoading(true)
     await dispatch(savePost({ post, auth }))
-    setSaveLoad(false)
+    setIsSaved(true)
+    setIsLoading(false)
   }
 
   const handleUnSavePost = async () => {
-    if (saveLoad) return
+    if (isLoading) return
 
-    setSaveLoad(true)
+    setIsLoading(true)
     await dispatch(unsavePost({ post, auth }))
-    setSaveLoad(false)
+    setIsSaved(false)
+    setIsLoading(false)
   }
 
   return (
@@ -73,10 +76,10 @@ const CardFooter = ({ post }) => {
           <Link to={`/posts/${post.postId}`} className='text-dark'>
             <i className='far fa-comment' />
           </Link>
-          <img src={Send} alt='Send' onClick={() => setIsShare(!isShare)} />
+          <img src={Send} alt='Send' onClick={() => setIsSharing(!isSharing)} />
         </div>
         {
-          saved ? (
+          isSaved ? (
             <i className='fas fa-bookmark text-info' onClick={handleUnSavePost} />
           ) : (
             <i className='far fa-bookmark' onClick={handleSavePost} />
@@ -84,7 +87,7 @@ const CardFooter = ({ post }) => {
         }
       </div>
       {
-        isShare && (
+        isSharing && (
           <ShareModal
             url={`${process.env.REACT_APP_WEB_URL}/posts/${post.postId}`}
             theme={theme}

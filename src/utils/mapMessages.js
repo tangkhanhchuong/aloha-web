@@ -16,7 +16,9 @@ export const messages = {
 		POST_SAVED: 'You has already saved this post!',
 		FILE_MISSED: 'Missing or invalid file!',
 		COMMENT_NOT_FOUND: 'Comment not found!',
-		COMMENT_LIKED: 'You has already liked this comment!'
+		COMMENT_LIKED: 'You has already liked this comment!',
+		INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password',
+		INVALID_VERFIRICATION_CODE: 'Invalid verification code'
 }
 
 export const mapMessages = (code) => {

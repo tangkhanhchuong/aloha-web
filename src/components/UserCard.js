@@ -7,12 +7,11 @@ const UserCard = ({
 }) => {
   const redirectToUserProfile = (userId) => {
     window.location = `#/profile/${userId}`
+    window.location.reload()
   }
 
   return (
-    <div
-      className={`d-flex p-2 align-items-center justify-content-between w-100`}
-    >
+    <div className={`d-flex p-2 align-items-center justify-content-between w-100 mt-2 user-card`}>
       <div>
         <div className='d-flex align-items-center' onClick={() => redirectToUserProfile(user.userId)}>
           <div>
@@ -20,10 +19,10 @@ const UserCard = ({
           </div>
           <div className='mx-3'>
             <div>
-              <span className='user-card-fullname'>{user.fullname}&nbsp;&nbsp;</span>
+              <span className='user-card-fullname'>{user.fullname || user.username}&nbsp;&nbsp;</span>
               <span className='user-card-username'>@{user.username}</span>
             </div>
-            <span><i>{user.bio}</i></span>
+            <div className='user-card-bio'><i>{user.bio}</i></div>
           </div>
         </div>
       </div>

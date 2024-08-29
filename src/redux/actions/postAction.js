@@ -174,11 +174,11 @@ export const deletePost = ({ post, auth, socket }) =>
 
 export const savePost = ({ post, auth }) =>
   async (dispatch) => {
-    const newUser = { ...auth.user, saved: [...auth.user.saved, post._id] }
-    dispatch({ type: AUTH_TYPES.AUTHENTICATED, payload: { ...auth, user: newUser } })
+    // const newUser = { ...auth.user, saved: [...auth.user.saved, post.postId] }
+    // dispatch({ type: AUTH_TYPES.AUTHENTICATED, payload: { ...auth, user: newUser } })
 
     try {
-      await patchDataAPI(dispatch, `posts/${post._id}/save`, null, auth.token)
+      await postDataAPI(dispatch, `posts/${post.postId}/bookmark`, null, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,
@@ -189,14 +189,14 @@ export const savePost = ({ post, auth }) =>
 
 export const unsavePost = ({ post, auth }) =>
   async (dispatch) => {
-    const newUser = {
-      ...auth.user,
-      saved: auth.user.saved.filter((id) => id !== post._id),
-    }
-    dispatch({ type: AUTH_TYPES.AUTHENTICATED, payload: { ...auth, user: newUser } })
+    // const newUser = {
+    //   ...auth.user,
+    //   saved: auth.user.saved.filter((id) => id !== post.postId),
+    // }
+    // dispatch({ type: AUTH_TYPES.AUTHENTICATED, payload: { ...auth, user: newUser } })
 
     try {
-      await patchDataAPI(dispatch, `posts/${post._id}/unsave`, null, auth.token)
+      await postDataAPI(dispatch, `posts/${post.postId}/bookmark`, null, auth.token)
     } catch (err) {
       dispatch({
         type: GLOBALTYPES.ALERT,

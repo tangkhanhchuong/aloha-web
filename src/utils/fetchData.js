@@ -28,8 +28,11 @@ export const postDataAPI = async (dispatch, url, data, token) => {
     })
     return response?.data;
   } catch (err) {
-    if (!dispatch)  return
-    if (err.response.status === HttpStatusCodes.UNAUTHORIZED) {
+    if (!dispatch) return
+    if (
+      err.response.status === HttpStatusCodes.UNAUTHORIZED
+      && err.response?.data.message !== 'INVALID_EMAIL_OR_PASSWORD'
+    ) {
       return dispatch(autoLogin())
     }
     throw err

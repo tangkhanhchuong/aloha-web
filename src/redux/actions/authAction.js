@@ -34,15 +34,16 @@ export const login = (data) => async (dispatch) => {
     dispatch({
       type: GLOBALTYPES.ALERT,
       payload: {
-        success: mapMessages(res.data.msg),
+        success: mapMessages(res.data.message),
         loading: false
       },
     })
   } catch (err) {
+    console.log({send: err.response.data.message})
     dispatch({
       type: GLOBALTYPES.ALERT,
       payload: {
-        error: mapMessages(err.response.data.msg),
+        error: mapMessages(err.response.data.message),
         loading: false
       },
     })
@@ -126,7 +127,7 @@ export const register = (data) => async (dispatch) => {
     dispatch({
       type: GLOBALTYPES.ALERT,
       payload: {
-        success: mapMessages(res.data.msg),
+        success: mapMessages(res.data.message),
         loading: false
       },
     })
@@ -134,7 +135,7 @@ export const register = (data) => async (dispatch) => {
     dispatch({
       type: GLOBALTYPES.ALERT,
       payload: {
-        error: mapMessages(err.response.data.msg),
+        error: mapMessages(err.response.data.message),
         loading: false
       },
     })
@@ -152,7 +153,7 @@ export const logout = (accessToken) => async (dispatch) => {
     dispatch({
       type: GLOBALTYPES.ALERT,
       payload: {
-        error: mapMessages(err.response.data.msg),
+        error: mapMessages(err.response.data.message),
         loading: false
       },
     })

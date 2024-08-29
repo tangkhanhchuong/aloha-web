@@ -137,6 +137,21 @@ img {
   border: 1px solid rgb(0, 0, 0, .125);
 }
 
+.user-card {
+  background-color: white;
+}
+
+.user-card-bio {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Limits to 2 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3em;
+  min-height: 3em;
+  line-height: 1.5em;
+}
+
 .user-card-fullname {
   color: black;
   font-weight: bold;

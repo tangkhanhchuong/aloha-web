@@ -20,7 +20,6 @@ const Followees = () => {
         auth.token
       )
       if (!mountedRef.current) return null
-      console.log(res.data.data)
       setFollowees(res.data?.data.items)
       setLoading(() => false)
     },
