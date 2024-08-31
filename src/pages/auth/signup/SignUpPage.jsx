@@ -1,14 +1,11 @@
-import { Link } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { FaUser } from "react-icons/fa";
+import { MdDriveFileRenameOutline, MdOutlineMail, MdPassword } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 import XSvg from "../../../components/svgs/X";
-
-import { MdOutlineMail } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
-import { MdPassword } from "react-icons/md";
-import { MdDriveFileRenameOutline } from "react-icons/md";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 const SignUpPage = () => {
 	const [formData, setFormData] = useState({
@@ -33,7 +30,6 @@ const SignUpPage = () => {
 
 				const data = await res.json();
 				if (!res.ok) throw new Error(data.error || "Failed to create account");
-				console.log(data);
 				return data;
 			} catch (error) {
 				console.error(error);

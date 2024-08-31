@@ -1,35 +1,30 @@
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
+import { FaLink } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa6";
+import { IoCalendarOutline } from "react-icons/io5";
+import { MdEdit } from "react-icons/md";
 import { Link, useParams } from "react-router-dom";
 
 import Posts from "../../components/common/Posts";
 import ProfileHeaderSkeleton from "../../components/skeletons/ProfileHeaderSkeleton";
-import EditProfileModal from "./EditProfileModal";
-
-import { POSTS } from "../../utils/db/dummy";
-
-import { FaArrowLeft } from "react-icons/fa6";
-import { IoCalendarOutline } from "react-icons/io5";
-import { FaLink } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
-import { useQuery } from "@tanstack/react-query";
-import { formatMemberSinceDate } from "../../utils/date";
-
 import useFollow from "../../hooks/useFollow";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
+import { requestUserProfile } from "../../services/user.service";
+import { formatMemberSinceDate } from "../../utils/date";
+import EditProfileModal from "./EditProfileModal";
 
 const ProfilePage = () => {
 	const [coverImg, setCoverImg] = useState(null);
 	const [profileImg, setProfileImg] = useState(null);
 	const [feedType, setFeedType] = useState("posts");
-
+	const { slug } = useParams();
 	const coverImgRef = useRef(null);
 	const profileImgRef = useRef(null);
-
-	const { username } = useParams();
-
+	
 	const { follow, isPending } = useFollow();
 	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
-
+	
 	const {
 		data: user,
 		isLoading,
@@ -39,11 +34,9 @@ const ProfilePage = () => {
 		queryKey: ["userProfile"],
 		queryFn: async () => {
 			try {
-				const res = await fetch(`/api/users/profile/${username}`);
-				const data = await res.json();
-				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
-				}
+				const data = await requestUserProfile({ slug });
+				setProfileImg(data.avatar)
+				setCoverImg(data.cover);
 				return data;
 			} catch (error) {
 				throw new Error(error);
@@ -53,9 +46,9 @@ const ProfilePage = () => {
 
 	const { isUpdatingProfile, updateProfile } = useUpdateUserProfile();
 
-	const isMyProfile = authUser._id === user?._id;
-	const memberSinceDate = formatMemberSinceDate(user?.createdAt);
-	const amIFollowing = authUser?.following.includes(user?._id);
+	const isMyProfile = authUser.userId === user?.userId;
+	const memberSinceDate = formatMemberSinceDate(user?.joinedAt);
+	const amIFollowing = (authUser?.following || []).includes(user?.userId);
 
 	const handleImgChange = (e, state) => {
 		const file = e.target.files[0];
@@ -71,7 +64,7 @@ const ProfilePage = () => {
 
 	useEffect(() => {
 		refetch();
-	}, [username, refetch]);
+	}, [slug, refetch]);
 
 	return (
 		<>
@@ -87,8 +80,8 @@ const ProfilePage = () => {
 									<FaArrowLeft className='w-4 h-4' />
 								</Link>
 								<div className='flex flex-col'>
-									<p className='font-bold text-lg'>{user?.fullName}</p>
-									<span className='text-sm text-slate-500'>{POSTS?.length} posts</span>
+									<p className='font-bold text-lg'>{user?.fullname}</p>
+									<span className='text-sm text-slate-500'>{user.numberOfPosts} posts</span>
 								</div>
 							</div>
 							{/* COVER IMG */}
@@ -123,7 +116,7 @@ const ProfilePage = () => {
 								/>
 								{/* USER AVATAR */}
 								<div className='avatar absolute -bottom-16 left-4'>
-									<div className='w-32 rounded-full relative group/avatar'>
+									<div className='w-32 rounded-full relative group/avatar bg-secondary'>
 										<img src={profileImg || user?.profileImg || "/avatar-placeholder.png"} />
 										<div className='absolute top-5 right-3 p-1 bg-primary rounded-full group-hover/avatar:opacity-100 opacity-0 cursor-pointer'>
 											{isMyProfile && (
@@ -137,11 +130,11 @@ const ProfilePage = () => {
 								</div>
 							</div>
 							<div className='flex justify-end px-4 mt-5'>
-								{isMyProfile && <EditProfileModal authUser={authUser} />}
+								{isMyProfile && <EditProfileModal authUser={authUser} profile={user} />}
 								{!isMyProfile && (
 									<button
 										className='btn btn-outline rounded-full btn-sm'
-										onClick={() => follow(user?._id)}
+										onClick={() => follow(user?.userId)}
 									>
 										{isPending && "Loading..."}
 										{!isPending && amIFollowing && "Unfollow"}
@@ -164,13 +157,13 @@ const ProfilePage = () => {
 
 							<div className='flex flex-col gap-4 mt-14 px-4'>
 								<div className='flex flex-col'>
-									<span className='font-bold text-lg'>{user?.fullName}</span>
+									<span className='font-bold text-lg'>{user?.fullname}</span>
 									<span className='text-sm text-slate-500'>@{user?.username}</span>
 									<span className='text-sm my-1'>{user?.bio}</span>
 								</div>
 
 								<div className='flex gap-2 flex-wrap'>
-									{user?.link && (
+									{user?.website && (
 										<div className='flex gap-1 items-center '>
 											<>
 												<FaLink className='w-3 h-3 text-slate-500' />
@@ -181,7 +174,7 @@ const ProfilePage = () => {
 													className='text-sm text-blue-500 hover:underline'
 												>
 													{/* Updated this after recording the video. I forgot to update this while recording, sorry, thx. */}
-													{user?.link}
+													{user?.website}
 												</a>
 											</>
 										</div>
@@ -193,11 +186,11 @@ const ProfilePage = () => {
 								</div>
 								<div className='flex gap-2'>
 									<div className='flex gap-1 items-center'>
-										<span className='font-bold text-xs'>{user?.following.length}</span>
+										<span className='font-bold text-xs'>{user?.numberOfFollowees}</span>
 										<span className='text-slate-500 text-xs'>Following</span>
 									</div>
 									<div className='flex gap-1 items-center'>
-										<span className='font-bold text-xs'>{user?.followers.length}</span>
+										<span className='font-bold text-xs'>{user?.numberOfFollowers}</span>
 										<span className='text-slate-500 text-xs'>Followers</span>
 									</div>
 								</div>
@@ -225,7 +218,7 @@ const ProfilePage = () => {
 						</>
 					)}
 
-					<Posts feedType={feedType} username={username} userId={user?._id} />
+					<Posts feedType={feedType} userSlug={slug} userId={user?.userId} />
 				</div>
 			</div>
 		</>

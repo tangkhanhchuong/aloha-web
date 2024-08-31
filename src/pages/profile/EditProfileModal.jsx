@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
-const EditProfileModal = ({ authUser }) => {
+const EditProfileModal = ({ authUser, profile }) => {
 	const [formData, setFormData] = useState({
-		fullName: "",
+		fullname: "",
 		username: "",
 		email: "",
 		bio: "",
@@ -21,7 +21,7 @@ const EditProfileModal = ({ authUser }) => {
 	useEffect(() => {
 		if (authUser) {
 			setFormData({
-				fullName: authUser.fullName,
+				fullname: profile.fullname,
 				username: authUser.username,
 				email: authUser.email,
 				bio: authUser.bio,
@@ -30,7 +30,7 @@ const EditProfileModal = ({ authUser }) => {
 				currentPassword: "",
 			});
 		}
-	}, [authUser]);
+	}, [authUser, profile]);
 
 	return (
 		<>
@@ -55,8 +55,8 @@ const EditProfileModal = ({ authUser }) => {
 								type='text'
 								placeholder='Full Name'
 								className='flex-1 input border border-gray-700 rounded p-2 input-md'
-								value={formData.fullName}
-								name='fullName'
+								value={formData.fullname}
+								name='fullname'
 								onChange={handleInputChange}
 							/>
 							<input
@@ -103,14 +103,14 @@ const EditProfileModal = ({ authUser }) => {
 								onChange={handleInputChange}
 							/>
 						</div>
-						<input
+						{/* <input
 							type='text'
 							placeholder='Link'
 							className='flex-1 input border border-gray-700 rounded p-2 input-md'
 							value={formData.link}
 							name='link'
 							onChange={handleInputChange}
-						/>
+						/> */}
 						<button className='btn btn-primary rounded-full btn-sm text-white'>
 							{isUpdatingProfile ? "Updating..." : "Update"}
 						</button>

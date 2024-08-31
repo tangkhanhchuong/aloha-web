@@ -1,26 +1,26 @@
-import XSvg from "../svgs/X";
-
-import { MdHomeFilled } from "react-icons/md";
-import { IoNotifications } from "react-icons/io5";
-import { FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { BiLogOut } from "react-icons/bi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { BiLogOut } from "react-icons/bi";
+import { FaUser } from "react-icons/fa";
+import { IoNotifications } from "react-icons/io5";
+import { MdHomeFilled } from "react-icons/md";
+import { Link } from "react-router-dom";
+
+import { requestLogout } from "../../services/auth.service";
+import XSvg from "../svgs/X";
+
+const DELAYED_LOGOUT_TIME = 500;
 
 const Sidebar = () => {
 	const queryClient = useQueryClient();
 	const { mutate: logout } = useMutation({
 		mutationFn: async () => {
 			try {
-				const res = await fetch("/api/auth/logout", {
-					method: "POST",
-				});
-				const data = await res.json();
-
-				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
-				}
+				await requestLogout();
+				toast.success("You are logged out");
+				setTimeout(() => {
+					window.location = "/";
+				}, DELAYED_LOGOUT_TIME);
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -72,7 +72,7 @@ const Sidebar = () => {
 				</ul>
 				{authUser && (
 					<Link
-						to={`/profile/${authUser.username}`}
+						to={`/profile/${authUser.slug}`}
 						className='mt-auto mb-10 flex gap-2 items-start transition-all duration-300 hover:bg-[#181818] py-2 px-4 rounded-full'
 					>
 						<div className='avatar hidden md:inline-flex'>

@@ -1,17 +1,15 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { MdOutlineMail, MdPassword } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 import XSvg from "../../../components/svgs/X";
-
-import { MdOutlineMail } from "react-icons/md";
-import { MdPassword } from "react-icons/md";
-
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { requestLogin } from "../../../services/auth.service";
 
 const LoginPage = () => {
 	const [formData, setFormData] = useState({
-		username: "",
-		password: "",
+		email: "chuongtangkhanh2104@gmail.com",
+		password: "Abc@1234",
 	});
 	const queryClient = useQueryClient();
 
@@ -21,21 +19,9 @@ const LoginPage = () => {
 		isError,
 		error,
 	} = useMutation({
-		mutationFn: async ({ username, password }) => {
+		mutationFn: async ({ email, password }) => {
 			try {
-				const res = await fetch("/api/auth/login", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ username, password }),
-				});
-
-				const data = await res.json();
-
-				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
-				}
+				await requestLogin({ email, password });
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -69,10 +55,10 @@ const LoginPage = () => {
 						<input
 							type='text'
 							className='grow'
-							placeholder='username'
-							name='username'
+							placeholder='email'
+							name='email'
 							onChange={handleInputChange}
-							value={formData.username}
+							value={formData.email}
 						/>
 					</label>
 
