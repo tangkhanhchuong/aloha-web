@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { MdOutlineMail, MdPassword } from "react-icons/md";
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie';
 
 import XSvg from "../../../components/svgs/X";
 import { requestLogin } from "../../../services/auth.service";
@@ -21,7 +22,9 @@ const LoginPage = () => {
 	} = useMutation({
 		mutationFn: async ({ email, password }) => {
 			try {
-				await requestLogin({ email, password });
+				const data = await requestLogin({ email, password });
+				Cookies.set('accessToken', data.accessToken);
+				Cookies.set('refreshToken', data.refreshToken);
 			} catch (error) {
 				throw new Error(error);
 			}

@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie';
-
 import {
     makeDeleteRequest,
     makeGetRequest,
@@ -11,8 +9,6 @@ export const requestLogin = async ({ email, password }) => {
         url: '/auth/login',
         data: { email, password },
     });
-    Cookies.set('accessToken', data.accessToken);
-    Cookies.set('refreshToken', data.refreshToken);
     return data;
 }
 
@@ -23,7 +19,7 @@ export const requestRegister = async ({ email, username, password }) => {
     });
 }
 
-export const requestAuthUser = async () => {
+export const requestGetAuthUser = async () => {
     return makeGetRequest({
         url: '/auth/me',
         isRequiredAccessToken: true
@@ -35,6 +31,4 @@ export const requestLogout = async () => {
         url: '/auth/logout',
         isRequiredAccessToken: true
     });
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
 }

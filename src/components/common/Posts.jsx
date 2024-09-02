@@ -1,25 +1,27 @@
-import Post from "./Post";
-import PostSkeleton from "../skeletons/PostSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-const Posts = ({ feedType, userSlug, userId }) => {
-	const getPostEndpoint = () => {
-		switch (feedType) {
-			case "forYou":
-				return "/api/posts/all";
-			case "following":
-				return "/api/posts/following";
-			case "posts":
-				return `/api/posts/user/${userSlug}`;
-			case "likes":
-				return `/api/posts/likes/${userId}`;
-			default:
-				return "/api/posts/all";
-		}
-	};
+import { requestGetUserTimeline } from "../../services/user.service";
+import PostSkeleton from "../skeletons/PostSkeleton";
+import Post from "./Post";
 
-	const POST_ENDPOINT = getPostEndpoint();
+const Posts = ({ feedType, userSlug, userId }) => {
+	// const getPostEndpoint = () => {
+	// 	switch (feedType) {
+	// 		case "forYou":
+	// 			return "/api/posts/all";
+	// 		case "following":
+	// 			return "/api/posts/following";
+	// 		case "posts":
+	// 			return `/api/posts/user/${userSlug}`;
+	// 		case "likes":
+	// 			return `/api/posts/likes/${userId}`;
+	// 		default:
+	// 			return "/api/posts/all";
+	// 	}
+	// };
+
+	// const POST_ENDPOINT = getPostEndpoint();
 
 	const {
 		data: posts,
@@ -30,14 +32,11 @@ const Posts = ({ feedType, userSlug, userId }) => {
 		queryKey: ["posts"],
 		queryFn: async () => {
 			try {
-				const res = await fetch(POST_ENDPOINT);
-				const data = await res.json();
-
-				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
+				if (!userId) {
+					return [];
 				}
-
-				return data;
+				const data = await requestGetUserTimeline({ userId });
+				return data.items;
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -63,7 +62,7 @@ const Posts = ({ feedType, userSlug, userId }) => {
 			{!isLoading && !isRefetching && posts && (
 				<div>
 					{posts.map((post) => (
-						<Post key={post._id} post={post} />
+						<Post key={post.postId} post={post} />
 					))}
 				</div>
 			)}

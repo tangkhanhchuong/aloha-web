@@ -10,7 +10,7 @@ import SignUpPage from "./pages/auth/signup/SignUpPage";
 import HomePage from "./pages/home/HomePage";
 import NotificationPage from "./pages/notification/NotificationPage";
 import ProfilePage from "./pages/profile/ProfilePage";
-import { requestAuthUser } from "./services/auth.service";
+import { requestGetAuthUser } from "./services/auth.service";
 
 function App() {
 	const { data: authUser, isLoading } = useQuery({
@@ -18,7 +18,7 @@ function App() {
 		queryKey: ["authUser"],
 		queryFn: async () => {
 			try {
-				const data = await requestAuthUser();
+				const data = await requestGetAuthUser();
 				return data;
 			} catch (error) {
 				throw new Error(error);

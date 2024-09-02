@@ -10,7 +10,7 @@ import Posts from "../../components/common/Posts";
 import ProfileHeaderSkeleton from "../../components/skeletons/ProfileHeaderSkeleton";
 import useFollow from "../../hooks/useFollow";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
-import { requestUserProfile } from "../../services/user.service";
+import { requestGetUserProfile } from "../../services/user.service";
 import { formatMemberSinceDate } from "../../utils/date";
 import EditProfileModal from "./EditProfileModal";
 
@@ -34,7 +34,7 @@ const ProfilePage = () => {
 		queryKey: ["userProfile"],
 		queryFn: async () => {
 			try {
-				const data = await requestUserProfile({ slug });
+				const data = await requestGetUserProfile({ slug });
 				setProfileImg(data.avatar)
 				setCoverImg(data.cover);
 				return data;
@@ -117,7 +117,7 @@ const ProfilePage = () => {
 								{/* USER AVATAR */}
 								<div className='avatar absolute -bottom-16 left-4'>
 									<div className='w-32 rounded-full relative group/avatar bg-secondary'>
-										<img src={profileImg || user?.profileImg || "/avatar-placeholder.png"} />
+										<img src={profileImg || user?.avatar || "/avatar-placeholder.png"} />
 										<div className='absolute top-5 right-3 p-1 bg-primary rounded-full group-hover/avatar:opacity-100 opacity-0 cursor-pointer'>
 											{isMyProfile && (
 												<MdEdit
@@ -173,7 +173,6 @@ const ProfilePage = () => {
 													rel='noreferrer'
 													className='text-sm text-blue-500 hover:underline'
 												>
-													{/* Updated this after recording the video. I forgot to update this while recording, sorry, thx. */}
 													{user?.website}
 												</a>
 											</>
@@ -218,7 +217,7 @@ const ProfilePage = () => {
 						</>
 					)}
 
-					<Posts feedType={feedType} userSlug={slug} userId={user?.userId} />
+					{ user?.userId && <Posts feedType={feedType} userSlug={user?.slug} userId={user?.userId} /> }
 				</div>
 			</div>
 		</>

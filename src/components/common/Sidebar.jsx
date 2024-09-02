@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Cookies from 'js-cookie';
 import toast from "react-hot-toast";
 import { BiLogOut } from "react-icons/bi";
 import { FaUser } from "react-icons/fa";
@@ -13,11 +14,13 @@ const DELAYED_LOGOUT_TIME = 500;
 
 const Sidebar = () => {
 	const queryClient = useQueryClient();
-	const { mutate: logout } = useMutation({
+	const { mutate: mutateLogout } = useMutation({
 		mutationFn: async () => {
 			try {
 				await requestLogout();
 				toast.success("You are logged out");
+				Cookies.remove('accessToken');
+				Cookies.remove('refreshToken');
 				setTimeout(() => {
 					window.location = "/";
 				}, DELAYED_LOGOUT_TIME);
@@ -77,7 +80,7 @@ const Sidebar = () => {
 					>
 						<div className='avatar hidden md:inline-flex'>
 							<div className='w-8 rounded-full'>
-								<img src={authUser?.profileImg || "/avatar-placeholder.png"} />
+								<img src={authUser?.avatar || "/avatar-placeholder.png"} />
 							</div>
 						</div>
 						<div className='flex justify-between flex-1'>
@@ -89,7 +92,7 @@ const Sidebar = () => {
 								className='w-5 h-5 cursor-pointer'
 								onClick={(e) => {
 									e.preventDefault();
-									logout();
+									mutateLogout();
 								}}
 							/>
 						</div>
