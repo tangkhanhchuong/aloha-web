@@ -1,5 +1,6 @@
 import {
     makeDeleteRequest,
+    makeGetRequest,
     makePostRequest
 } from "./http/axios.client";
 
@@ -28,6 +29,13 @@ export const requestCreatePostComment = async ({ postId, content }) => {
             content,
             type: 'TEXT'
         },
+        isRequiredAccessToken: true
+    });
+}
+
+export const requestGetPostComments = async ({ postId }) => {
+    return makeGetRequest({
+        url: `/posts/${postId}/comments`,
         isRequiredAccessToken: true
     });
 }
