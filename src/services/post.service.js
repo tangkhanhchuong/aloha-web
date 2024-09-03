@@ -1,11 +1,11 @@
 import {
-    makeGetRequest,
+    makeDeleteRequest,
     makePostRequest
 } from "./http/axios.client";
 
-export const requestGetPost = async ({ userId }) => {
-    return makeGetRequest({
-        url: `/users/${userId}/posts`,
+export const requestDeletePost = async ({ postId }) => {
+    return makeDeleteRequest({
+        url: `/posts/${postId}`,
         isRequiredAccessToken: true
     });
 }

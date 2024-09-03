@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
 const EditProfileModal = ({ authUser, profile }) => {
@@ -12,7 +13,7 @@ const EditProfileModal = ({ authUser, profile }) => {
 		currentPassword: "",
 	});
 
-	const { updateProfile, isUpdatingProfile } = useUpdateUserProfile();
+	const { mutateUpdateProfile, isUpdatingProfile } = useUpdateUserProfile();
 
 	const handleInputChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,7 +36,7 @@ const EditProfileModal = ({ authUser, profile }) => {
 	return (
 		<>
 			<button
-				className='btn btn-outline rounded-full btn-sm'
+				className='btn btn-primary text-white rounded-full btn-sm'
 				onClick={() => document.getElementById("edit_profile_modal").showModal()}
 			>
 				Edit profile
@@ -47,7 +48,7 @@ const EditProfileModal = ({ authUser, profile }) => {
 						className='flex flex-col gap-4'
 						onSubmit={(e) => {
 							e.preventDefault();
-							updateProfile(formData);
+							mutateUpdateProfile(formData);
 						}}
 					>
 						<div className='flex flex-wrap gap-2'>

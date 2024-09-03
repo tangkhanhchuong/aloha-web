@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 const useFollow = () => {
 	const queryClient = useQueryClient();
 
-	const { mutate: mutateFollow, isPending } = useMutation({
+	const { mutate: mutateFollow, isPending: isFollowing } = useMutation({
 		mutationFn: async (userId) => {
 			try {
 				const res = await fetch(`/api/users/mutateFollow/${userId}`, {
@@ -31,7 +31,7 @@ const useFollow = () => {
 		},
 	});
 
-	return { mutateFollow, isPending };
+	return { mutateFollow, isFollowing };
 };
 
 export default useFollow;

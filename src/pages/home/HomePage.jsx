@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import Posts from "../../components/common/Posts";
 import CreatePost from "./CreatePost";
 
 const HomePage = () => {
@@ -37,7 +36,7 @@ const HomePage = () => {
 				<CreatePost />
 
 				{/* POSTS */}
-				<Posts feedType={feedType} />
+				{/* <Posts /> */}
 			</div>
 		</>
 	);
