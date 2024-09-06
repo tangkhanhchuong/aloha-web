@@ -20,5 +20,5 @@ export const ProfileTabs = ({ feedType, setFeedType}) => {
 				)}
 			</div>
 		</div>
-	)
+	);
 }

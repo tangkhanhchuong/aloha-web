@@ -10,5 +10,5 @@ export const PostContent = ({ post }) => {
                 />
             )}
         </div>
-    )
+    );
 }

@@ -11,5 +11,5 @@ export const CommentButton = ({ post }) => {
                 {post.numberOfComments}
             </span>
         </div>
-    )
-}
+    );
+};

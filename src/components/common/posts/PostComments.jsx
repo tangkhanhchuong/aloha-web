@@ -7,12 +7,12 @@ import LoadingSpinner from "../LoadingSpinner";
 
 export const PostComments = ({ post }) => {
 	const queryClient = useQueryClient();
-	const [newComment, setNewComment] = useState("");
+	const [comment, setNewComment] = useState("");
 
 	const { mutate: mutateCommentPost, isPending: isCommenting } = useMutation({
 		mutationFn: async () => {
 			try {
-				const data = await requestCreatePostComment({ postId: post.postId, content: newComment });
+				const data = await requestCreatePostComment({ postId: post.postId, content: comment });
 				return data;
 			} catch (error) {
 				throw new Error(error);
@@ -33,9 +33,7 @@ export const PostComments = ({ post }) => {
 		queryKey: ["postComments"],
 		queryFn: async () => {
             try {
-                console.log("Loadingf")
                 const data = await requestGetPostComments({ postId: post.postId });
-                console.log({data})
 				return data.items;
 			} catch (error) {
 				throw new Error(error);
@@ -43,13 +41,13 @@ export const PostComments = ({ post }) => {
 		},
 		retry: true,
     });
-    console.log({postComments})
 
 	const handlePostComment = (e) => {
 		e.preventDefault();
 		if (isCommenting) return;
 		mutateCommentPost();
     };
+
     
     return (
         <dialog id={`comments_modal${post.postId}`} className='modal border-none outline-none'>
@@ -61,23 +59,23 @@ export const PostComments = ({ post }) => {
                             No comments yet 🤔 Be the first one 😉
                         </p>
                     )}
-                    {(postComments || []).map((newComment) => (
-                        <div key={newComment.postId} className='flex gap-2 items-start'>
+                    {(postComments || []).map((comment) => (
+                        <div key={comment.commentId} className='flex gap-2 items-start'>
                             <div className='avatar'>
                                 <div className='w-8 rounded-full'>
                                     <img
-                                        src={newComment.createdBy.avatar || "/avatar-placeholder.png"}
+                                        src={comment.createdBy.avatar || "/avatar-placeholder.png"}
                                     />
                                 </div>
                             </div>
                             <div className='flex flex-col'>
                                 <div className='flex items-center gap-1'>
-                                    <span className='font-bold'>{newComment.createdBy.fullName}</span>
+                                    <span className='font-bold'>{comment.createdBy.fullName}</span>
                                     <span className='text-gray-700 text-sm'>
-                                        @{newComment.createdBy.username}
+                                        @{comment.createdBy.username}
                                     </span>
                                 </div>
-                                <div className='text-sm'>{newComment.content}</div>
+                                <div className='text-sm'>{comment.content}</div>
                             </div>
                         </div>
                     ))}
@@ -88,8 +86,8 @@ export const PostComments = ({ post }) => {
                 >
                     <textarea
                         className='textarea w-full p-1 rounded text-md resize-none border focus:outline-none  border-gray-800'
-                        placeholder='Add a newComment...'
-                        value={newComment}
+                        placeholder='Add a comment...'
+                        value={comment}
                         onChange={(e) => setNewComment(e.target.value)}
                     />
                     <button className='btn btn-primary rounded-full btn-sm text-white px-4'>

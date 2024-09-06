@@ -54,9 +54,8 @@ export const PostFooter = ({ post }) => {
 						<FaHeart className='w-4 h-4 text-pink-500' />
 					)}
 					<span
-						className={`text-sm  group-hover:text-pink-500 ${
-							isReacted ? "text-pink-500" : "text-slate-500"
-						}`}
+						className={`text-sm  group-hover:text-pink-500 ${isReacted ? "text-pink-500" : "text-slate-500"
+							}`}
 					>
 						{post.numberOfReactions}
 					</span>
@@ -66,5 +65,5 @@ export const PostFooter = ({ post }) => {
 				<FaRegBookmark className='w-4 h-4 text-slate-500 cursor-pointer' />
 			</div>
 		</div>
-	)
+	);
 }

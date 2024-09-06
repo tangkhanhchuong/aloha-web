@@ -1,21 +1,25 @@
+import moment from "moment";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
 const EditProfileModal = ({ authUser, profile }) => {
 	const [formData, setFormData] = useState({
 		fullname: "",
-		username: "",
-		email: "",
 		bio: "",
-		link: "",
-		newPassword: "",
-		currentPassword: "",
+		location: "",
+		website: "",
+		gender: "MALE",
+		birthday: ""
 	});
 
 	const { mutateUpdateProfile, isUpdatingProfile } = useUpdateUserProfile();
 
 	const handleInputChange = (e) => {
+		if (!profile.fullname) {
+			toast.error("Fullname can't be blank!")
+		}
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
@@ -23,12 +27,11 @@ const EditProfileModal = ({ authUser, profile }) => {
 		if (authUser) {
 			setFormData({
 				fullname: profile.fullname,
-				username: authUser.username,
-				email: authUser.email,
-				bio: authUser.bio,
-				link: authUser.link,
-				newPassword: "",
-				currentPassword: "",
+				bio: profile.bio || "",
+				location: profile.location || "",
+				website: profile.website || "",
+				gender: profile.gender || "MALE",
+				birthday: profile.birthday ? moment(profile.birthday).format("YYYY-MM-DD") : ""
 			});
 		}
 	}, [authUser, profile]);
@@ -43,7 +46,7 @@ const EditProfileModal = ({ authUser, profile }) => {
 			</button>
 			<dialog id='edit_profile_modal' className='modal'>
 				<div className='modal-box border rounded-md border-gray-700 shadow-md'>
-					<h3 className='font-bold text-lg my-3'>Update Profile</h3>
+					<h3 className='font-bold text-lg my-3'>Edit Profile</h3>
 					<form
 						className='flex flex-col gap-4'
 						onSubmit={(e) => {
@@ -60,58 +63,58 @@ const EditProfileModal = ({ authUser, profile }) => {
 								name='fullname'
 								onChange={handleInputChange}
 							/>
-							<input
-								type='text'
-								placeholder='Username'
-								className='flex-1 input border border-gray-700 rounded p-2 input-md'
-								value={formData.username}
-								name='username'
-								onChange={handleInputChange}
-							/>
 						</div>
 						<div className='flex flex-wrap gap-2'>
-							<input
-								type='email'
-								placeholder='Email'
-								className='flex-1 input border border-gray-700 rounded p-2 input-md'
-								value={formData.email}
-								name='email'
-								onChange={handleInputChange}
-							/>
 							<textarea
 								placeholder='Bio'
 								className='flex-1 input border border-gray-700 rounded p-2 input-md'
 								value={formData.bio}
 								name='bio'
+								rows={3}
 								onChange={handleInputChange}
 							/>
 						</div>
 						<div className='flex flex-wrap gap-2'>
 							<input
-								type='password'
-								placeholder='Current Password'
+								placeholder='Website'
 								className='flex-1 input border border-gray-700 rounded p-2 input-md'
-								value={formData.currentPassword}
-								name='currentPassword'
-								onChange={handleInputChange}
-							/>
-							<input
-								type='password'
-								placeholder='New Password'
-								className='flex-1 input border border-gray-700 rounded p-2 input-md'
-								value={formData.newPassword}
-								name='newPassword'
+								value={formData.website}
+								name='website'
 								onChange={handleInputChange}
 							/>
 						</div>
-						{/* <input
-							type='text'
-							placeholder='Link'
-							className='flex-1 input border border-gray-700 rounded p-2 input-md'
-							value={formData.link}
-							name='link'
-							onChange={handleInputChange}
-						/> */}
+						<div className='flex flex-wrap gap-2'>
+							<input
+								type='text'
+								placeholder='Location'
+								className='flex-1 input border border-gray-700 rounded p-2 input-md'
+								value={formData.location}
+								name='location'
+								onChange={handleInputChange}
+							/>
+						</div>
+						<div className='flex flex-wrap gap-2'>
+							<select
+								id="gender"
+								name="gender"
+								value={formData.gender}
+								onChange={handleInputChange}
+								className="flex-1 input border border-gray-700 rounded p-2 input-md"
+							>
+								<option value="MALE">Male</option>
+								<option value="FEMALE">Female</option>
+							</select>
+						</div>
+						<div className='flex flex-wrap gap-2'>
+							<input
+								type='date'
+								placeholder='Birthday'
+								className='flex-1 input border border-gray-700 rounded p-2 input-md'
+								value={formData.birthday}
+								name='birthday'
+								onChange={handleInputChange}
+							/>
+						</div>
 						<button className='btn btn-primary rounded-full btn-sm text-white'>
 							{isUpdatingProfile ? "Updating..." : "Update"}
 						</button>
