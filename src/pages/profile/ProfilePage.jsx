@@ -9,16 +9,28 @@ import { ProfileInfo } from "../../components/profile/ProfielInfo";
 import { ProfileHeader } from "../../components/profile/ProfileHeader";
 import { ProfileTabs } from "../../components/profile/ProfileTabs";
 import { UpdateButton } from "../../components/profile/UpdateButton";
+import { UserMedia } from "../../components/profile/UserMedia";
 import { UserTimeline } from "../../components/profile/UserTimeline";
 import ProfileHeaderSkeleton from "../../components/skeletons/ProfileHeaderSkeleton";
 import { requestGetUserProfile } from "../../services/user.service";
 
-const ProfilePage = () => {
+const ProfileFeedGenerator = ({ feedType, user }) => {
+	switch (feedType) {
+		case "media":
+			return <UserMedia userId={user?.userId} />;
+		case "user-timeline":
+			return <UserTimeline userId={user?.userId} />;
+		default:
+			return <>Not found</>
+	}						
+}
+
+export const ProfilePage = () => {
 	const [coverPath, setCoverPath] = useState(null);
 	const [avatarPath, setAvatarPath] = useState(null);
 	const [coverFile, setCoverFile] = useState(null);
 	const [avatarFile, setAvatarFile] = useState(null);
-	const [feedType, setFeedType] = useState("posts");
+	const [feedType, setFeedType] = useState("user-timeline");
 	const { slug } = useParams();
 	const coverImgRef = useRef(null);
 	const avatarImgRef = useRef(null);
@@ -141,12 +153,11 @@ const ProfilePage = () => {
 							</div>
 							<ProfileInfo user={user} />
 							<ProfileTabs feedType={feedType} setFeedType={setFeedType} />
+							<ProfileFeedGenerator feedType={feedType} user={user} />
 						</>
 					)}
-					{ user?.userId && <UserTimeline userId={user?.userId} /> }
 				</div>
 			</div>
 		</>
 	);
 };
-export default ProfilePage;

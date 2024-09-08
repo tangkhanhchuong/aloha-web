@@ -1,4 +1,7 @@
-import { makeGetRequest, makePatchRequest } from "./http/axios.client";
+import {
+    makeGetRequest,
+    makePatchRequest
+} from "./http/axios.client";
 
 export const requestGetUserProfile = async ({ slug }) => {
     return makeGetRequest({
@@ -38,6 +41,13 @@ export const requestUpdateUser = async ({
 export const requestGetUserTimeline = async ({ userId }) => {
     return makeGetRequest({
         url: `/users/${userId}/posts`,
+        isRequiredAccessToken: true
+    });
+}
+
+export const requestGetUserMedia = async ({ userId }) => {
+    return makeGetRequest({
+        url: `/users/${userId}/media`,
         isRequiredAccessToken: true
     });
 }

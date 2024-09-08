@@ -9,7 +9,7 @@ import LoginPage from "./pages/auth/login/LoginPage";
 import SignUpPage from "./pages/auth/signup/SignUpPage";
 import HomePage from "./pages/home/HomePage";
 import NotificationPage from "./pages/notification/NotificationPage";
-import ProfilePage from "./pages/profile/ProfilePage";
+import { ProfilePage } from "./pages/profile/ProfilePage";
 import { requestGetAuthUser } from "./services/auth.service";
 
 function App() {
